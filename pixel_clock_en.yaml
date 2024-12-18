@@ -1,0 +1,17 @@
+substitutions:
+  device: esp-pixel-clock-en
+  name: ESPHome Pixel Clock
+  project_name: "ajs.Pixel_Clock"
+  project_version: "1.1.5"
+  update_interval: 60s
+  comment: "Ulanzi Pixel Clock | EHMTXv2"
+  weekdays: "SUMOTUWETHFRSA"
+  date_to: ""
+
+dashboard_import:
+  package_import_url: github://andrewjswan/pixel-clock/pixel-clock.yaml@main
+
+packages:
+  common: !include packages/common.yaml
+  pixel: !include packages/pixel_clock.yaml
+  # sun: !include packages/pixel_clock_sun.yaml

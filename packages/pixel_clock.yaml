@@ -1,0 +1,516 @@
+substitutions:
+  project_name: "Ulanzi.EHMTXv2"
+  project_version: "2024.12.3"
+  # Pin definition from https://github.com/aptonline/PixelIt_Ulanzi
+  battery_pin: GPIO34
+  buzzer_pin: GPIO15
+  ldr_pin: GPIO35
+  matrix_pin: GPIO32
+  left_button_pin: GPIO26
+  mid_button_pin: GPIO27
+  right_button_pin: GPIO14
+  scl_pin: GPIO22
+  sda_pin: GPIO21
+
+external_components:
+  # - source:
+  #     type: git
+  #     url: https://github.com/lubeda/EspHoMaTriXv2
+  #     ref: 2024.12.3
+  #   components: [ehmtxv2]
+  #   refresh: 60s
+  - source:
+      type: git
+      url: https://github.com/andrewjswan/EspHoMaTriXv2
+      ref: 2024.12.3-Return_of_the_multicolor_text
+    components: [ehmtxv2]
+    refresh: 60s
+
+globals:
+  # aab = auto-adjustable brightness
+  - id: aab_enable
+    type: "bool"
+    restore_value: true
+    initial_value: "true"
+
+  - id: aab_add
+    type: int
+    initial_value: '10'
+
+  - id: aab_max
+    type: int
+    initial_value: '220'
+
+  - id: aab_min
+    type: int
+    initial_value: '25'
+
+esphome:
+  on_boot:
+    then:
+      - ds1307.read_time:
+      - lambda: id(rtttl_out).turn_off();
+
+esp32:
+  framework:
+    advanced:
+      ignore_efuse_custom_mac: true
+
+api:
+  services:
+    - service: tune
+      variables:
+        tune: string
+      then:
+        - rtttl.play:
+            rtttl: !lambda 'return tune;'
+
+# Over The Air Update
+ota:
+  - platform: esphome
+    on_begin:
+      then:
+        - lambda: id(rtttl_out).turn_off();
+
+switch:
+  - platform: template
+    name: "${name} Auto-Adjust Brightness"
+    id: switch_autobrightness
+    icon: mdi:brightness-auto
+    restore_mode: RESTORE_DEFAULT_ON
+    lambda: |-
+      return id(aab_enable);
+    turn_on_action:
+      lambda: |-
+        id(aab_enable) = true;
+    turn_off_action:
+      lambda: |-
+        id(aab_enable) = false;
+
+output:
+  - platform: ledc
+    pin:
+      number: $buzzer_pin
+      ignore_strapping_warning: true
+    id: rtttl_out
+
+rtttl:
+  output: rtttl_out
+  id: buzzer
+
+font:
+  # Matrix Clock Fonts
+  # Grab these from https://github.com/trip5/Matrix-Fonts
+  # Store in a "fonts" subfolder of your ESPHome config folder or change paths below
+  - file: fonts/MatrixChunky6.ttf
+    size: 6
+    id: default_font
+    glyphs: |-
+      ! "#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz°|¬¾¼•АаБбВвГгҐґДдЕеЄєЖжЗзИиІіЇїЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЬьЮюЯяЁёЪъЫыЭэ
+    ignore_missing_glyphs: true
+
+  - file: fonts/MatrixChunky8.ttf
+    size: 8
+    id: special_font
+    glyphs: |-
+      ! "#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz°|¬¾¼•АаБбВвГгҐґДдЕеЄєЖжЗзИиІіЇїЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЬьЮюЯяЁёЪъЫыЭэ℃₴€
+    ignore_missing_glyphs: true
+
+binary_sensor:
+  - platform: gpio
+    name: "${name} Left button"
+    pin:
+      number: $left_button_pin
+      inverted: true
+
+  - platform: gpio
+    name: "${name} Middle button"
+    pin:
+      inverted: true
+      number: $mid_button_pin
+      mode: INPUT_PULLUP
+    on_release:
+      then:
+        - lambda: |-
+            id(rgb8x32)->set_display_on();
+            if (id(rgb8x32)->night_mode)
+              id(rgb8x32)->force_screen("*", 2);
+            else
+              id(rgb8x32)->force_screen("day#2", 15);
+
+  - platform: gpio
+    name: "${name} Right button"
+    pin:
+      number: $right_button_pin
+      inverted: true
+    on_release:
+      then:
+        - lambda: |-
+            id(rgb8x32)->skip_screen();
+
+sensor:
+  - platform: sht3xd
+    temperature:
+      name: "${name} Temperature"
+      device_class: temperature
+    humidity:
+      name: "${name} Relative Humidity"
+      device_class: humidity
+    update_interval: ${update_interval}
+
+  - platform: adc
+    name: "${name} Battery"
+    pin: $battery_pin
+    id: battery_voltage
+    update_interval: 10s
+    device_class: battery
+    accuracy_decimals: 0
+    attenuation: auto
+    filters:
+      - sliding_window_moving_average:
+          window_size: 15
+          send_every: 15
+          send_first_at: 1
+      - multiply: 1.6
+      - lambda: |-
+          auto r = ((x - 3) / 0.69 * 100.00);
+          if (r >= 100) return 100;
+          if (r > 0) return r;
+          if (r <= 0) return 1;
+          return 0;
+    unit_of_measurement: '%'
+
+  - platform: adc
+    name: "${name} Illuminance"
+    id: light_sensor
+    pin: $ldr_pin
+    update_interval: 10s
+    attenuation: auto
+    unit_of_measurement: lx
+    device_class: illuminance
+    accuracy_decimals: 0
+    filters:
+      - lambda: |-
+          return (x / 10000.0) * 2000000.0 - 15 ;
+    on_value:
+      then:
+        - lambda: |-
+            if ( id(aab_enable) )
+            {
+              int n = x / 4 + id(aab_add); // new_value
+              if (n > id(aab_max)) n = id(aab_max);
+              if (n < (id(rgb8x32)->night_mode ? id(aab_min) : id(aab_min) - 5)) n = (id(rgb8x32)->night_mode ? id(aab_min) : id(aab_min) - 5);
+              // if (n == 37) n = 36; // @chertvl fix for rgb: 128,128,128
+              int c = id(rgb8x32)->get_brightness(); // current value
+              c = c > 0 ? c : 1;
+              int d = (n - c) * 100 / c; // diff in %
+              if (abs(d) > 2) id(rgb8x32)->set_brightness(n);
+            }
+
+i2c:
+  sda: $sda_pin
+  scl: $scl_pin
+  scan: true
+  id: i2cbus
+
+light:
+  - platform: neopixelbus
+    name: "${name} Light"
+    id: ehmtx_light
+    type: GRB
+    internal: true
+    variant: WS2812
+    pin: $matrix_pin
+    num_leds: 256
+    color_correct: [30%, 30%, 30%]
+    gamma_correct: 2.0
+    restore_mode: ALWAYS_OFF
+
+animation:
+  - file: images/1pixel.gif
+    id: empty_animation
+
+time:
+  - platform: sntp
+    timezone: Europe/Kiev
+    on_time_sync:
+      then:
+        ds1307.write_time:
+
+  - platform: ds1307
+    timezone: Europe/Kiev
+    update_interval: never
+    id: ehmtx_time
+
+display:
+  - platform: addressable_light
+    id: ehmtx_display
+    addressable_light_id: ehmtx_light
+    width: 32
+    height: 8
+    pixel_mapper: |-
+      if (y % 2 == 0)
+      {
+        return (y * 32) + x;
+      }
+      return (y * 32) + (31 - x);
+    rotation: 0°
+    update_interval: 16ms
+    auto_clear_enabled: false
+    lambda: |-
+      id(rgb8x32)->tick();
+      id(rgb8x32)->draw();
+
+ehmtxv2:
+  id: rgb8x32
+  icons2html: true
+  iconscache: true
+  matrix_component: ehmtx_display
+  time_component: ehmtx_time
+  time_format: "%H:%M"
+  time_format_big: "%H:%M:%S"
+  date_format: "%d•%m"
+  date_format_big: "%d•%b"
+  weekdays: ${weekdays}
+
+  replace_time_date_from: "Sun Mon Tue Wed Thu Fri Sat Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec"
+  replace_time_date_to: ${date_to}
+
+  default_font_id: default_font
+  default_font_yoffset: 7
+  special_font_id: special_font
+  special_font_yoffset: 8
+  blend_steps: 32
+  scroll_count: 2  # scroll long text at least two times
+  scroll_interval: 80  # milliseconds
+  rainbow_interval: 32  # milliseconds
+  rainbow_shimmer: true
+
+  multicolor_text: true
+
+  show_seconds: false
+  vertical_scroll: false
+  advanced_clock: true
+  flip_flop_clock: true
+  flip_flop_speed: 3
+  advanced_bitmap: true
+  boot_logo: "[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,1,1,1,1,0,0,0,0,1,1,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,2,0,0,0,0,2,0,0,0,2,0,0,2,0,0,0,2,0,0,2,2,0,2,2,0,0,0,0,0,0,0,0,4,0,0,0,0,4,0,0,0,4,0,0,4,0,0,0,4,0,0,4,0,4,0,4,0,0,0,0,0,0,0,0,8,0,0,0,0,8,8,8,8,0,0,0,8,8,8,8,8,0,0,8,0,0,0,8,0,0,0,0,0,0,0,0,16,0,0,0,0,16,0,0,0,16,0,0,16,0,0,0,16,0,0,16,0,0,0,16,0,0,0,0,0,0,0,0,32,0,0,0,0,32,0,0,0,32,0,0,32,0,0,0,32,0,0,32,0,0,0,32,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]"
+  boot_logo_mode: 7
+
+  icon_indicator_screens:
+    - 15
+
+  night_mode_screens:
+    - 2
+    - 3
+    - 11
+    - 16
+    - 23
+
+  # https://developer.lametric.com/icons
+  icons:
+    - id: home_assistant
+      frame_duration: 500
+      lameid: 7956
+
+    - id: ukraine
+      lameid: 881
+      frame_duration: 300
+
+    - id: fireworks
+      lameid: 26001
+    - id: fire
+      lameid: 60710
+
+    - id: r2d2
+      lameid: 9527
+    - id: bb8
+      lameid: 8786
+
+    - id: pacman
+      lameid: 1496
+    - id: skull
+      lameid: 11241
+    - id: dog
+      lameid: 55532
+
+    - id: new_year
+      lameid: 27062
+
+    - id: phone
+      lameid: 35
+    - id: music
+      lameid: 30008
+    - id: video
+      lameid: 1944
+
+    - id: power
+      lameid: 14429
+
+    - id: distance
+      lameid: 12110
+
+    - id: player_play
+      lameid: 2361
+    - id: player_pause
+      lameid: 27246
+    - id: player_stop
+      lameid: 2363
+
+    - id: error
+      lameid: 40530
+    - id: attention
+      lameid: 555
+    - id: wait
+      lameid: 55353
+
+    - id: alert_red
+      lameid: 55376
+    - id: alert_green
+      lameid: 46063
+
+    - id: alarm_light
+      lameid: 34175
+    - id: alarm_shield_green
+      lameid: 46063
+    - id: alarm_shield_yellow
+      lameid: 55377
+    - id: alarm_shield_purple
+      lameid: 53027
+
+    - id: lightning
+      lameid: 23713
+
+    - id: airconditioner
+      lameid: 61643
+
+    - id: heater
+      lameid: 29266
+
+    - id: temperature
+      lameid: 2056
+    - id: temperature_down
+      lameid: 19649
+    - id: temperature_up
+      lameid: 19650
+    - id: temperature_hot_up
+      lameid: 19651
+    - id: temperature_normal_up
+      lameid: 19652
+    - id: temperature_cold_up
+      lameid: 19653
+    - id: temperature_hot_down
+      lameid: 1965
+    - id: temperature_normal_down
+      lameid: 19658
+    - id: temperature_cold_down
+      lameid: 19659
+    - id: temperature_hot
+      lameid: 22293
+    - id: temperature_warm
+      lameid: 22294
+    - id: temperature_normal
+      lameid: 22295
+    - id: temperature_cold
+      lameid: 22296
+
+    - id: aqi_good
+      lameid: 6620
+    - id: aqi_moderate
+      lameid: 6623
+    - id: aqi_sensitive
+      lameid: 6624
+    - id: aqi_unhealthy
+      lameid: 6625
+    - id: aqi_very_unhealthy
+      lameid: 6626
+    - id: aqi_hazardous
+      lameid: 6627
+
+    - id: umbrella
+      lameid: 60978
+    - id: snow
+      lameid: 17140
+
+    - id: pressure
+      frame_duration: 1000
+      lameid: 39912
+
+    - id: weather_clear_night
+      frame_duration: 1000
+      lameid: 53383
+    - id: weather_cloudy
+      frame_duration: 192
+      lameid: 2283
+    - id: weather_exceptional
+      lameid: 16754
+    - id: weather_fog
+      lameid: 12196
+    - id: weather_hail
+      lameid: 53288
+    - id: weather_lightning
+      lameid: 23713
+    - id: weather_lightning_rainy
+      lameid: 49299
+    - id: weather_partlycloudy
+      frame_duration: 210
+      lameid: 22160
+    - id: weather_pouring
+      lameid: 49300
+    - id: weather_rainy
+      lameid: 2284
+    - id: weather_snowy
+      frame_duration: 300
+      lameid: 2289
+    - id: weather_snowy_rainy
+      lameid: 49301
+    - id: weather_sunny
+      frame_duration: 500
+      lameid: 2282
+    - id: weather_windy
+      lameid: 21909
+    - id: weather_windy_variant
+      lameid: 21909
+    - id: weather_cloudy_night
+      lameid: 12195
+
+    - id: season_spring
+      lameid: 8759
+    - id: season_summer
+      lameid: 21148
+    - id: season_autumn
+      lameid: 12894
+    - id: season_winter
+      lameid: 12897
+
+  on_next_screen:
+    - homeassistant.event:
+        event: esphome.new_screen
+        data_template:
+          iconname: !lambda "return icon.c_str();"
+          text: !lambda "return text.c_str();"
+
+  on_empty_queue:
+    then:
+      - script.execute: clock_screens
+
+  on_start_running:
+    then:
+      - script.execute: clock_screens
+
+script:
+  - id: clock_screens
+    then:
+      lambda: |-
+        id(rgb8x32)->expand_icon_to_9(3);
+
+        id(rgb8x32)->set_clock_infotext_color(200,200,200, 200,200,200, true, 0);
+
+        id(rgb8x32)->set_adv_clock_color(0,0,0, 0,150,240, 150,150,150);
+        id(rgb8x32)->icon_clock("blank|day#2", 1440, 10, true);
+
+        id(rgb8x32)->set_date_infotext_color(0,150,240, 0,150,240, false, 1);
+        id(rgb8x32)->icon_date("blank|weekday", 1440, 5, true);
+
+        id(rgb8x32)->show_icon_indicator(240,240,240, 7, 7, 1);
+        id(rgb8x32)->set_weekday_accent_on();
