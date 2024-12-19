@@ -22,7 +22,7 @@ external_components:
   - source:
       type: git
       url: https://github.com/andrewjswan/EspHoMaTriXv2
-      ref: 2024.12.3-Return_of_the_multicolor_text
+      ref: 2024.12.3
     components: [ehmtxv2]
     refresh: 60s
 
