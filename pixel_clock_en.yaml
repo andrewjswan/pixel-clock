@@ -15,4 +15,4 @@ packages:
   common: !include packages/common.yaml
   pixel: !include packages/pixel_clock.yaml
   # sun: !include packages/pixel_clock_sun.yaml
-  timezone: !include packages/pixel_timezone.yaml
+  timezone: !include packages/pixel_clock_timezone.yaml
