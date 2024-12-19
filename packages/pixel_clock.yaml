@@ -232,13 +232,12 @@ animation:
 
 time:
   - platform: sntp
-    timezone: Europe/Kiev
+    id: net_time
     on_time_sync:
       then:
         ds1307.write_time:
 
   - platform: ds1307
-    timezone: Europe/Kiev
     update_interval: never
     id: ehmtx_time
 

@@ -1,0 +1,35 @@
+text:
+  - platform: template
+    name: "${name} Time Zone"
+    id: timezone
+    optimistic: true
+    min_length: 0
+    max_length: 15
+    mode: text
+    restore_value: true
+    initial_value: "Europe/Kyiv"
+    icon: mdi:airplane-time
+    entity_category: config
+    disabled_by_default: true
+    web_server:
+      sorting_weight: 5
+    on_value:
+      then:
+        - lambda: |-
+            set_timezone->execute(x.c_str());
+
+script:
+  - id: set_timezone
+    mode: restart
+    parameters:
+      timezone: string
+    then:
+      - lambda: |-
+          ESP_LOGI("timezone", "Setting timezone: %s", timezone.c_str());
+          size_t start = timezone.find('<');
+          size_t end = timezone.find('>');
+          if (start != std::string::npos && end != std::string::npos && end > start)
+            timezone.replace(start, (end - start) + 1, "UTC");
+          net_time->set_timezone(timezone.c_str());
+          net_time->call_setup();
+          net_time->dump_config();
