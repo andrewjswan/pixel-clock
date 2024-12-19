@@ -53,11 +53,6 @@ jobs:
           path: release-pixel-clock-files
           merge-multiple: true
 
-      - name: Check artifacts
-        run: |
-          ls -l
-        working-directory: release-files
-
       - name: Check PixelClock artifacts
         run: |
           ls -l
@@ -113,6 +108,7 @@ jobs:
 
       - name: Copy PixelClock artifacts files
         run: |
+          mkdir output
           mkdir output/pixel-clock
           cp -R release-pixel-clock-files/* output/pixel-clock/
 
