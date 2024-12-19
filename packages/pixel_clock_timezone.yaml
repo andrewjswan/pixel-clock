@@ -7,6 +7,7 @@ text:
     max_length: 15
     mode: text
     restore_value: true
+    initial_value: "Europe/Kyiv"
     icon: mdi:airplane-time
     entity_category: config
     disabled_by_default: true
@@ -29,6 +30,6 @@ script:
           size_t end = timezone.find('>');
           if (start != std::string::npos && end != std::string::npos && end > start)
             timezone.replace(start, (end - start) + 1, "UTC");
-          time_provider->set_timezone(timezone.c_str());
-          time_provider->call_setup();
-          time_provider->dump_config();
+          net_time->set_timezone(timezone.c_str());
+          net_time->call_setup();
+          net_time->dump_config();
