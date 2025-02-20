@@ -1,6 +1,6 @@
 substitutions:
   project_name: "Ulanzi.EHMTXv2"
-  project_version: "2024.12.3"
+  project_version: "2025.2.13"
   # Pin definition from https://github.com/aptonline/PixelIt_Ulanzi
   battery_pin: GPIO34
   buzzer_pin: GPIO15
@@ -13,16 +13,10 @@ substitutions:
   sda_pin: GPIO21
 
 external_components:
-  # - source:
-  #     type: git
-  #     url: https://github.com/lubeda/EspHoMaTriXv2
-  #     ref: 2024.12.3
-  #   components: [ehmtxv2]
-  #   refresh: 60s
   - source:
       type: git
       url: https://github.com/andrewjswan/EspHoMaTriXv2
-      ref: 2024.12.3
+      ref: 2025.2.0
     components: [ehmtxv2]
     refresh: 60s
 
@@ -225,10 +219,6 @@ light:
     color_correct: [30%, 30%, 30%]
     gamma_correct: 2.0
     restore_mode: ALWAYS_OFF
-
-animation:
-  - file: images/1pixel.gif
-    id: empty_animation
 
 time:
   - platform: sntp
