@@ -64,7 +64,7 @@ jobs:
         with:
           files: |
             release-pixel-clock-files/*.factory.bin
-        discussion_category_name: Announcements
+          discussion_category_name: Announcements
 
   cleanup:
     name: GitHub Pages / Delete deployment
