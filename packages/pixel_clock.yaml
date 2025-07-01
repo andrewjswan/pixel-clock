@@ -16,7 +16,7 @@ external_components:
   - source:
       type: git
       url: https://github.com/andrewjswan/EspHoMaTriXv2
-      ref: 2025.6.1
+      ref: 2025.6.3
     components: [ehmtxv2]
     refresh: 60s
 
@@ -47,6 +47,7 @@ esphome:
 
 esp32:
   framework:
+    type: arduino
     advanced:
       ignore_efuse_custom_mac: true
 
