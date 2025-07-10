@@ -117,6 +117,7 @@ binary_sensor:
     pin:
       number: $left_button_pin
       inverted: true
+      mode: INPUT_PULLUP
 
   - platform: gpio
     name: "${name} Middle button"
@@ -138,6 +139,7 @@ binary_sensor:
     pin:
       number: $right_button_pin
       inverted: true
+      mode: INPUT_PULLUP
     on_release:
       then:
         - lambda: |-
