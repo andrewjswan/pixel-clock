@@ -1,6 +1,6 @@
 text:
   - platform: template
-    name: "${name} Time Zone"
+    name: "Time Zone"
     id: timezone
     optimistic: true
     min_length: 0

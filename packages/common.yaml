@@ -2,19 +2,20 @@ substitutions:
   reboot_timeout: 0s
 
 esphome:
-  name: ${device}
-  # name_add_mac_suffix: true
+  name: $name
+  friendly_name: $friendly_name
   comment: $comment
   build_path: ./.build/$device
   project:
-    name: ${project_name}
-    version: ${project_version}
+    name: $project_name
+    version: $project_version
 
 esp32:
   board: esp32dev
 
 api:
   reboot_timeout: ${reboot_timeout}
+  custom_services: true
 
 # Over The Air Update
 ota:
@@ -32,6 +33,7 @@ ota:
             format: "OTA Update has completed successfully"
             level: "WARN"
             tag: "ota"
+  - platform: web_server
 
 logger:
   level: INFO
@@ -53,16 +55,16 @@ improv_serial:
 
 sensor:
   - platform: uptime
-    name: ${name} Uptime
+    name: Uptime
     entity_category: diagnostic
 
   - platform: wifi_signal
-    name: ${name} WiFi Signal
+    name: WiFi Signal
     entity_category: diagnostic
     icon: mdi:signal
 
   - platform: internal_temperature
-    name: ${name} Device Temperature
+    name: Device Temperature
     entity_category: diagnostic
     icon: mdi:coolant-temperature
     device_class: temperature
@@ -70,36 +72,36 @@ sensor:
 
 button:
   - platform: restart
-    name: ${name} Restart
+    name: Restart
     id: Restart
     entity_category: diagnostic
     icon: mdi:restart
 
   - platform: factory_reset
-    name: ${name} Restart with Factory Default Settings
+    name: Restart with Factory Default Settings
     id: Reset
     entity_category: diagnostic
     disabled_by_default: true
 
 text_sensor:
   - platform: version
-    name: ${name} ESPHome Version
+    name: ESPHome Version
     hide_timestamp: true
     entity_category: diagnostic
 
   - platform: wifi_info
     ip_address:
-      name: "${name} IP Address"
+      name: "IP Address"
       disabled_by_default: true
       entity_category: diagnostic
       icon: mdi:ip
     ssid:
-      name: "${name} Connected SSID"
+      name: "Connected SSID"
       disabled_by_default: true
       entity_category: diagnostic
       icon: mdi:access-point-network
     mac_address:
-      name: "${name} Mac Address"
+      name: "Mac Address"
       disabled_by_default: true
       entity_category: diagnostic
       icon: mdi:console-network
