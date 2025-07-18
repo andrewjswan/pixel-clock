@@ -1,6 +1,6 @@
 substitutions:
   project_name: "Ulanzi.EHMTXv2"
-  project_version: "2025.6.1"
+  project_version: "2025.7.1"
   # Pin definition from https://github.com/aptonline/PixelIt_Ulanzi
   battery_pin: GPIO34
   buzzer_pin: GPIO15
@@ -16,7 +16,7 @@ external_components:
   - source:
       type: git
       url: https://github.com/andrewjswan/EspHoMaTriXv2
-      ref: 2025.6.3
+      ref: 2025.7.1
     components: [ehmtxv2]
     refresh: 60s
 
@@ -69,7 +69,7 @@ ota:
 
 switch:
   - platform: template
-    name: "${name} Auto-Adjust Brightness"
+    name: "Auto-Adjust Brightness"
     id: switch_autobrightness
     icon: mdi:brightness-auto
     restore_mode: RESTORE_DEFAULT_ON
@@ -113,13 +113,14 @@ font:
 
 binary_sensor:
   - platform: gpio
-    name: "${name} Left button"
+    name: "Left button"
     pin:
       number: $left_button_pin
       inverted: true
+      mode: INPUT_PULLUP
 
   - platform: gpio
-    name: "${name} Middle button"
+    name: "Middle button"
     pin:
       inverted: true
       number: $mid_button_pin
@@ -134,10 +135,11 @@ binary_sensor:
               id(rgb8x32)->force_screen("day#2", 15);
 
   - platform: gpio
-    name: "${name} Right button"
+    name: "Right button"
     pin:
       number: $right_button_pin
       inverted: true
+      mode: INPUT_PULLUP
     on_release:
       then:
         - lambda: |-
@@ -146,15 +148,15 @@ binary_sensor:
 sensor:
   - platform: sht3xd
     temperature:
-      name: "${name} Temperature"
+      name: "Temperature"
       device_class: temperature
     humidity:
-      name: "${name} Relative Humidity"
+      name: "Relative Humidity"
       device_class: humidity
     update_interval: ${update_interval}
 
   - platform: adc
-    name: "${name} Battery"
+    name: "Battery"
     pin: $battery_pin
     id: battery_voltage
     update_interval: 10s
@@ -176,7 +178,7 @@ sensor:
     unit_of_measurement: '%'
 
   - platform: adc
-    name: "${name} Illuminance"
+    name: "Illuminance"
     id: light_sensor
     pin: $ldr_pin
     update_interval: 10s
@@ -210,7 +212,7 @@ i2c:
 
 light:
   - platform: neopixelbus
-    name: "${name} Light"
+    name: "Light"
     id: ehmtx_light
     type: GRB
     internal: true

@@ -1,6 +1,7 @@
 substitutions:
-  device: esp-pixel-clock-en
-  name: ESPHome Pixel Clock
+  device: esp_pixel_clock_en
+  name: pixel-clock-en
+  friendly_name: ESPHome Pixel Clock
   project_name: "ajs.Pixel_Clock"
   project_version: "1.1.5"
   update_interval: 60s
