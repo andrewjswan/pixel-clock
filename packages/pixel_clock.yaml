@@ -95,16 +95,15 @@ rtttl:
 
 font:
   # Matrix Clock Fonts
-  # Grab these from https://github.com/trip5/Matrix-Fonts
-  # Store in a "fonts" subfolder of your ESPHome config folder or change paths below
-  - file: fonts/MatrixChunky6.ttf
+  # Fonts from from https://github.com/trip5/Matrix-Fonts
+  - file: https://github.com/trip5/Matrix-Fonts/raw/refs/heads/main/6-series/MatrixChunky6.ttf
     size: 6
     id: default_font
     glyphs: |-
       ! "#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz°|¬¾¼•АаБбВвГгҐґДдЕеЄєЖжЗзИиІіЇїЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЬьЮюЯяЁёЪъЫыЭэ
     ignore_missing_glyphs: true
 
-  - file: fonts/MatrixChunky8.ttf
+  - file: https://github.com/trip5/Matrix-Fonts/raw/refs/heads/main/8-series/MatrixChunky8.ttf
     size: 8
     id: special_font
     glyphs: |-
