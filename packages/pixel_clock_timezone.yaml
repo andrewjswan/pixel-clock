@@ -24,6 +24,8 @@ script:
     parameters:
       timezone: string
     then:
+      - wait_until:
+          condition: wifi.connected
       - lambda: |-
           ESP_LOGI("timezone", "Setting timezone: %s", timezone.c_str());
           size_t start = timezone.find('<');
