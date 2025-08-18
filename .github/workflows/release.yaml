@@ -99,7 +99,7 @@ jobs:
 
     steps:
       - name: Checkout website files
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Download PixelClock Artifacts
         uses: actions/download-artifact@v5
