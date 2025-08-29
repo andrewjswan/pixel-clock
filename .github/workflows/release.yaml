@@ -21,7 +21,7 @@ jobs:
       version: ${{ steps.current_release.outputs.tag_name }}
       url: ${{ steps.current_release.outputs.html_url }}
     steps:
-      - name: Get Current Release
+      - name: 👀 Get Current Release
         id: current_release
         uses: joutvhu/get-release@v1
         env:
@@ -47,19 +47,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download PixelClock Artifacts
+      - name: 📦 Download PixelClock Artifacts
         uses: actions/download-artifact@v5
         with:
           pattern: PixelClock-*
           path: release-pixel-clock-files
           merge-multiple: true
 
-      - name: Check PixelClock artifacts
+      - name: 👀 Check PixelClock artifacts
         run: |
           ls -l
         working-directory: release-pixel-clock-files
 
-      - name: Release
+      - name: 🎭 Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
@@ -74,7 +74,7 @@ jobs:
       - build
 
     steps:
-      - name: Delete deployment
+      - name: 🧹 Delete deployment
         uses: strumwolf/delete-deployment-environment@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -98,43 +98,54 @@ jobs:
       cancel-in-progress: true
 
     steps:
-      - name: Checkout website files
+      - name: ⬇️ Checkout website files
         uses: actions/checkout@v5
 
-      - name: Download PixelClock Artifacts
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+
+      - name: 📦 Install mkDocs
+        run: pip install mkdocs-material
+
+      - name: 💅 Build the docs site
+        run: mkdocs build --config-file .mkdocs.yml
+
+      - name: 📦 Download PixelClock Artifacts
         uses: actions/download-artifact@v5
         with:
           pattern: PixelClock-*
           path: release-pixel-clock-files
           merge-multiple: true
 
-      - name: Copy PixelClock artifacts files
+      - name: 💅 Copy PixelClock artifacts files
         run: |
           mkdir output
           mkdir output/pixel-clock
-          cp -R release-pixel-clock-files/* output/pixel-clock/
+          cp -R release-pixel-clock-files/* site/pixel-clock/
 
-      - name: Copy website files
-        run: cp -R static/* output/
+      - name: 💅 Copy website files
+        run: cp -R static/* site/
 
-      - name: Check output
+      - name: 👀 Check output
         run: |
           ls -l
-        working-directory: output
+        working-directory: site
 
-      - name: Setup Pages
+      - name: 🎭 Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload artifact
+      - name: 🚀 Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: ${{ github.workspace }}/output/
+          path: site/
 
-      - name: Deploy to GitHub Pages
+      - name: 💅 Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
 
-      - name: Delete Artifacts / Github Pages
+      - name: 🧹 Delete Artifacts / Github Pages
         uses: geekyeggo/delete-artifact@v5
         with:
           name: github-pages
