@@ -14,7 +14,7 @@ The easiest way to use Pixel Clock as a status display is to use the icon names 
 
 !!! example "Icon names as trigger ID"
 
-    ``` yaml
+    ``` { .yaml .copy }
     alias: EHMTX Pixel Clock 
     trigger:
       - platform: numeric_state
@@ -42,7 +42,7 @@ Sample automation to show the weather with local temperature
 
 !!! example "Weather with icon per condition"
 
-    ``` yaml
+    ``` { .yaml .copy }
     alias: EHMTX Pixel Clock Weather
     trigger:
       - platform: state
@@ -63,7 +63,7 @@ Sample automation for the trashcan type
 
 !!! example "Trashcan type"
 
-    ``` yaml
+    ``` { .yaml .copy }
     alias: "EHMTX Müllanzeige"
     description: Anzeige welche Tonne raus muss. iconnamen gekürzt
     trigger:
