@@ -121,8 +121,7 @@ jobs:
 
       - name: 💅 Copy PixelClock artifacts files
         run: |
-          mkdir output
-          mkdir output/pixel-clock
+          mkdir site/pixel-clock
           cp -R release-pixel-clock-files/* site/pixel-clock/
 
       - name: 💅 Copy website files
