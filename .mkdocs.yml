@@ -69,6 +69,7 @@ markdown_extensions:
   - pymdownx.details
   - pymdownx.superfences
   - admonition
+  - codehilite
 
 nav:
   - Home: index.md
