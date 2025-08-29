@@ -15,23 +15,23 @@ The easiest way to use Pixel Clock as a status display is to use the icon names 
 !!! example "Icon names as trigger ID"
 
     ``` { .yaml .copy }
-    alias: EHMTX Pixel Clock 
+    alias: EHMTX Pixel Clock
     trigger:
-      - platform: numeric_state
-        entity_id: sensor.wind_speed
-        id: wind
-      - platform: state
-        entity_id: sensor.outside_temperature
-        id: temp
-      - platform: state
-        entity_id: sensor.cover_device
-        id: cover
+      - platform: numeric_state
+        entity_id: sensor.wind_speed
+        id: wind
+      - platform: state
+        entity_id: sensor.outside_temperature
+        id: temp
+      - platform: state
+        entity_id: sensor.cover_device
+        id: cover
     action:
-      - service: esphome.pixel_clock_icon_screen
-        data:
-          icon_name: '{{trigger.id}}'
-          text: >-
-            {{trigger.to_state.state}}{{trigger.to_state.attributes.unit_of_measurement}}
+      - service: esphome.pixel_clock_icon_screen
+        data:
+          icon_name: '{{trigger.id}}'
+          text: >-
+            {{trigger.to_state.state}}{{trigger.to_state.attributes.unit_of_measurement}}
     mode: queued
     max: 10
     ```
@@ -40,60 +40,59 @@ The easiest way to use Pixel Clock as a status display is to use the icon names 
 
 Sample automation to show the weather with local temperature
 
-!!! example "Weather with icon per condition"
+!!! example annotate "Weather with icon per condition"
 
-    ``` { .yaml .copy }
+    ``` { .yaml .copy .annotate }
     alias: EHMTX Pixel Clock Weather
     trigger:
-      - platform: state
-        entity_id: weather.current
+      - platform: state
+        entity_id: weather.current
     action:
-      - service: esphome.pixel_clock_del_screen
-        data:
-          icon_name: weather_*
-          mode: 5
-      - service: esphome.pixel_clock_icon_screen
-        data:
-          icon_name: weather_{{ trigger.to_state.state }}
-          text: >-
-            {{ states("sensor.outside_temperature") }}°C
+      - service: esphome.pixel_clock_del_screen
+        data:
+          icon_name: weather_*
+          mode: 5 (1)
+      - service: esphome.pixel_clock_icon_screen
+        data:
+          icon_name: weather_{{ trigger.to_state.state }}
+          text: >-
+            {{ states("sensor.outside_temperature") }}°C
     ```
+1.  See the list of all possible [modes](esphomatrix.md#screens-and-modes) and their values
 
 Sample automation for the trashcan type
 
-!!! example "Trashcan type"
+!!! example annotate "Garbage display"
 
-    ``` { .yaml .copy }
-    alias: "EHMTX Müllanzeige"
-    description: Anzeige welche Tonne raus muss. iconnamen gekürzt
+    ``` { .yaml .copy .annotate }
+    alias: "EHMTX Pixel Clock Garbage display"
     trigger:
-      - platform: time
-        at:
-          - "06:30"
-          - "08:30"
-          - "10:30"
-          - "15:00"
-          - "17:00"
-          - "19:00"
+      - platform: time
+        at:
+          - "06:30"
+          - "08:30"
+          - "10:30"
+          - "15:00"
+          - "17:00"
+          - "19:00"
     condition:
-      - condition: numeric_state
-        entity_id: sensor.mulltrigger
-        below: "3"
+      - condition: numeric_state
+        entity_id: sensor.trash_trigger
+        below: "3"
     action:
-      - service: esphome.ulanzi_del_screen
-        data:
-          icon_name: trash_*
-          mode: 5
-      - service: esphome.ulanzi_icon_screen
-        data:
-          icon_name: >-
-            trash_{{ states("sensor.mulldetails") | replace("Biotonne",   "brow")|
-            replace("Papiertonne","blue")| replace("Restmüll",   "grey")|
-            replace("gelbe Tonne","yell|") | truncate(4,true,"")  }}     
-          text: >-
-            {{ states("sensor.mulldetails") }}
-          lifetime: 120
+      - service: esphome.ulanzi_del_screen
+        data:
+          icon_name: trash_*
+          mode: 5 (1)
+      - service: esphome.ulanzi_icon_screen
+        data:
+          icon_name: >-
+            trash_{{ states("sensor.trash_details") | replace("Organic", "brown") | replace("Paper","blue") | replace("Residual waste", "grey") | replace("Yellow bin","yellow") }}
+          text: >-
+            {{ states("sensor.trash_details") }}
+        lifetime: 120
     ```
+1.  See the list of all possible [modes](esphomatrix.md#screens-and-modes) and their values
 
 #### Tips
 
