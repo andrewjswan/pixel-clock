@@ -1,6 +1,6 @@
 ## Integration in Home Assistant
 
-To control your display, it has to be integrated in Home Assistant. Then it provides several services, all prefixed with the configured `devicename` e.g. "pixel_clock".
+To control your display, it has to be integrated in Home Assistant. Then it provides several services, all prefixed with the configured `devicename` e.g. `pixel_clock`.
 
 ### Services
 
@@ -13,7 +13,8 @@ All communication with Home Assistant use the homeasistant-api. The services can
 The easiest way to use Pixel Clock as a status display is to use the icon names as trigger ID. In my example, I have an icon named `wind` when the `sensor.wind_speed` has a new state, this automation sends the new data to the screen with the icon named `wind` and so on.
 
 !!! example "Icon names as trigger ID"
-    ```yaml
+
+    ``` yaml
     alias: EHMTX Pixel Clock 
     trigger:
       - platform: numeric_state
@@ -40,7 +41,8 @@ The easiest way to use Pixel Clock as a status display is to use the icon names 
 Sample automation to show the weather with local temperature
 
 !!! example "Weather with icon per condition"
-    ```yaml
+
+    ``` yaml
     alias: EHMTX Pixel Clock Weather
     trigger:
       - platform: state
@@ -60,7 +62,8 @@ Sample automation to show the weather with local temperature
 Sample automation for the trashcan type
 
 !!! example "Trashcan type"
-    ```yaml
+
+    ``` yaml
     alias: "EHMTX Müllanzeige"
     description: Anzeige welche Tonne raus muss. iconnamen gekürzt
     trigger:
@@ -95,6 +98,5 @@ Sample automation for the trashcan type
 #### Tips
 
 !!! tip "Display sensor precision after Home Assistant 2023.3"
-    See [templating](https://www.home-assistant.io/docs/configuration/templating/#states) for possibilities to optimize the output
-    e.g.
-    `{{ states(sensor.solarpower, rounded=True) }} kWh`
+
+    See [templating](https://www.home-assistant.io/docs/configuration/templating/#states) for possibilities to optimize the output e.g. `{{ states(sensor.solarpower, rounded=True) }} kWh`
