@@ -15,7 +15,7 @@ The easiest way to use Pixel Clock as a status display is to use the icon names 
 !!! example "Icon names as trigger ID"
 
     ``` { .yaml .copy }
-    alias: EHMTX Pixel Clock
+    alias: Pixel Clock - Icons
     trigger:
       - platform: numeric_state
         entity_id: sensor.wind_speed
@@ -43,7 +43,7 @@ Sample automation to show the weather with local temperature
 !!! example annotate "Weather with icon per condition"
 
     ``` { .yaml .copy .annotate }
-    alias: EHMTX Pixel Clock Weather
+    alias: Pixel Clock - Weather
     trigger:
       - platform: state
         entity_id: weather.current
@@ -65,7 +65,7 @@ Sample automation for the trashcan type
 !!! example annotate "Garbage display"
 
     ``` { .yaml .copy .annotate }
-    alias: "EHMTX Pixel Clock Garbage display"
+    alias: Pixel Clock - Garbage Display
     trigger:
       - platform: time
         at:

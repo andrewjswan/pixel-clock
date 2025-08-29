@@ -40,5 +40,5 @@ Screen|Mode|Value|
 |rainbow_icon_text_screen|MODE_RAINBOW_ICON_TEXT_SCREEN| 22|
 |bitmap_stack|MODE_BITMAP_STACK_SCREEN| 23|
 |text_screen_progress|MODE_TEXT_PROGRESS| 24|
-|icon_prognosis_screen_rgb|MODE_PROGNOSIS_SCREEN| 25|
+|icon_prognosis_screen|MODE_PROGNOSIS_SCREEN| 25|
 |rainbow_alert_screen|MODE_RAINBOW_ALERT_SCREEN| 26|
