@@ -13,7 +13,11 @@ dashboard_import:
   package_import_url: github://andrewjswan/pixel-clock/pixel-clock.yaml@main
 
 packages:
-  common: !include packages/common.yaml
-  pixel: !include packages/pixel_clock.yaml
-  # sun: !include packages/pixel_clock_sun.yaml
-  timezone: !include packages/pixel_clock_timezone.yaml
+  remote_package:
+    url: https://github.com/andrewjswan/pixel-clock
+    files:
+      - packages/common.yaml
+      - packages/pixel_clock.yaml
+      # - packages/pixel_clock_sun.yaml
+      - packages/pixel_clock_timezone.yaml
+    refresh: 1s
