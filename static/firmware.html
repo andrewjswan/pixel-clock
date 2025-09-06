@@ -154,7 +154,7 @@
           type="radio"
           name="pixel-clock-device"
           class="device"
-          value="esp-pixel-clock"
+          value="pixel-clock"
           checked
         />
         <img src="ulanzi-ua.png" alt="ESP8266/ESP32 Generic" />
@@ -164,7 +164,7 @@
           type="radio"
           name="pixel-clock-device"
           class="device"
-          value="esp-pixel-clock-en"
+          value="pixel-clock-en"
         />
         <img src="ulanzi-en.png" alt="M5Stack Atom Lite" />
       </label>
@@ -173,7 +173,7 @@
           type="radio"
           name="pixel-clock-device"
           class="device"
-          value="esp-pixel-clock-ru"
+          value="pixel-clock-ru"
         />
         <img src="ulanzi-ru.png" alt="M5Stack Atom Lite" />
       </label>
@@ -192,7 +192,7 @@
       var url = "https://andrewjswan.github.io/pixel-clock/pixel-clock/esp-pixel-clock-manifest.json";
         $.getJSON( url, {
         format: "json"
-    	})
+        })
       .done(function( data ) {
          $("#version").text(data.version);
       });

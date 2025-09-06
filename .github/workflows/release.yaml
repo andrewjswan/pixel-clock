@@ -130,7 +130,7 @@ jobs:
       - name: 👀 Check output
         run: |
           ls -l
-        working-directory: site
+        working-directory: site/pixel-clock
 
       - name: 🎭 Setup Pages
         uses: actions/configure-pages@v5
