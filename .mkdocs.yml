@@ -16,6 +16,8 @@ copyright: Copyright &copy; Andrew J.Swan
 # Configuration
 theme:
   name: material
+  icon:
+    logo: material/clock-digital
   features:
     - navigation.tabs
     - navigation.features
