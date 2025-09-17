@@ -12,6 +12,8 @@ esphome:
 
 esp32:
   board: esp32dev
+  framework:
+    type: arduino
 
 api:
   reboot_timeout: ${reboot_timeout}
