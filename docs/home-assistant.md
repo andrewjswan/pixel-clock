@@ -99,3 +99,7 @@ Sample automation for the trashcan type
 !!! tip "Display sensor precision after Home Assistant 2023.3"
 
     See [templating](https://www.home-assistant.io/docs/configuration/templating/#states) for possibilities to optimize the output e.g. `{{ states(sensor.solarpower, rounded=True) }} kWh`
+
+!!! tip "Time zone"
+
+    See [Add timezone support to GetTimeResponse for automatic timezone synchronization](https://github.com/esphome/esphome/pull/10661)
