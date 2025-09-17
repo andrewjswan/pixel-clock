@@ -10,11 +10,6 @@ esphome:
     name: $project_name
     version: $project_version
 
-esp32:
-  board: esp32dev
-  framework:
-    type: arduino
-
 api:
   reboot_timeout: ${reboot_timeout}
   custom_services: true

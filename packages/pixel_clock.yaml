@@ -45,12 +45,6 @@ esphome:
       - ds1307.read_time:
       - lambda: id(rtttl_out).turn_off();
 
-esp32:
-  framework:
-    type: arduino
-    advanced:
-      ignore_efuse_custom_mac: true
-
 api:
   services:
     - service: tune
@@ -208,19 +202,6 @@ i2c:
   scl: $scl_pin
   scan: true
   id: i2cbus
-
-light:
-  - platform: neopixelbus
-    name: "Light"
-    id: ehmtx_light
-    type: GRB
-    internal: true
-    variant: WS2812
-    pin: $matrix_pin
-    num_leds: 256
-    color_correct: [30%, 30%, 30%]
-    gamma_correct: 2.0
-    restore_mode: ALWAYS_OFF
 
 time:
   - platform: sntp
