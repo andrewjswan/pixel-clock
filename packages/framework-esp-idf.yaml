@@ -5,6 +5,9 @@ esp32:
     advanced:
       ignore_efuse_custom_mac: true
 
+wifi:
+  power_save_mode: none
+
 light:
   - platform: esp32_rmt_led_strip
     name: "Light"
