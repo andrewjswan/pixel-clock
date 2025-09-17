@@ -19,5 +19,5 @@ packages:
       - packages/common.yaml
       - packages/pixel_clock.yaml
       # - packages/pixel_clock_sun.yaml
-      - packages/pixel_clock_timezone.yaml
+      # - packages/pixel_clock_timezone.yaml
     refresh: 1s

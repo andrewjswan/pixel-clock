@@ -10,14 +10,10 @@ substitutions:
   date_to: "ВС ПН ВТ СР ЧТ ПТ СБ Січ Лют Бер Кві Тра Чер Лип Сер Вер Жов Лис Гру"
 
 dashboard_import:
-  package_import_url: github://andrewjswan/pixel-clock/pixel-clock.yaml@main
+  package_import_url: github://andrewjswan/pixel-clock/test/arduino-pixel-clock.yaml@main
 
 packages:
-  remote_package:
-    url: https://github.com/andrewjswan/pixel-clock
-    files:
-      - packages/common.yaml
-      - packages/pixel_clock.yaml
-      # - packages/pixel_clock_sun.yaml
-      # - packages/pixel_clock_timezone.yaml
-    refresh: 1s
+  common: !include ../packages/common.yaml
+  pixel: !include ../packages/pixel_clock.yaml
+  # sun: !include packages/pixel_clock_sun.yaml
+  # timezone: !include packages/pixel_clock_timezone.yaml
