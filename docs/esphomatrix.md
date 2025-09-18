@@ -509,7 +509,9 @@ A common format for specifying output options: `icon|mode#draw_mode`
 
 ## ESPHome configuration
 
-!!! example annotate "Local configuration file"
+### Arduino
+
+!!! example annotate "Local configuration file | Arduino"
 
     ``` { .yaml .copy .annotate }
     substitutions:
@@ -526,6 +528,34 @@ A common format for specifying output options: `icon|mode#draw_mode`
     packages:
       common: !include packages/common.yaml (1)
       framework: !include packages/framework-arduino.yaml (2)
+      pixel: !include packages/pixel_clock.yaml (3)
+    ```
+1. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
+2. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
+3. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
+
+!!! tip
+    To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
+
+### ESP-IDF
+
+!!! example annotate "Local configuration file | ESP-IDF"
+
+    ``` { .yaml .copy .annotate }
+    substitutions:
+      device: esp_pixel_clock
+      name: pixel-clock
+      friendly_name: ESPHome Pixel Clock
+      project_name: "ajs.Pixel_Clock"
+      project_version: "1.1.5"
+      update_interval: 60s
+      comment: "Ulanzi Pixel Clock | EHMTXv2"
+      weekdays: "ВСПНВТСРЧТПТСБ"
+      date_to: "ВС ПН ВТ СР ЧТ ПТ СБ Січ Лют Бер Кві Тра Чер Лип Сер Вер Жов Лис Гру"
+
+    packages:
+      common: !include packages/common.yaml (1)
+      framework: !include packages/framework-esp-idf.yaml (2)
       pixel: !include packages/pixel_clock.yaml (3)
     ```
 1. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
