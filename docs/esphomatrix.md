@@ -43,7 +43,7 @@ This component is highly customizable.
       scroll_interval: 80 # milliseconds
       rainbow_interval: 32 # milliseconds
       icons: (1)
-        .....
+        ...
     ```
 1. See [Icons and Animations](#icons-and-animations)
 
@@ -524,10 +524,13 @@ A common format for specifying output options: `icon|mode#draw_mode`
       date_to: "ВС ПН ВТ СР ЧТ ПТ СБ Січ Лют Бер Кві Тра Чер Лип Сер Вер Жов Лис Гру"
 
     packages:
-      common: !include packages/common.yaml
-      framework: !include packages/framework-arduino.yaml
-      pixel: !include packages/pixel_clock.yaml
+      common: !include packages/common.yaml (1)
+      framework: !include packages/framework-arduino.yaml (2)
+      pixel: !include packages/pixel_clock.yaml (3)
     ```
+1. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
+2. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
+3. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
 
 !!! tip
     To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
