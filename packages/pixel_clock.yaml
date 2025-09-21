@@ -441,8 +441,6 @@ ehmtxv2:
       lameid: 2282
     - id: weather_windy
       lameid: 21909
-    - id: weather_windy_variant
-      lameid: 21909
     - id: weather_cloudy_night
       lameid: 12195
 
