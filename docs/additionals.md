@@ -10,4 +10,4 @@
 
 !!! note "Home Assistant Integrations"
     * [SwatchTime for Home Assistant](https://github.com/andrewjswan/SwatchTime)
-    * [Dewpoint for Home Assistant](https://andrewjswan.github.io/home-assistant-dewpoint)
+    * [Dewpoint for Home Assistant](https://github.com/andrewjswan/home-assistant-dewpoint)
