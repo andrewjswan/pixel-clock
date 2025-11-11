@@ -20,63 +20,6 @@ external_components:
     components: [ehmtxv2]
     refresh: 60s
 
-globals:
-  # aab = auto-adjustable brightness
-  - id: aab_enable
-    type: "bool"
-    restore_value: true
-    initial_value: "true"
-
-  - id: aab_add
-    type: int
-    initial_value: '10'
-
-number:
-  - platform: template
-    name: "Auto-Adjust Maximum Brightness"
-    id: aab_max
-    min_value: 2
-    max_value: 100
-    step: 1
-    icon: mdi:brightness-7
-    entity_category: config
-    disabled_by_default: true
-    initial_value: 86.0
-    unit_of_measurement: "%"
-    optimistic: true
-    restore_value: true
-    on_value:
-      then:
-        - if:
-            condition:
-              lambda: 'return x <= id(aab_min).state;'
-            then:
-              - number.set:
-                  id: aab_min
-                  value: !lambda 'return x - 1;'
-  - platform: template
-    name: "Auto-Adjust Minimum Brightness"
-    id: aab_min
-    min_value: 1
-    max_value: 99
-    step: 1
-    icon: mdi:brightness-2
-    entity_category: config
-    disabled_by_default: true
-    initial_value: 10.0
-    unit_of_measurement: "%"
-    optimistic: true
-    restore_value: true
-    on_value:
-      then:
-        - if:
-            condition:
-              lambda: 'return x >= id(aab_max).state;'
-            then:
-              - number.set:
-                  id: aab_max
-                  value: !lambda 'return x + 1;'
-
 esphome:
   on_boot:
     then:
@@ -98,21 +41,6 @@ ota:
     on_begin:
       then:
         - lambda: id(rtttl_out).turn_off();
-
-switch:
-  - platform: template
-    name: "Auto-Adjust Brightness"
-    id: switch_autobrightness
-    icon: mdi:brightness-auto
-    restore_mode: RESTORE_DEFAULT_ON
-    lambda: |-
-      return id(aab_enable);
-    turn_on_action:
-      lambda: |-
-        id(aab_enable) = true;
-    turn_off_action:
-      lambda: |-
-        id(aab_enable) = false;
 
 output:
   - platform: ledc
@@ -250,24 +178,6 @@ sensor:
     filters:
       - lambda: |-
           return (x / 10000.0) * 2000000.0 - 15 ;
-    on_value:
-      then:
-        - lambda: |-
-            if ( id(aab_enable) )
-            {
-              uint8_t max_val = esphome::remap(id(aab_max).state, 0.0f, 100.0f, (uint8_t)0, (uint8_t)255);
-              uint8_t min_val = esphome::remap(id(aab_min).state, 0.0f, 100.0f, (uint8_t)0, (uint8_t)255);
-              if (!id(rgb8x32)->night_mode) min_val -= 5;
-              uint8_t n = std::clamp((uint8_t)(x / 4 + id(aab_add)), min_val, max_val);
-              uint8_t c = std::max(min_val, (uint8_t)id(rgb8x32)->get_brightness());
-              uint8_t diffPercent = (n - c) * 100 / c;
-              if (abs(diffPercent) > 2)
-              {
-                float brightness = std::clamp(n / 255.0f, 0.01f, 1.0f);
-                auto light = id(rgb8x32)->show_display ? id(light_display).turn_on() : id(light_display).turn_off();
-                light.set_brightness(brightness).perform();
-              }
-            }
 
 i2c:
   sda: $sda_pin

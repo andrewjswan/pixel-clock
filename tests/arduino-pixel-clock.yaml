@@ -16,5 +16,6 @@ packages:
   common: !include ../packages/common.yaml
   framework: !include ../packages/framework-arduino.yaml
   pixel: !include ../packages/pixel_clock.yaml
+  aab: !include ../packages/pixel_clock_aab.yaml
   # sun: !include packages/pixel_clock_sun.yaml
   # timezone: !include packages/pixel_clock_timezone.yaml
