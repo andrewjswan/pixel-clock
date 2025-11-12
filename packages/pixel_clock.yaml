@@ -48,36 +48,6 @@ output:
       number: $buzzer_pin
       ignore_strapping_warning: true
     id: rtttl_out
-  - platform: template
-    type: float
-    id: output_display
-    write_action:
-      lambda: |-
-        if (state > 0.0)
-        {
-          uint8_t brightness = esphome::remap(state, 0.0f, 1.0f, (uint8_t)1, (uint8_t)255);
-          id(rgb8x32)->set_brightness(brightness);
-        }
-        else if (id(rgb8x32)->show_display)
-        {
-           id(rgb8x32)->set_display_off();
-        }
-
-light:
-  - platform: monochromatic
-    name: Display
-    id: light_display
-    icon: mdi:led-strip-variant
-    restore_mode: ALWAYS_ON
-    output: output_display
-    gamma_correct: 0
-    default_transition_length: 0s
-    on_turn_on:
-      then:
-        lambda: 'id(rgb8x32)->set_display_on();'
-    on_turn_off:
-      then:
-        lambda: 'id(rgb8x32)->set_display_off();'
 
 rtttl:
   output: rtttl_out

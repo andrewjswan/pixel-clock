@@ -1,10 +1,5 @@
 globals:
   # aab = auto-adjustable brightness
-  - id: aab_enable
-    type: "bool"
-    restore_value: true
-    initial_value: "true"
-
   - id: aab_add
     type: int
     initial_value: '10'
@@ -54,20 +49,46 @@ number:
               - number.set:
                   id: aab_max
                   value: !lambda 'return x + 1;'
+
 switch:
   - platform: template
     name: "Auto-Adjust Brightness"
     id: switch_autobrightness
     icon: mdi:brightness-auto
+    optimistic: true
     restore_mode: RESTORE_DEFAULT_ON
-    lambda: |-
-      return id(aab_enable);
-    turn_on_action:
+
+output:
+  - platform: template
+    type: float
+    id: output_display
+    write_action:
       lambda: |-
-        id(aab_enable) = true;
-    turn_off_action:
-      lambda: |-
-        id(aab_enable) = false;
+        if (state > 0.0)
+        {
+          uint8_t brightness = esphome::remap(state, 0.0f, 1.0f, (uint8_t)1, (uint8_t)255);
+          id(rgb8x32)->set_brightness(brightness);
+        }
+        else if (id(rgb8x32)->show_display)
+        {
+           id(rgb8x32)->set_display_off();
+        }
+
+light:
+  - platform: monochromatic
+    name: Display
+    id: light_display
+    icon: mdi:tablet-dashboard
+    restore_mode: ALWAYS_ON
+    output: output_display
+    gamma_correct: 0
+    default_transition_length: 0s
+    on_turn_on:
+      then:
+        lambda: 'id(rgb8x32)->set_display_on();'
+    on_turn_off:
+      then:
+        lambda: 'id(rgb8x32)->set_display_off();'
 
 sensor:
   - platform: adc
@@ -75,11 +96,10 @@ sensor:
     on_value:
       then:
         - lambda: |-
-            if ( id(aab_enable) )
+            if ( id(switch_autobrightness).state )
             {
               uint8_t max_val = esphome::remap(id(aab_max).state, 0.0f, 100.0f, (uint8_t)0, (uint8_t)255);
               uint8_t min_val = esphome::remap(id(aab_min).state, 0.0f, 100.0f, (uint8_t)0, (uint8_t)255);
-              if (!id(rgb8x32)->night_mode) min_val -= 5;
               uint8_t n = std::clamp((uint8_t)(x / 4 + id(aab_add)), min_val, max_val);
               uint8_t c = std::max(min_val, (uint8_t)id(rgb8x32)->get_brightness());
               uint8_t diffPercent = (n - c) * 100 / c;
