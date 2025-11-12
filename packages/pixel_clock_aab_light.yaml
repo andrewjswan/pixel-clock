@@ -14,6 +14,8 @@ number:
     icon: mdi:brightness-7
     entity_category: config
     disabled_by_default: true
+    web_server:
+      sorting_group_id: sorting_group_aab
     initial_value: 86.0
     unit_of_measurement: "%"
     optimistic: true
@@ -36,6 +38,8 @@ number:
     icon: mdi:brightness-2
     entity_category: config
     disabled_by_default: true
+    web_server:
+      sorting_group_id: sorting_group_aab
     initial_value: 10.0
     unit_of_measurement: "%"
     optimistic: true
@@ -57,6 +61,8 @@ switch:
     icon: mdi:brightness-auto
     optimistic: true
     restore_mode: RESTORE_DEFAULT_ON
+    web_server:
+      sorting_group_id: sorting_group_aab
 
 output:
   - platform: template
