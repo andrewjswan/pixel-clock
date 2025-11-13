@@ -1,0 +1,38 @@
+globals:
+  # aab = auto-adjustable brightness
+  - id: aab_add
+    type: int
+    initial_value: '10'
+
+  - id: aab_max
+    type: int
+    initial_value: '220'
+
+  - id: aab_min
+    type: int
+    initial_value: '25'
+
+switch:
+  - platform: template
+    name: "Auto-Adjust Brightness"
+    id: switch_autobrightness
+    icon: mdi:brightness-auto
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_ON
+
+sensor:
+  - platform: adc
+    id: !extend light_sensor
+    on_value:
+      then:
+        - lambda: |-
+            if ( id(switch_autobrightness).state )
+            {
+              uint8_t max_val = (uint8_t)id(aab_max);
+              uint8_t min_val = (uint8_t)id(aab_min);
+              if (!id(rgb8x32)->night_mode) min_val -= 5;
+              uint8_t n = std::clamp((uint8_t)(x / 4 + id(aab_add)), min_val, max_val);
+              uint8_t c = std::max(min_val, (uint8_t)id(rgb8x32)->get_brightness());
+              uint8_t diffPercent = (n - c) * 100 / c;
+              if (abs(diffPercent) > 2) id(rgb8x32)->set_brightness(n);
+            }

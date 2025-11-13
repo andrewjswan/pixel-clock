@@ -20,25 +20,6 @@ external_components:
     components: [ehmtxv2]
     refresh: 60s
 
-globals:
-  # aab = auto-adjustable brightness
-  - id: aab_enable
-    type: "bool"
-    restore_value: true
-    initial_value: "true"
-
-  - id: aab_add
-    type: int
-    initial_value: '10'
-
-  - id: aab_max
-    type: int
-    initial_value: '220'
-
-  - id: aab_min
-    type: int
-    initial_value: '25'
-
 esphome:
   on_boot:
     then:
@@ -60,21 +41,6 @@ ota:
     on_begin:
       then:
         - lambda: id(rtttl_out).turn_off();
-
-switch:
-  - platform: template
-    name: "Auto-Adjust Brightness"
-    id: switch_autobrightness
-    icon: mdi:brightness-auto
-    restore_mode: RESTORE_DEFAULT_ON
-    lambda: |-
-      return id(aab_enable);
-    turn_on_action:
-      lambda: |-
-        id(aab_enable) = true;
-    turn_off_action:
-      lambda: |-
-        id(aab_enable) = false;
 
 output:
   - platform: ledc
@@ -182,20 +148,6 @@ sensor:
     filters:
       - lambda: |-
           return (x / 10000.0) * 2000000.0 - 15 ;
-    on_value:
-      then:
-        - lambda: |-
-            if ( id(aab_enable) )
-            {
-              int n = x / 4 + id(aab_add); // new_value
-              if (n > id(aab_max)) n = id(aab_max);
-              if (n < (id(rgb8x32)->night_mode ? id(aab_min) : id(aab_min) - 5)) n = (id(rgb8x32)->night_mode ? id(aab_min) : id(aab_min) - 5);
-              // if (n == 37) n = 36; // @chertvl fix for rgb: 128,128,128
-              int c = id(rgb8x32)->get_brightness(); // current value
-              c = c > 0 ? c : 1;
-              int d = (n - c) * 100 / c; // diff in %
-              if (abs(d) > 2) id(rgb8x32)->set_brightness(n);
-            }
 
 i2c:
   sda: $sda_pin
