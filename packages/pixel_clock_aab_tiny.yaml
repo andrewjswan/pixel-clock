@@ -19,8 +19,6 @@ switch:
     icon: mdi:brightness-auto
     optimistic: true
     restore_mode: RESTORE_DEFAULT_ON
-    web_server:
-      sorting_group_id: sorting_group_aab
 
 sensor:
   - platform: adc
