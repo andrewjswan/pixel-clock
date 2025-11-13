@@ -4,6 +4,13 @@ globals:
     type: int
     initial_value: '10'
 
+web_server:
+  version: 3
+  sorting_groups:
+    - id: sorting_group_aab
+      name: "Auto-Adjust Brightness"
+      sorting_weight: 5
+
 number:
   - platform: template
     name: "Auto-Adjust Maximum Brightness"
