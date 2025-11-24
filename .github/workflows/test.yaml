@@ -10,7 +10,7 @@ jobs:
     name: Build tests list
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - id: set-matrix
         run: echo "matrix=$(ls *.yaml | jq -R -s -c 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
         working-directory: ${{ github.workspace }}/tests
@@ -27,7 +27,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Build firmware
         uses: esphome/build-action@v7
         id: esphome-build
