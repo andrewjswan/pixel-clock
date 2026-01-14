@@ -81,6 +81,8 @@ nav:
       - EspHoMaTriX: esphomatrix.md
       - Screens: screens.md
       - Home Assistant: home-assistant.md
+  - Examples:
+      - Time Zone: time-zone.md
   - Additionals: additionals.md
   - Firmware:
       - MatrixLamp - ESP Web Tools: firmware.html
