@@ -71,4 +71,4 @@
     The first `set_timezone` changes the ESP's time, the second changes the RTC's time. The `call_setup` calls internal code to restart the time module (which will also trigger a sync).
 
 !!! note
-    Thanks @trip5
+    Thanks @trip5 https://github.com/andrewjswan/pixel-clock/issues/56
