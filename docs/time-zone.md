@@ -53,12 +53,12 @@
               if (id(timezone_text).state != "" && id(timezone_text).state.c_str() != "${time_zone}") {
                 id(my_time)->set_timezone(id(timezone_text).state.c_str());
                 id(ehmtx_time)->set_timezone(id(timezone_text).state.c_str());
-                id(my_time)->call_setup();
+                // id(my_time)->call_setup();
                 ESP_LOGI("main", "Alt Time Zone Set");
               } else {
                 id(my_time)->set_timezone("${time_zone}");
                 id(ehmtx_time)->set_timezone("${time_zone}");
-                id(my_time)->call_setup();
+                // id(my_time)->call_setup();
                 ESP_LOGI("main", "Default Time Zone");
                 id(timezone_text).state="${time_zone}";
               }
