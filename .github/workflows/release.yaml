@@ -124,9 +124,6 @@ jobs:
           mkdir site/pixel-clock
           cp -R release-pixel-clock-files/* site/pixel-clock/
 
-      - name: 💅 Copy website files
-        run: cp -R static/* site/
-
       - name: 👀 Check output
         run: |
           ls -l
