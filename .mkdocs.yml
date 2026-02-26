@@ -97,3 +97,6 @@ extra:
 extra_css:
   - stylesheets/table.css
   - stylesheets/installer.css
+
+plugins:
+  - social
