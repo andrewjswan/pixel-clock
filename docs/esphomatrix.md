@@ -446,6 +446,38 @@ Numerous features are accessible with services from home assistant and lambdas t
 - **value**: the brightness 0...255 
 - **prognosis**: 24 triplets of digits (72 in total), each triplet, one point on the prognosis bar in the specified color in the triplet color. Like: [200,200,200, ..., 100,100,100] see [details](https://github.com/lubeda/EspHoMaTriXv2/issues/149)
 
+!!! example annotate "Alert Screen without Icon"
+
+    ``` { .yaml .copy .annotate }
+        - action: esphome.ulanzi_text_screen
+          continue_on_error: true
+          metadata: {}
+          data:
+            default_font: true
+            text: What a long text
+            lifetime: 0 (1)
+            screen_time: 10 (2)
+            r: 200
+            g: 200
+            b: 200
+
+        - action: esphome.ulanzi_force_screen
+          continue_on_error: true
+          metadata: {}
+          data:
+            mode: 6 (3)
+        ```
+
+1. Shows it only once
+2. Or however long you want to see it
+3. For the text screen (**MODE_TEXT_SCREEN**), brings it up immediately
+
+This should show it immediately with the text for the `screen_time` number of seconds and then it would disappear.
+
+!!! note
+
+    It might be shown longer if you have long text and the config option to scroll long text at least once is enabled.
+
 ## Advanced options
 
 ### Screen ID
