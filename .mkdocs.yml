@@ -19,7 +19,6 @@ theme:
   favicon: img/favicon.png
   icon:
     logo: material/clock-digital
-  custom_dir: docs/overrides
   features:
     - navigation.tabs
     - navigation.features
