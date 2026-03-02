@@ -48,7 +48,7 @@ jobs:
 
     steps:
       - name: 📦 Download PixelClock Artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           pattern: PixelClock-*
           path: release-pixel-clock-files
@@ -118,7 +118,7 @@ jobs:
         run: mkdocs build --config-file .mkdocs.yml
 
       - name: 📦 Download PixelClock Artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           pattern: PixelClock-*
           path: release-pixel-clock-files
