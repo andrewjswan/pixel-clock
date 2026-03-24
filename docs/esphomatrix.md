@@ -522,10 +522,12 @@ A common format for specifying output options: `icon|mode#draw_mode`
 - `draw_mode` - Mode how the text will be displayed on the icon
 
 **mode** that are supported:
+
 - `day` - Displays the current day of the month on the icon
 - `weekday` - Displays the current day of the week on the icon 
 
 **draw_mode** that are supported:
+
 - 0 - default - To the edges
 - 1 - To the center
 - 2 - Left to center, Right to edge
