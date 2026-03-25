@@ -431,10 +431,10 @@ script:
         id(rgb8x32)->set_clock_infotext_color(200,200,200, 200,200,200, true, 0);
 
         id(rgb8x32)->set_adv_clock_color(0,0,0, 0,150,240, 150,150,150);
-        id(rgb8x32)->icon_clock("blank|day#2", 1440, 10, true);
+        id(rgb8x32)->icon_clock("blank|day#2", -5, 15, true);
 
         id(rgb8x32)->set_date_infotext_color(0,150,240, 0,150,240, false, 1);
-        id(rgb8x32)->icon_date("blank|weekday", 1440, 5, true);
+        id(rgb8x32)->icon_date("blank|weekday", -5, 5, true);
 
         id(rgb8x32)->show_icon_indicator(240,240,240, 7, 7, 1);
         id(rgb8x32)->set_weekday_accent_on();
