@@ -297,6 +297,7 @@ Screen|Mode|Value|
 |text_screen_progress|MODE_TEXT_PROGRESS| 24|
 |icon_prognosis_screen|[MODE_PROGNOSIS_SCREEN](screens.md#mode_prognosis_screen)| 25|
 |rainbow_alert_screen|MODE_RAINBOW_ALERT_SCREEN| 26|
+|alert_text_screen|MODE_ALERT_TEXT_SCREEN| 27|
 
 ## Icons and Animations
 
@@ -401,6 +402,7 @@ Numerous features are accessible with services from home assistant and lambdas t
 |rainbow_icon_screen|"icon_name", "text", "lifetime", "screen_time", "default_font"|show the specified icon with text in rainbow color|
 |text_screen|"text", "lifetime", "screen_time", "default_font", "r", "g", "b"|show the specified text|
 |rainbow_text_screen|"text", "lifetime", "screen_time", "default_font"|show the specified text in rainbow colors|
+|alert_text_screen|"text", "screen_time", "default_font"|show the specified text, screen forced and lifetime = screen_time|
 |clock_screen|"lifetime", "screen_time", "default_font", "r", "g", "b"|show the clock|
 |rainbow_clock_screen|"lifetime", "screen_time", "default_font"|show the clock in rainbow color|
 |blank_screen|"lifetime", "screen_time"|"show" an empty screen|
@@ -438,7 +440,7 @@ Numerous features are accessible with services from home assistant and lambdas t
 - **icon_name**: the id of the icon to show, as defined in the YAML file (or pseudo-icon `blank` - empty icon, `solid` - solid icon, `calendar` - calendar icon), it is also possible to set the arbitrary [screen identifier](#screen-id), for example `icon_name|screen_id`
 - **icons**: the list of id of the icon to show, as defined in the YAML file, like: icon1,icon2.
 - **text**: a text message to display
-- **lifetime**: how long does this screen stay in the queue (minutes)
+- **lifetime**: how long does this screen stay in the queue (minutes), `-5` for Infinity.
 - **screen_time**: how long is this screen display in the loop (seconds). For short text without scrolling it is shown the defined time, longer text is scrolled at least `scroll_count` times.
 - **default_font**: use the default font (true) or the special font (false)
 - **progress**: can take a value from -100 to 100, the color of the progress bar is calculated automatically, if no colors are specified in the function `set_progressbar_color`, then if the progress is in the range `0..100`, then `from red to green`, if in the range `-100..0`, then from `green to red`.
