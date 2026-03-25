@@ -448,31 +448,30 @@ Numerous features are accessible with services from home assistant and lambdas t
 - **value**: the brightness 0...255 
 - **prognosis**: 24 triplets of digits (72 in total), each triplet, one point on the prognosis bar in the specified color in the triplet color. Like: [200,200,200, ..., 100,100,100] see [details](https://github.com/lubeda/EspHoMaTriXv2/issues/149)
 
-!!! example annotate "Alert Screen without Icon"
+!!! example annotate "Text Screen like Alert Text Screen"
 
     ``` { .yaml .copy .annotate }
-        - action: esphome.ulanzi_text_screen
-          continue_on_error: true
-          metadata: {}
-          data:
-            default_font: true
-            text: What a long text
-            lifetime: 0 (1)
-            screen_time: 10 (2)
-            r: 200
-            g: 200
-            b: 200
+    - action: esphome.ulanzi_text_screen (1)
+      continue_on_error: true
+      data:
+        default_font: true
+        text: What a long text
+        lifetime: 0 (2)
+        screen_time: 10 (3)
+        r: 200
+        g: 200
+        b: 200
 
-        - action: esphome.ulanzi_force_screen
-          continue_on_error: true
-          metadata: {}
-          data:
-            mode: 6 (3)
-        ```
+    - action: esphome.ulanzi_force_screen
+      continue_on_error: true
+      data:
+        mode: 6 (4)
+    ```
 
-1. Shows it only once
-2. Or however long you want to see it
-3. For the text screen (**MODE_TEXT_SCREEN**), brings it up immediately
+1. This example replicates the functionality of the `alert_text_screen` screen
+2. Shows it only once
+3. Or however long you want to see it
+4. For the text screen (**MODE_TEXT_SCREEN**), brings it up immediately
 
 This should show it immediately with the text for the `screen_time` number of seconds and then it would disappear.
 
@@ -519,6 +518,7 @@ If the screen identifier is specified, then all work on identification of the sc
 ### Icon Text
 
 A common format for specifying output options: `icon|mode#draw_mode`
+
 - `icon` - Icon from YAML that will be displayed
 - `mode` - Mode, what will be displayed on the icon
 - `draw_mode` - Mode how the text will be displayed on the icon
@@ -530,12 +530,12 @@ A common format for specifying output options: `icon|mode#draw_mode`
 
 **draw_mode** that are supported:
 
-- 0 - default - To the edges
-- 1 - To the center
-- 2 - Left to center, Right to edge
-- 3 - To the center, the left one is a pixel higher
-- 4 - To the center, the right one is a pixel higher
-- 5 - To the center, without leading 0 (**only for day**)
+- `0` - default - To the edges
+- `1` - To the center
+- `2` - Left to center, Right to edge
+- `3` - To the center, the left one is a pixel higher
+- `4` - To the center, the right one is a pixel higher
+- `5` - To the center, without leading 0 (**only for day**)
 
 !!! tip
     More information at the [link](https://github.com/lubeda/EspHoMaTriXv2/issues/92#issuecomment-1750184472)
