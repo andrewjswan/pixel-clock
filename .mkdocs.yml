@@ -98,4 +98,8 @@ extra_css:
   - stylesheets/installer.css
 
 plugins:
-  - social
+  - social:
+      cards_layout: default/variant
+      cards_layout_options:
+        background_image: docs/img/back.png
+        background_color: transparent
