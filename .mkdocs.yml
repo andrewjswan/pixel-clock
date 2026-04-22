@@ -89,6 +89,9 @@ nav:
       - Pixel Clock: firmware.md
 
 extra:
+  analytics:
+    provider: google
+    property: G-4S8QHJJ2B7
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/andrewjswan
