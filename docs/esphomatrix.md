@@ -337,6 +337,9 @@ All other solutions provide ready-made icons, especially **Lametric** has a big 
           url: https://github.com/home-assistant/assets/raw/master/logo/logo-special.png      
     ```
 
+!!! tip
+    [Default icons](icons.md) in the **Pixel Clock** configuration
+
 ### Parameters reference
 
 The ID of the icons is used later to icon display. So, you should name them wisely. 
