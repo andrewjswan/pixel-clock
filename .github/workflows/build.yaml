@@ -69,11 +69,16 @@ jobs:
         run: |
           mv manifest.json ${{ steps.esphome-build.outputs.original-name }}-manifest.json
         working-directory: output
-      - name: Upload artifact
+      - name: Upload Build artifact
         uses: actions/upload-artifact@v7
         with:
           name: ${{ format('PixelClock-{0}', steps.esphome-build.outputs.name) }}
           path: output
+      - name: Upload Icons artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ format('icons-{0}', matrix.config-file) }}
+          path: pixel*.html
 
   ci-status:
     name: Status

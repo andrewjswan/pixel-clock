@@ -114,6 +114,37 @@ jobs:
           pip install mkdocs-video
           pip install "mkdocs-material[imaging]"
 
+      - name: 📦 Download Icons Artifacts
+        uses: actions/download-artifact@v8
+        with:
+          pattern: icons-*
+          path: icons-pixel-clock-files
+          merge-multiple: true
+
+      - name: 💅 Transform HTML to MkDocs Markdown
+        run: |
+          INPUT="icons-pixel-clock-files/pixel_clock.html"
+          OUTPUT="docs/icons.md"
+
+          echo "## Default icons" > $OUTPUT
+          echo "" >> $OUTPUT
+
+          echo '<style>svg { padding: 2px; vertical-align: middle; }</style>' >> $OUTPUT
+          echo '<div style="padding: 20px; font-family: monospace;">' >> $OUTPUT
+
+          sed -n '/<BODY>/,/<\/BODY>/p' $INPUT \
+            | sed 's/<BODY>//g; s/<\/BODY>//g' \
+            | sed -E 's/<DIV ID=[^>]+>//g' \
+            | sed 's/<\/DIV>//g' >> $OUTPUT
+
+          echo '</div>' >> $OUTPUT
+
+      - name: 🧹 Delete Icons Artifacts
+        uses: geekyeggo/delete-artifact@v6
+        with:
+          name: icons-*
+          failOnError: false
+
       - name: 💅 Build the docs site
         run: mkdocs build --config-file .mkdocs.yml
 
