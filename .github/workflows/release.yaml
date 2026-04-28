@@ -123,21 +123,40 @@ jobs:
 
       - name: 💅 Transform HTML to MkDocs Markdown
         run: |
-          INPUT="icons-pixel-clock-files/pixel_clock.html"
-          OUTPUT="docs/icons.md"
+          INPUT_FILE="icons-pixel-clock-files/pixel_clock.html"
+          OUTPUT_FILE="docs/icons.md"
 
-          echo "## Default icons" > $OUTPUT
-          echo "" >> $OUTPUT
+          echo "## Default Icons" > "$OUTPUT_FILE"
+          echo "" >> "$OUTPUT_FILE"
 
-          echo '<style>svg { padding: 2px; vertical-align: middle; }</style>' >> $OUTPUT
-          echo '<div style="padding: 20px; font-family: monospace;">' >> $OUTPUT
+          cat <<EOF >> "$OUTPUT_FILE"
+          <style>
+            .icon-container { background:#1a1a1a; padding:10px; color:#eee; }
+            .icon-row { margin-bottom: 10px; padding-top: 10px; }
+            .icon-header { display: block; margin-bottom: 10px; font-size: 1.1em; }
+            .icon-name { color: #526cfe; font-weight: bold; }
+            .pixel-svg { 
+              vertical-align: middle; 
+              margin: 3px; 
+              width: 50px;
+              height: 50px; 
+              border: 1px solid #444;
+              background: transparent;
+              image-rendering: pixelated;
+            }
+          </style>
+          <div class="icon-container">
+          EOF
 
-          sed -n '/<BODY>/,/<\/BODY>/p' $INPUT \
-            | sed 's/<BODY>//g; s/<\/BODY>//g' \
-            | sed -E 's/<DIV ID=[^>]+>//g' \
-            | sed 's/<\/DIV>//g' >> $OUTPUT
+          cat "$INPUT_FILE" | tr -d '\n\r' \
+            | sed -E 's/Icon:/\nIcon:/g' \
+            | grep '^Icon:' \
+            | sed -E 's/<[bB]>([^<]+)<\/[bB]>/<span class="icon-name">\1<\/span>/g' \
+            | sed -E 's/<\/?(div|body|html|br)[^>]*>//gi' \
+            | sed -E 's/<svg/<svg class="pixel-svg"/g' \
+            | sed -E 's/(Icon:[^:]+:)(.*)/<div class="icon-row"><div class="icon-header">\1<\/div>\2<\/div>/' >> "$OUTPUT_FILE"
 
-          echo '</div>' >> $OUTPUT
+          echo -e "\n</div>" >> "$OUTPUT_FILE"
 
       - name: 🧹 Delete Icons Artifacts
         uses: geekyeggo/delete-artifact@v6
