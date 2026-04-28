@@ -81,6 +81,7 @@ nav:
   - Pixel Clock:
       - EspHoMaTriX: esphomatrix.md
       - Screens: screens.md
+      - Icons: icons.md
       - Home Assistant: home-assistant.md
   - Examples:
       - Time Zone: time-zone.md
