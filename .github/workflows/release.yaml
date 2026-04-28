@@ -131,21 +131,24 @@ jobs:
 
           cat <<EOF >> "$OUTPUT_FILE"
           <style>
-            .icon-container { background:#1a1a1a; padding:10px; color:#eee; }
-            .icon-row { margin-bottom: 10px; padding-top: 10px; }
-            .icon-header { display: block; margin-bottom: 10px; font-size: 1.1em; }
-            .icon-name { color: #526cfe; font-weight: bold; }
+            .icon-group { margin-bottom: 10px; }
+            .icon-header { margin-bottom: 5px; color: inherit; }
+            .icon-name { color: var(--md-code-hl-color); font-weight: bold; }
+            .pixel-box { 
+              background: #1a1a1a; 
+              padding: 15px; 
+              border-radius: 8px; 
+              display: flex; 
+              flex-wrap: wrap; 
+              gap: 4px;
+            }
             .pixel-svg { 
-              vertical-align: middle; 
-              margin: 3px; 
-              width: 50px;
+              width: 50px; 
               height: 50px; 
-              border: 1px solid #444;
-              background: transparent;
-              image-rendering: pixelated;
+              border: 1px solid #444; 
+              image-rendering: pixelated; 
             }
           </style>
-          <div class="icon-container">
           EOF
 
           cat "$INPUT_FILE" | tr -d '\n\r' \
@@ -154,9 +157,7 @@ jobs:
             | sed -E 's/<[bB]>([^<]+)<\/[bB]>/<span class="icon-name">\1<\/span>/g' \
             | sed -E 's/<\/?(div|body|html|br)[^>]*>//gi' \
             | sed -E 's/<svg/<svg class="pixel-svg"/g' \
-            | sed -E 's/(Icon:[^:]+:)(.*)/<div class="icon-row"><div class="icon-header">\1<\/div>\2<\/div>/' >> "$OUTPUT_FILE"
-
-          echo -e "\n</div>" >> "$OUTPUT_FILE"
+            | sed -E 's/(Icon:[^:]+:)(.*)/<div class="icon-group"><div class="icon-header">\1<\/div><div class="pixel-box">\2<\/div><\/div>/' >> "$OUTPUT_FILE"
 
       - name: 🧹 Delete Icons Artifacts
         uses: geekyeggo/delete-artifact@v6
