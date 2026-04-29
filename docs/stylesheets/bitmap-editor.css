@@ -9,8 +9,8 @@
 }
 
 .pixel-cell {
-    width: 18px !important; 
-    height: 18px !important;
+    width: 20px !important; 
+    height: 20px !important;
     cursor: crosshair;
     background-color: #000;
     box-sizing: border-box;
@@ -25,20 +25,46 @@
     margin: 0 auto;
 }
 
-.input-group input {
-    width: 50px; background: #2b2b2b; border: 1px solid #444;
-    color: #fff; text-align: center; padding: 4px; border-radius: 4px;
+.color-inputs {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+    justify-content: center;
+    width: 100%;
 }
-.input-group span { font-size: 10px; color: #888; }
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.input-group input {
+    width: 62px;
+    background: #2b2b2b;
+    border: 1px solid #444;
+    color: #fff;
+    text-align: center;
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.input-group span {
+    font-size: 12px;
+    color: #888;
+    font-weight: bold;
+}
 
 .preview-container-editor {
-    background: #111; padding: 10px; border-radius: 4px;
+    background: #111; padding: 20px; border-radius: 4px;
     display: flex; justify-content: center; border: 1px solid #333;
     overflow: hidden; /* Убираем скроллы */
 }
 
 #editorOutput {
-    width: 100%; height: 80px; background: #1e1e1e; color: #ccc;
+    width: 100%; height: 145px; background: #1e1e1e; color: #ccc;
     border: 1px solid #333; padding: 10px; font-family: monospace;
-    font-size: 11px; resize: none; border-radius: 4px;
+    font-size: 12px; resize: none; border-radius: 4px;
 }
