@@ -1,7 +1,5 @@
 <script src="../js/converter.js"></script>
 
-## Bitmap Converter
-
 Convert any image to RGB565 arrays for your LED matrix displays.
 
 <div class="admonition info">
