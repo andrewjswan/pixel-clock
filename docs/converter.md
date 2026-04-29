@@ -1,3 +1,5 @@
+<script src="../js/converter.js"></script>
+
 ## Bitmap Converter
 
 A tool for converting images to the RGB565 format.
