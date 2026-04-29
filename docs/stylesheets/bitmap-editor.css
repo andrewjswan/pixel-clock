@@ -1,10 +1,10 @@
 .editor-layout {
     display: flex;
-    gap: 30px;
+    gap: 15px;
     flex-wrap: wrap;
     justify-content: center;
     flex-direction: row-reverse; 
-    padding: 10px;
+    padding: 5px;
 }
 
 .picker-sidebar {
@@ -86,12 +86,15 @@
 
 .preview-container-editor {
     background: #111;
-    padding: 20px;
+    padding: 10px;
     border-radius: 4px;
     display: flex;
     justify-content: center;
-    overflow-x: auto;
     border: 1px solid #333;
+}
+
+.ehmtx-tool-container {
+    padding: 0 !important;
 }
 
 @media (max-width: 768px) {
