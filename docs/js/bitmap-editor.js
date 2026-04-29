@@ -17,6 +17,20 @@ document.addEventListener("DOMContentLoaded", () => {
         updateOutput();
     };
 
+    window.copyEditorCode = (btn) => {
+        output.select();
+        document.execCommand('copy');
+        
+        const originalText = btn.textContent;
+        btn.textContent = "✅ Copied!";
+        btn.classList.add('md-button--primary');
+        
+        setTimeout(() => {
+            btn.textContent = originalText;
+            btn.classList.remove('md-button--primary');
+        }, 2000);
+    };
+
     function initGrid() {
         grid.style.gridTemplateColumns = `repeat(${currentW}, 1fr)`;
         grid.innerHTML = '';
@@ -38,6 +52,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.addEventListener('mouseup', () => isDrawing = false);
 
+    function rgb565ToRgb(val) {
+        val = parseInt(val, 16);
+        const r = Math.round(((val >> 11) & 0x1F) * 255 / 31);
+        const g = Math.round(((val >> 5) & 0x3F) * 255 / 63);
+        const b = Math.round((val & 0x1F) * 255 / 31);
+        return `rgb(${r}, ${g}, ${b})`;
+    }
+
     function updateOutput() {
         const cells = document.querySelectorAll('.pixel-cell');
         const rgb565Array = Array.from(cells).map(cell => {
@@ -48,9 +70,20 @@ document.addEventListener("DOMContentLoaded", () => {
             const rgb565 = (r5 << 11) | (g6 << 5) | b5;
             return `0x${rgb565.toString(16).toUpperCase().padStart(4, '0')}`;
         });
-
-        output.textContent = `const uint16_t drawn_${currentW}x${currentH}[] = {\n    ${rgb565Array.join(', ')}\n};`;
+        output.value = `const uint16_t drawn_${currentW}x${currentH}[] = {\n    ${rgb565Array.join(', ')}\n};`;
     }
+
+    output.addEventListener('input', () => {
+        const matches = output.value.match(/0x[0-9A-Fa-f]{4}/g);
+        if (matches) {
+            const cells = document.querySelectorAll('.pixel-cell');
+            matches.forEach((hex, index) => {
+                if (cells[index]) {
+                    cells[index].style.backgroundColor = rgb565ToRgb(hex);
+                }
+            });
+        }
+    });
 
     initGrid();
 });
