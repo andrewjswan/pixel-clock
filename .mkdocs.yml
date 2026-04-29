@@ -85,6 +85,7 @@ nav:
       - Home Assistant: home-assistant.md
   - Examples:
       - Time Zone: time-zone.md
+  - Bitmap converter: converter.md
   - Additionals: additionals.md
   - Firmware:
       - Pixel Clock: firmware.md
