@@ -42,5 +42,4 @@ Convert any image to RGB565 arrays for your LED matrix displays.
 </div>
 </div>
 
-<div id="toast">Copied to clipboard!</div>
 <canvas id="hiddenCanvas" style="display:none;"></canvas>
