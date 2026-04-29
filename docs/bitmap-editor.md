@@ -1,5 +1,11 @@
 ## Bitmap editor
 
+<link href="https://cdn.jsdelivr.net/npm/vuetify@2.6.10/dist/vuetify.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.6.10/dist/vuetify.min.js"></script>
+
 <script src="../js/bitmap-editor.js"></script>
 
 <div id="app">
