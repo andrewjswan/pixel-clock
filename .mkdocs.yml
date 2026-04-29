@@ -103,6 +103,7 @@ extra_css:
   - stylesheets/table.css
   - stylesheets/installer.css
   - stylesheets/converter.css
+  - stylesheets/bitmap-editor.css
 
 plugins:
   - social:
