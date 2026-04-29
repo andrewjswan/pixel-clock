@@ -6,47 +6,46 @@
 
 <script src="../js/bitmap-editor.js"></script>
 
-<div id="app">
-  <v-app id="bitmap-app" class="v-application">
+<div id="app" data-app="true">
+  <v-app id="bitmap-app" class="v-application v-application--is-ltr theme--light">
     <v-main>
-      <v-container>
-        <bitmap-editor></bitmap-editor>
-      </v-container>
+      <bitmap-editor></bitmap-editor>
     </v-main>
   </v-app>
 </div>
 
 <style>
-  .v-application {
-      font-family: Roboto, sans-serif !important;
-      line-height: 1.5 !important;
+  #app .v-application {
+      font-family: inherit !important;
+  }
+  
+  html, body {
+      font-size: initial !important; 
+  }
+
+  #bitmap-app {
+      background: transparent !important;
+      min-height: auto !important;
   }
   .v-application--wrap {
       min-height: auto !important;
-      display: block !important;
   }
-  #bitmap-app {
-      background-color: transparent !important;
-  }
-  .v-btn {
-      height: auto !important;
-      letter-spacing: normal !important;
-      text-transform: none !important;
-  }
+  
   .v-application table {
-      display: table !important;
-      margin: 0 !important;
-      word-break: normal !important;
+      display: inline-table !important;
+      border: none !important;
+  }
+  .v-application td, .v-application th {
+      border: none !important;
+      padding: 0 !important;
   }
 </style>
 
 <script>
-  window.addEventListener('load', function () {
-    new Vue({
-      el: '#app',
-      vuetify: new Vuetify({
-          theme: { dark: false }
-      }),
-    })
+  new Vue({
+    el: '#app',
+    vuetify: new Vuetify({
+        theme: { disable: true },
+    }),
   })
 </script>
