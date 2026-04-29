@@ -77,8 +77,6 @@ document.addEventListener("DOMContentLoaded", () => {
             btn.textContent = "✅ Copied!";
             btn.classList.add('md-button--primary');
             
-            showToast();
-
             setTimeout(() => {
                 btn.textContent = originalText;
                 btn.classList.remove('md-button--primary');
@@ -86,8 +84,4 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 
-    function showToast() {
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 3000);
-    }
 });
