@@ -21,9 +21,6 @@
                     <Art :colors="colors" pixelCount="64" :func="onclick" />
                     <p></p>
                     <v-textarea filled outlined v-model="array8x8String" rows="5" hide-details></v-textarea>
-                    <div class="text-center">
-                        <ButtonSave color="green" text="Save" icon="mdi-content-save" :data="array8x8String" :pixelMode="this.pixelMode" :condition="true"></ButtonSave>
-                    </div>
                 </v-card>
             </v-col>
             <v-col cols="12" lg="4">
@@ -41,9 +38,6 @@
                     <div class="text-center" v-if="isAnimated" >    
                         <v-card-text><h3 class="red--text">No animated 8x32 bitmaps are supported!</h3></v-card-text>
                     </div> 
-                    <div class="text-center">                        
-                        <ButtonSave color="green" text ="Save" icon="mdi-content-save" :data="array8x32String" :pixelMode="pixelMode" :condition="!isAnimated"></ButtonSave>
-                    </div>       
                 </v-card>
             </v-col>
             <v-col cols="12" lg="4">
@@ -56,7 +50,6 @@
 </template>
 <script>
 import Art from '../components/Art';
-import ButtonSave from '../components/ButtonBMPSave';
 export default {
     data() {
         return {
@@ -70,7 +63,6 @@ export default {
     },
     components: {
         Art,
-        ButtonSave,
     },
     computed: {
         cleaned8x32String(){
