@@ -86,6 +86,7 @@ nav:
   - Examples:
       - Time Zone: time-zone.md
   - Bitmap converter: converter.md
+  - Bitmap editor: bitmap-editor.md
   - Additionals: additionals.md
   - Firmware:
       - Pixel Clock: firmware.md
