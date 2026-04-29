@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     colorPicker.on(['color:init', 'color:change'], (color) => {
-        currentColor = color.hexString;
+        currentColor = color.hexString.toUpperCase();
         inR.value = color.rgb.r; inG.value = color.rgb.g; inB.value = color.rgb.b;
     });
 
@@ -27,19 +27,31 @@ document.addEventListener("DOMContentLoaded", () => {
         for (let i = 0; i < w * h; i++) {
             const cell = document.createElement('div');
             cell.className = 'pixel-cell';
-            cell.style.backgroundColor = '#000000';
-            cell.addEventListener('mousedown', (e) => { isDrawing = true; paint(e); });
-            cell.addEventListener('mouseover', (e) => { if (isDrawing) paint(e); });
+            cell.style.backgroundColor = 'rgb(0, 0, 0)';
+            cell.addEventListener('mousedown', (e) => { isDrawing = true; handlePaint(e, true); });
+            cell.addEventListener('mouseover', (e) => { if (isDrawing) handlePaint(e, false); });
             grid.appendChild(cell);
         }
         updateOutput();
     };
 
-    function paint(e) { e.target.style.backgroundColor = currentColor; updateOutput(); }
+    function handlePaint(e, isClick) {
+        const cell = e.target;
+        const cellRgb = cell.style.backgroundColor.match(/\d+/g).map(Number);
+        const cellHex = "#" + cellRgb.map(x => x.toString(16).padStart(2, '0')).join('').toUpperCase();
+
+        if (isClick && cellHex === currentColor) {
+            cell.style.backgroundColor = 'rgb(0, 0, 0)';
+        } else {
+            cell.style.backgroundColor = currentColor;
+        }
+        updateOutput();
+    }
+
     window.addEventListener('mouseup', () => isDrawing = false);
 
     window.clearEditor = () => {
-        document.querySelectorAll('.pixel-cell').forEach(c => c.style.backgroundColor = '#000000');
+        document.querySelectorAll('.pixel-cell').forEach(c => c.style.backgroundColor = 'rgb(0, 0, 0)');
         updateOutput();
     };
 
@@ -60,18 +72,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     output.addEventListener('input', () => {
         const rawValues = output.value.replace(/[\[\]\s]/g, '').split(',');
-        if (rawValues.length > 0) {
-            const cells = document.querySelectorAll('.pixel-cell');
-            rawValues.forEach((val, i) => {
-                if (cells[i] && val !== "") {
-                    const v = parseInt(val);
-                    const r = Math.round(((v >> 11) & 31) * 255 / 31);
-                    const g = Math.round(((v >> 5) & 63) * 255 / 63);
-                    const b = Math.round((v & 31) * 255 / 31);
-                    cells[i].style.backgroundColor = `rgb(${r},${g},${b})`;
-                }
-            });
-        }
+        const cells = document.querySelectorAll('.pixel-cell');
+        rawValues.forEach((val, i) => {
+            if (cells[i] && val !== "") {
+                const v = parseInt(val);
+                cells[i].style.backgroundColor = `rgb(${Math.round(((v >> 11) & 31) * 255 / 31)},${Math.round(((v >> 5) & 63) * 255 / 63)},${Math.round((v & 31) * 255 / 31)})`;
+            }
+        });
     });
 
     window.setEditorMode(8, 8);
