@@ -46,28 +46,29 @@ document.addEventListener("DOMContentLoaded", () => {
     window.copyEditorCode = (btn) => {
         output.select(); document.execCommand('copy');
         const old = btn.textContent; btn.textContent = "✅ Copied!";
-        btn.classList.add('md-button--primary');
-        setTimeout(() => { btn.textContent = old; btn.classList.remove('md-button--primary'); }, 2000);
+        setTimeout(() => { btn.textContent = old; }, 2000);
     };
 
     function updateOutput() {
         const cells = document.querySelectorAll('.pixel-cell');
         const rgb565 = Array.from(cells).map(c => {
             const rgb = c.style.backgroundColor.match(/\d+/g).map(Number);
-            const val = ((rgb[0] >> 3) << 11) | ((rgb[1] >> 2) << 5) | (rgb[2] >> 3);
-            return `0x${val.toString(16).toUpperCase().padStart(4, '0')}`;
+            return ((rgb[0] >> 3) << 11) | ((rgb[1] >> 2) << 5) | (rgb[2] >> 3);
         });
-        output.value = `const uint16_t drawn_${currentW}x${currentH}[] = {\n    ${rgb565.join(', ')}\n};`;
+        output.value = `[${rgb565.join(',')}]`;
     }
 
     output.addEventListener('input', () => {
-        const matches = output.value.match(/0x[0-9A-Fa-f]{4}/g);
-        if (matches) {
+        const rawValues = output.value.replace(/[\[\]\s]/g, '').split(',');
+        if (rawValues.length > 0) {
             const cells = document.querySelectorAll('.pixel-cell');
-            matches.forEach((hex, i) => {
-                if (cells[i]) {
-                    const v = parseInt(hex, 16);
-                    cells[i].style.backgroundColor = `rgb(${Math.round(((v>>11)&31)*255/31)},${Math.round(((v>>5)&63)*255/63)},${Math.round((v&31)*255/31)})`;
+            rawValues.forEach((val, i) => {
+                if (cells[i] && val !== "") {
+                    const v = parseInt(val);
+                    const r = Math.round(((v >> 11) & 31) * 255 / 31);
+                    const g = Math.round(((v >> 5) & 63) * 255 / 63);
+                    const b = Math.round((v & 31) * 255 / 31);
+                    cells[i].style.backgroundColor = `rgb(${r},${g},${b})`;
                 }
             });
         }
