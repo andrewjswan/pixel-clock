@@ -104,18 +104,6 @@ jobs:
       - name: ⬇️ Checkout website files
         uses: actions/checkout@v6
 
-      - name: ⚙️ Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-
-      - name: 🎨 Build Vue Component
-        run: |
-          cd bitmap-editor
-          npm install
-          npx vue-cli-service build --target wc --name bitmap-editor src/Creator.vue
-          cp dist/bitmap-editor.js ../docs/js/
-
       - name: 🐍 Set up Python
         uses: actions/setup-python@v6
         with:
