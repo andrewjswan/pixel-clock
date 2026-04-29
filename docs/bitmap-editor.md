@@ -14,10 +14,19 @@
     <div class="editor-layout" style="display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; flex-direction: row-reverse;">
         <div class="picker-sidebar">
             <div id="iroPicker"></div>
-            <div class="color-inputs" style="display: flex; gap: 8px; margin-top: 15px;">
-                <div class="input-group"><input type="number" id="input-r" value="0"><span>R</span></div>
-                <div class="input-group"><input type="number" id="input-g" value="0"><span>G</span></div>
-                <div class="input-group"><input type="number" id="input-b" value="0"><span>B</span></div>
+            <div class="color-inputs">
+                <div class="input-group">
+                    <input type="number" id="input-r" value="0">
+                    <span>R</span>
+                </div>
+                <div class="input-group">
+                    <input type="number" id="input-g" value="0">
+                    <span>G</span>
+                </div>
+                <div class="input-group">
+                    <input type="number" id="input-b" value="0">
+                    <span>B</span>
+                </div>
             </div>
         </div>
 
