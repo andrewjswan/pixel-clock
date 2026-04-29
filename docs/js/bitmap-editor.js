@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.setEditorMode = (w, h) => {
         currentW = w; currentH = h;
-        grid.style.gridTemplateColumns = `repeat(${w}, 18px)`;
+        grid.style.gridTemplateColumns = `repeat(${w}, 1fr)`;
         grid.innerHTML = '';
         for (let i = 0; i < w * h; i++) {
             const cell = document.createElement('div');
