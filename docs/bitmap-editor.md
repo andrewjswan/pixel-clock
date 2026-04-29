@@ -7,23 +7,46 @@
 <script src="../js/bitmap-editor.js"></script>
 
 <div id="app">
-  <v-app id="bitmap-app">
+  <v-app id="bitmap-app" class="v-application">
     <v-main>
-      <bitmap-editor></bitmap-editor>
+      <v-container>
+        <bitmap-editor></bitmap-editor>
+      </v-container>
     </v-main>
   </v-app>
 </div>
 
 <style>
-  #bitmap-app { background-color: transparent !important; }
-  .v-application--wrap { min-height: auto !important; }
+  .v-application {
+      font-family: Roboto, sans-serif !important;
+      line-height: 1.5 !important;
+  }
+  .v-application--wrap {
+      min-height: auto !important;
+      display: block !important;
+  }
+  #bitmap-app {
+      background-color: transparent !important;
+  }
+  .v-btn {
+      height: auto !important;
+      letter-spacing: normal !important;
+      text-transform: none !important;
+  }
+  .v-application table {
+      display: table !important;
+      margin: 0 !important;
+      word-break: normal !important;
+  }
 </style>
 
 <script>
   window.addEventListener('load', function () {
     new Vue({
       el: '#app',
-      vuetify: new Vuetify(),
+      vuetify: new Vuetify({
+          theme: { dark: false }
+      }),
     })
   })
 </script>
