@@ -11,7 +11,7 @@
         <button class="md-button" onclick="window.clearEditor()" style="background-color: #ff5252; color: white; border: none;">Clear</button>
     </div>
 
-    <div class="editor-layout" style="display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; flex-direction: row-reverse;">
+    <div class="editor-layout" style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; flex-direction: row-reverse;">
         <div class="picker-sidebar">
             <div id="iroPicker"></div>
             <div class="color-inputs">
