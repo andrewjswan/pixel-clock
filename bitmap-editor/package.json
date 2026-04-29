@@ -1,8 +1,8 @@
 {
-  "name": "pixel-it-creator-wc",
+  "name": "pixel-editor",
   "version": "1.0.0",
   "scripts": {
-    "build": "vue-cli-service build --target wc --name pixel-it-creator src/views/Creator.vue"
+    "build": "vue-cli-service build --target wc --name pixel-editor src/Creator.vue"
   },
   "dependencies": {
     "vue": "^2.6.11",
@@ -10,7 +10,6 @@
   },
   "devDependencies": {
     "@vue/cli-service": "~4.5.0",
-    "vue-template-compiler": "^2.6.11",
-    "vuetify-loader": "^1.3.0"
+    "vue-template-compiler": "^2.6.11"
   }
 }
