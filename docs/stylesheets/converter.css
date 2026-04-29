@@ -2,14 +2,27 @@
     padding: 0.5rem 0;
 }
 
+.upload-icon {
+    font-size: 4rem !important;
+    display: block;
+    margin-bottom: 1rem;
+    line-height: 1;
+}
+
 .upload-section {
-    padding: 2rem;
+    padding: 3.5rem 2rem !important;
     text-align: center;
     border: 2px dashed var(--md-primary-fg-color--light);
     border-radius: 0.4rem;
     cursor: pointer;
     margin-bottom: 1.5rem;
     background: var(--md-default-bg-color);
+}
+
+.upload-section p {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem !important;
+    color: var(--md-default-fg-color--light);
 }
 
 .upload-section:hover {
