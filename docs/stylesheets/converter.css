@@ -16,7 +16,6 @@
     background: var(--md-primary-fg-color--transparent);
 }
 
-/* Сетка внутри блока */
 .converter-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
