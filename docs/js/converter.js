@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const fileInput = document.getElementById('fileInput');
     const dropZone = document.getElementById('dropZone');
     const results = document.getElementById('results');
-    const toast = document.getElementById('toast');
     const canvas = document.getElementById('hiddenCanvas');
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
@@ -51,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const imageData = ctx.getImageData(0, 0, targetW, targetH).data;
         let rgb565Array = [];
+        let rgb565ArrayPlain = [];
 
         for (let i = 0; i < imageData.length; i += 4) {
             const r = imageData[i];
@@ -64,10 +64,17 @@ document.addEventListener("DOMContentLoaded", () => {
             const rgb565 = (r5 << 11) | (g6 << 5) | b5;
             
             rgb565Array.push(`0x${rgb565.toString(16).toUpperCase().padStart(4, '0')}`);
+            rgb565ArrayPlain.push(rgb565);
         }
 
         const formattedCode = `const uint16_t bitmap_${targetW}x${targetH}[] = {\n    ${rgb565Array.join(', ')}\n};`;
         document.getElementById(codeId).textContent = formattedCode;
+
+        const plainCode = `[${rgb565ArrayPlain.join(',')}]`;
+        const plainElement = document.getElementById(codeId + '_plain');
+        if (plainElement) {
+            plainElement.textContent = plainCode;
+        }
     }
 
     window.copyCode = (elementId, btn) => {
@@ -83,5 +90,4 @@ document.addEventListener("DOMContentLoaded", () => {
             }, 2000);
         });
     };
-
 });

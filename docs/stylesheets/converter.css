@@ -10,12 +10,12 @@
 }
 
 .upload-section {
-    padding: 3.5rem 2rem !important;
+    padding: 1rem 1rem !important;
     text-align: center;
     border: 2px dashed var(--md-primary-fg-color--light);
     border-radius: 0.4rem;
     cursor: pointer;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     background: var(--md-default-bg-color);
 }
 
