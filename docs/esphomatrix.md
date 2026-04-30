@@ -281,7 +281,7 @@ Screen|Mode|Value|
 |rainbow_text_screen|MODE_RAINBOW_TEXT| 8|
 |rainbow_clock_screen|MODE_RAINBOW_CLOCK| 9|
 |rainbow_date_screen|MODE_RAINBOW_DATE| 10|
-|bitmap_screen|MODE_BITMAP_SCREEN| 11|
+|bitmap_screen|[MODE_BITMAP_SCREEN](screens.md#mode_bitmap_screen)| 11|
 |bitmap_small|MODE_BITMAP_SMALL| 12|
 |color_screen|MODE_COLOR| 13|
 |fire_screen|MODE_FIRE| 14|
