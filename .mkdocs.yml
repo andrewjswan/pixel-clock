@@ -85,8 +85,8 @@ nav:
       - Home Assistant: home-assistant.md
   - Examples:
       - Time Zone: time-zone.md
-  - Bitmap converter: converter.md
-  - Bitmap editor: bitmap-editor.md
+  - Bitmap Converter: converter.md
+  - Bitmap Editor: bitmap-editor.md
   - Additionals: additionals.md
   - Firmware:
       - Pixel Clock: firmware.md
