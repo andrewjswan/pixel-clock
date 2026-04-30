@@ -53,8 +53,8 @@
 
 ![MODE_BITMAP_SCREEN](img/screens/mode_bitmap_screen.png)
 
-> [!WARNING]
-> This feature is only available on ESP32 platform !!!
+!!! warning
+    This feature is only available on ESP32 platform !!!
 
 For **8x32** images as text. You can generate these images with, e.g., [Bitmap Editor](bitmap-editor.md) or just open the [Bitmap Converter](converter.md) and select the images you want. This tool will automatically scale and convert your images into the correct **RGB565** format for the `bitmap_screen` service.
 
