@@ -281,7 +281,7 @@ Screen|Mode|Value|
 |rainbow_text_screen|MODE_RAINBOW_TEXT| 8|
 |rainbow_clock_screen|MODE_RAINBOW_CLOCK| 9|
 |rainbow_date_screen|MODE_RAINBOW_DATE| 10|
-|bitmap_screen|MODE_BITMAP_SCREEN| 11|
+|bitmap_screen|[MODE_BITMAP_SCREEN](screens.md#mode_bitmap_screen)| 11|
 |bitmap_small|MODE_BITMAP_SMALL| 12|
 |color_screen|MODE_COLOR| 13|
 |fire_screen|MODE_FIRE| 14|
@@ -304,7 +304,7 @@ Screen|Mode|Value|
 Download and install all needed icons `(.jpg/.png)` and animations `(.gif)` under the `matrix_lamp:` key. All icons have to be 8x8 pixels in size. If necessary, you can scale them with the option `resize: 8x8`.
 
 !!! tip
-    To easily convert your own images into the required RGB565 format for use in your YAML, you can use the built-in [Bitmap Converter](converter.md) tool.
+    To easily convert your own images into the required RGB565 format for use in your YAML, you can use the built-in [Bitmap Converter](converter.md) or [Bitmap Editor](bitmap-editor.md) tool.
 
 You can also specify a URL to directly download the image file. The URLs will only be downloaded once at compile time, so there is no additional traffic on the hosting website.
 

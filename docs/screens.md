@@ -48,3 +48,24 @@
 
 !!! tip Home Assistant
     Additional examples and screenshots are available at the [link](https://github.com/lubeda/EspHoMaTriXv2/issues/149)
+
+## MODE_BITMAP_SCREEN
+
+![MODE_BITMAP_SCREEN](img/screens/mode_bitmap_screen.png)
+
+> [!WARNING]
+> This feature is only available on ESP32 platform !!!
+
+For **8x32** images as text. You can generate these images with, e.g., [Bitmap Editor](bitmap-editor.md) or just open the [Bitmap Converter](converter.md) and select the images you want. This tool will automatically scale and convert your images into the correct **RGB565** format for the `bitmap_screen` service.
+
+!!! example annotate "Service via API"
+
+    ``` { .yaml .copy .annotate }
+    bitmap_screen => {"[0,4523,0,2342,0,..... (256 values 16bit values rgb565)]", "lifetime", "screen_time"}
+    ```
+
+!!! example annotate "Lambda"
+
+    ``` { .c .copy .annotate }
+    void bitmap_screen(string text, int =D_LIFETIME, int screen_time=D_SCREEN_TIME);
+    ```
