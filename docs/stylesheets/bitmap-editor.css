@@ -60,7 +60,7 @@
 .preview-container-editor {
     background: #111; padding: 20px; border-radius: 4px;
     display: flex; justify-content: center; border: 1px solid #333;
-    overflow: hidden; /* Убираем скроллы */
+    overflow: hidden;
 }
 
 #editorOutput {
@@ -68,3 +68,8 @@
     border: 1px solid #333; padding: 10px; font-family: monospace;
     font-size: 12px; resize: none; border-radius: 4px;
 }
+
+@media (max-width: 800px) {
+    .editor-layout {
+        flex-direction: column;
+    }
