@@ -29,12 +29,13 @@ The easiest way to use Pixel Clock as a status display is to use the icon names 
     action:
       - service: esphome.pixel_clock_icon_screen
         data:
-          icon_name: '{{trigger.id}}'
+          icon_name: '{{trigger.id}}' (1)
           text: >-
             {{trigger.to_state.state}}{{trigger.to_state.attributes.unit_of_measurement}}
     mode: queued
     max: 10
     ```
+1. See the list of all possible [icons](icons.md)
 
 #### Specific icons per state
 
@@ -50,15 +51,16 @@ Sample automation to show the weather with local temperature
     action:
       - service: esphome.pixel_clock_del_screen
         data:
-          icon_name: weather_*
-          mode: 5 (1)
+          icon_name: weather_* (1)
+          mode: 5 (2)
       - service: esphome.pixel_clock_icon_screen
         data:
           icon_name: weather_{{ trigger.to_state.state }}
           text: >-
             {{ states("sensor.outside_temperature") }}°C
     ```
-1.  See the list of all possible [modes](esphomatrix.md#screens-and-modes) and their values
+1. See the list of all possible [icons](icons.md)
+2. See the list of all possible [modes](esphomatrix.md#screens-and-modes) and their values
 
 Sample automation for the trashcan type
 
@@ -82,8 +84,8 @@ Sample automation for the trashcan type
     action:
       - service: esphome.ulanzi_del_screen
         data:
-          icon_name: trash_*
-          mode: 5 (1)
+          icon_name: trash_* (1)
+          mode: 5 (2)
       - service: esphome.ulanzi_icon_screen
         data:
           icon_name: >-
@@ -92,7 +94,8 @@ Sample automation for the trashcan type
             {{ states("sensor.trash_details") }}
         lifetime: 120
     ```
-1.  See the list of all possible [modes](esphomatrix.md#screens-and-modes) and their values
+1. See the list of all possible [icons](icons.md)
+2. See the list of all possible [modes](esphomatrix.md#screens-and-modes) and their values
 
 #### Tips
 
