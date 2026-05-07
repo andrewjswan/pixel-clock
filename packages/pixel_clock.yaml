@@ -324,7 +324,7 @@ ehmtxv2:
     - id: temperature_cold_up
       lameid: 19653
     - id: temperature_hot_down
-      lameid: 1965
+      lameid: 19657
     - id: temperature_normal_down
       lameid: 19658
     - id: temperature_cold_down
