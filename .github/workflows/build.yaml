@@ -92,6 +92,7 @@ jobs:
           file: CHANGELOG.md
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload changelog artifact
+        if: always()
         uses: actions/upload-artifact@v7
         with:
           name: Changelog
