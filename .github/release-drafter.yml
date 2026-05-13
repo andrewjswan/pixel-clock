@@ -1,0 +1,55 @@
+name-template: v$RESOLVED_VERSION
+tag-template: v$RESOLVED_VERSION
+exclude-contributors:
+  - github-actions[bot]
+  - github-actions
+  - dependabot[bot]
+  - dependabot
+categories:
+  - title: ❗️ Breaking Changes
+    labels:
+      - breaking
+      - breaking changes
+  - title: 🚀 Features
+    labels:
+      - feature
+      - enhancement
+  - title: 🐛 Bug Fixes
+    labels:
+      - fix
+      - bug
+      - bugfix
+  - title: 🧰 Maintenance
+    labels:
+      - chore
+      - cosmetic
+      - dependencies
+      - documentation
+      - workflow
+change-template: "- $TITLE @$AUTHOR ($URL)"
+change-title-escapes: '\<*_&'  # You can add # and @ to disable mentions, and add ` to disable code blocks.
+version-resolver:
+  major:
+    labels:
+      - major
+      - breaking
+  minor:
+    labels:
+      - minor
+  patch:
+    labels:
+      - patch
+      - dependencies
+  default: patch
+template: |
+  ## What's Changed
+
+  $CHANGES
+
+  ## 🤝 Support
+
+  If you like the project, you can support it with a star ⭐ on GitHub.
+
+  ## ✨ Changelog
+
+  **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
