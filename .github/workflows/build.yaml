@@ -80,24 +80,6 @@ jobs:
           name: ${{ format('icons-{0}', matrix.config-file) }}
           path: pixel*.html
 
-  changelog:
-    name: Update changelog
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          ref: main
-      - uses: rhysd/changelog-from-release/action@v3
-        with:
-          file: CHANGELOG.md
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Upload changelog artifact
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: Changelog
-          path: CHANGELOG.md
-
   ci-status:
     name: Status
     runs-on: ubuntu-latest
