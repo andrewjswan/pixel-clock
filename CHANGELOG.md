@@ -21,7 +21,7 @@ If you like the project, you can support it with a star ⭐ on GitHub.
 
 ### ✨ Changelog
 
-**Full Changelog**: https://github.com/andrewjswan/pixel-clock/compare/v1.1.5.37...v1.1.6
+**Full Changelog**: https://github.com/andrewjswan/pixel-clock/compare/v1.1.5.37...v1.1.5.39
 
 ## [v1.1.5.37](https://github.com/andrewjswan/pixel-clock/releases/tag/v1.1.5.37) - 2026-05-07
 
