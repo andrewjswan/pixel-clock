@@ -245,7 +245,7 @@ Each pixel is output depending on the bit that is set in its value byte, for exa
         ```
 1. Screen numbers in the table [mode](#screens-and-modes).
 
-**icons2html** (optional, boolean): If true, generate the HTML-file (*filename*.html) to show all included icons. (default = `false`)
+**icons2html** (optional, boolean): If true, generate the HTML-file ([**filename**.html](icons.md)) to show all included icons. (default = `false`)
 
 **iconscache** (optional, boolean): If true, it caches icons in the `.cache\icons` folder and if it finds the specified icons in the cache, it uses them instead of trying to download them again from the Internet. (default = `false`)
 
