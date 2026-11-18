@@ -9,7 +9,7 @@
 [![StandWithUkraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://github.com/vshymanskyy/StandWithUkraine/blob/main/docs/README.md)
 
 ## Description
-ESPHome firmware for Ulanzi TC001 Clock using [EspHoMaTriX](https://github.com/lubeda/EspHoMaTriXv2) component.
+ESPHome firmware for **Ulanzi TC001** Clock using [EspHoMaTriX](https://github.com/andrewjswan/EspHoMaTriXv2) component.
 
 ![Ulanzi TC001](./docs/img/ulanzi-tc001.png)
 
