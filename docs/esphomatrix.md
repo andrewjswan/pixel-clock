@@ -871,14 +871,14 @@ To always use the latest version and fixes directly from the repository, add the
     external_components:
       - source:
           type: git
-          url: [https://github.com](https://github.com/andrewjswan/EspHoMaTriXv2)
-          ref: 2026.XX.X
+          url: https://github.com/andrewjswan/EspHoMaTriXv2
+          ref: 202X.XX.X
         refresh: 60s
         components: [ ehmtxv2 ]
     ```
 
 !!! tip
-    Always specify the latest default branch in the `ref:` parameter (example `2026.XX.X`) so that ESPHome pulls the most up-to-date version and compatibility fixes.
+    Always specify the latest default branch in the `ref:` parameter (example `202X.XX.X`) so that ESPHome pulls the most up-to-date version and compatibility fixes.
 
 ### Arduino
 
