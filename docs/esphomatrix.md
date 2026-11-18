@@ -861,6 +861,25 @@ Depending on your LED matrix wiring, use the corresponding `pixel_mapper` formul
 
 ## ESPHome configuration
 
+### External Component
+
+To always use the latest version and fixes directly from the repository, add the `external_components` block pointing to the current `default` branch:
+
+!!! example annotate "Connect via external_components"
+
+    ``` { .yaml .copy .annotate }
+    external_components:
+      - source:
+          type: git
+          url: [https://github.com](https://github.com/andrewjswan/EspHoMaTriXv2)
+          ref: 2026.XX.X
+        refresh: 60s
+        components: [ ehmtxv2 ]
+    ```
+
+!!! tip
+    Always specify the latest default branch in the `ref:` parameter (example `2026.XX.X`) so that ESPHome pulls the most up-to-date version and compatibility fixes.
+
 ### Arduino
 
 !!! example annotate "Local configuration file | Arduino"
