@@ -1,12 +1,12 @@
 ## Introduction
 
-[**EspHoMaTriXv2**](https://github.com/lubeda/EspHoMaTriXv2) is a flexible, highly customizable DIY LED Matrix display, built with a 8×32 RGB LED panel and implemented with [**ESPHome**](https://esphome.io)
+[**EspHoMaTriXv2**](https://github.com/andrewjswan/EspHoMaTriXv2) is a flexible, highly customizable DIY LED Matrix display, built with a 8×32 RGB LED panel and implemented with [**ESPHome**](https://esphome.io)
 
 ![Ulanzi TC001](./img/ulanzi-tc001.png)
 
-!!! info "EspHoMaTriXv2 Documentation"
-    Full documentation with all the nuances is available in the [**EspHoMaTriXv2**](https://github.com/lubeda/EspHoMaTriXv2) component repository.
+### Microcontroller Requirements
 
+It is highly recommended to use an **ESP32** device. On **ESP8266** boards, limited RAM causes certain memory-intensive features (such as `bitmap_screen`) to be disabled automatically.
 
 ## Fonts
 
@@ -265,7 +265,7 @@ Each pixel is output depending on the bit that is set in its value byte, for exa
 
 **gauge** (optional, boolean, default: true): Controls the ability to use the gauge indicator.
 
-**fire_screen** (optional, boolean, default: true): Controls the ability to use the fire screen.
+**fire_screen** (optional, boolean, default: true): Controls the ability to use the fire screen. Not available with the `esp-idf` framework (disabled automatically).
 
 ## Screens and Modes
 
@@ -301,7 +301,10 @@ Screen|Mode|Value|
 
 ## Icons and Animations
 
-Download and install all needed icons `(.jpg/.png)` and animations `(.gif)` under the `matrix_lamp:` key. All icons have to be 8x8 pixels in size. If necessary, you can scale them with the option `resize: 8x8`.
+Download and install all needed icons `(.jpg/.png)` and animations `(.gif)` under the `ehmtxv2:` key. All icons have to be `8x8` or `8x32` pixels in size. If necessary, you can scale them with the option `resize: 8x8` or `resize: 8x32`.
+
+!!! note
+    The first defined icon will be used as a fallback icon in case of an error (e.g., if you use a non-existing icon ID).
 
 !!! tip
     To easily convert your own images into the required RGB565 format for use in your YAML, you can use the built-in [Bitmap Converter](converter.md) or [Bitmap Editor](bitmap-editor.md) tool.
@@ -319,7 +322,7 @@ All other solutions provide ready-made icons, especially **Lametric** has a big 
 !!! example annotate "Icons and Animations"
 
     ``` { .yaml .copy .annotate }
-    matrix_lamp:
+    ehmtxv2:
       display: ...
       icons: 
         - id: boot 
@@ -444,7 +447,7 @@ Numerous features are accessible with services from home assistant and lambdas t
 - **size**: The size of the corner indicator or alarm, 1-3, center indicator 1-4, icon_indicator 1-10
 - **percent**: values from 0..100
 - **icon_name**: the id of the [icon](icons.md) to show, as defined in the YAML file (or pseudo-icon `blank` - empty icon, `solid` - solid icon, `calendar` - calendar icon), it is also possible to set the arbitrary [screen identifier](#screen-id), for example `icon_name|screen_id`
-- **icons**: the list of id of the [icon](icons.md) to show, as defined in the YAML file, like: `icon1,icon2`.
+- **icons**: the list of id of the icon to show, as defined in the YAML file, like: `icon1,icon2`. The pseudo-icons `blank`, `solid`, and `calendar` are allowed as well.
 - **text**: a text message to display
 - **lifetime**: how long does this screen stay in the queue (minutes), any negative for Infinity.
 - **screen_time**: how long is this screen display in the loop (seconds). For short text without scrolling it is shown the defined time, longer text is scrolled at least `scroll_count` times.
@@ -549,6 +552,252 @@ A common format for specifying output options: `icon|mode#draw_mode`
 !!! example
     `calendar|day#1` - Show the `calendar` icon, display the current day of the month on it with the numbers centered.
 
+### Bitmap Stack Modifier
+
+You can use the `|two` modifier in the `icons` list (supported for 1, 2, or 3 icons) to alter how icons are rendered.
+
+!!! example annotate "Bitmap stack with modifier"
+
+    ``` { .yaml .copy .annotate }
+    service: esphome.pixel_clock_bitmap_stack
+    data:
+      icons: "skull,skull,skull|two"
+      lifetime: 1
+      screen_time: 10
+    ```
+
+!!! example annotate "Bitmap stack without modifier"
+
+    ``` { .yaml .copy .annotate }
+    service: esphome.pixel_clock_bitmap_stack
+    data:
+      icons: "skull,skull,skull"
+      lifetime: 1
+      screen_time: 10    
+    ```
+
+!!! tip
+
+    It's easier to see what it looks like than to describe it, try both options, choose the one that suits you best.
+
+## Local Triggers and Lambdas
+
+Component triggers and C++ lambdas allow local management without relying on Home Assistant automations.
+
+### Available Triggers
+
+- **`on_empty_queue`**: Triggered when the display queue is empty.
+- **`on_start_running`**: Triggered once post-boot after time synchronization and default screens load.
+- **`on_add_screen`**: Triggered upon adding a new icon screen (provides `icon` and `mode`).
+- **`on_icon_error`**: Triggered when an undefined icon is added (provides `icon`).
+- **`on_next_screen`**: Triggered when transitioning to a new screen, excluding clock/date screens (provides `icon` and `text`).
+- **`on_next_clock`**: Triggered at the start of a new clock display cycle.
+- **`on_show_display`**: Triggered on display state changes (provides `state`).
+- **`on_night_mode`**: Triggered when night mode toggles (provides `state`).
+
+!!! example annotate "Triggers and physical buttons usage"
+
+    ``` { .yaml .copy .annotate }
+    ehmtxv2:
+      id: rgb8x32
+      on_empty_queue:
+        then:
+          - lambda: |-
+              id(rgb8x32)->icon_screen("error", "I'm bored");
+      on_next_screen:
+        - homeassistant.event:
+            event: esphome.next_screen
+            data_template:
+              iconname: !lambda "return icon.c_str();"
+              text: !lambda "return text.c_str();"
+
+    binary_sensor:
+      - platform: gpio
+        pin:
+          number: ${left_button_pin}
+          inverted: true
+        on_press:
+          lambda: id(rgb8x32)->skip_screen();
+      - platform: gpio
+        pin:
+          number: ${right_button_pin}
+          inverted: true
+        on_press:
+          lambda: id(rgb8x32)->hold_screen(120);
+    ```
+
+## Home Assistant Integration
+
+### UI Controls
+
+You can expose interactive controls (such as `brightness`, `display power`, `night mode`, and `icon expansion`) to your Home Assistant dashboard using template entities in your ESPHome YAML configuration (`number`, `switch`, and `select` platforms).
+
+!!! example annotate "Brightness"
+
+    ``` { .yaml .copy .annotate }
+    number:
+      - platform: template
+        name: "${devicename} brightness"
+        min_value: 0
+        max_value: 255
+        step: 1
+        lambda: |-
+          return id(rgb8x32)->get_brightness();
+        set_action:
+          lambda: |-
+            id(rgb8x32)->set_brightness(x);
+    ```
+
+!!! example annotate "Display switch"
+
+    ``` { .yaml .copy .annotate }
+    switch:
+      - platform: template
+        name: "${devicename} Display"
+        icon: "mdi:power"
+        restore_mode: ALWAYS_ON
+        lambda: |-
+          return id(rgb8x32)->show_display;
+        turn_on_action:
+          lambda: |-
+            id(rgb8x32)->set_display_on();
+        turn_off_action:
+          lambda: |-
+            id(rgb8x32)->set_display_off();
+    ```
+
+!!! example annotate "Night mode switch"
+
+    ``` { .yaml .copy .annotate }
+    switch:
+      - platform: template
+        name: "${devicename} Night Mode"
+        icon: "mdi:weather-night"
+        restore_mode: ALWAYS_OFF
+        lambda: |-
+          return id(rgb8x32)->night_mode;
+        turn_on_action:
+          lambda: |-
+            id(rgb8x32)->set_night_mode_on();
+        turn_off_action:
+          lambda: |-
+            id(rgb8x32)->set_night_mode_off();
+    ```
+
+### Automation Examples
+
+!!! example annotate "Automation to show the weather with local temperature"
+
+    ``` { .yaml .copy .annotate }
+    alias: Current weather
+    description: Weather with icon per condition
+    trigger:
+      - platform: state
+        entity_id: weather.current_weather
+    action:
+      - service: esphome.pixel_clock_del_screen
+        data:
+          icon_name: weather_*
+          mode: 5
+      - service: esphome.pixel_clock_icon_screen
+        data:
+          icon_name: weather_{{ trigger.to_state.state }}
+          text: >-
+            {{ states("sensor.external_temperature") }}°C
+          lifetime: 60
+          screen_time: 10
+    ```
+
+!!! example annotate "Automation for the trashcan type"
+
+    ``` { .yaml .copy .annotate }
+    alias: "Waste indicator"
+    description: Indicates which bin needs to be put out. Icon names shortened.
+    trigger:
+      - platform: time
+        at:
+          - "06:30"
+          - "08:30"
+          - "10:30"
+          - "15:00"
+          - "17:00"
+          - "19:00"
+    condition:
+      - condition: numeric_state
+        entity_id: sensor.mulltrigger
+        below: "3"
+    action:
+      - service: esphome.pixel_clock_del_screen
+        data:
+          icon_name: trash_*
+          mode: 5
+      - service: esphome.pixel_clock_icon_screen
+        data:
+          icon_name: >-
+            trash_{{ states("sensor.mulldetails") | replace("Organic", "brow")|
+                     replace("Papiertonne","blue")| replace("Residual", "grey")|
+                     replace("gelbe Tonne","yell|") | truncate(4,true,"") }}     
+          text: >-
+            {{ states("sensor.mulldetails") }}
+          lifetime: 120
+          ...
+    ```
+
+!!! tip
+
+    Use wildcard deletion (`*`) with `del_screen` in your Home Assistant automations to clean up and replace dynamic screens (like weather status) without duplicates in the queue.
+
+## Display Configuration
+
+### Display Component and Pixel Mappers
+
+The `ehmtxv2` component requires an `8x32` addressable display calling `tick()` and `draw()` inside its lambda:
+
+!!! example annotate "Light component"
+
+    ``` { .yaml .copy .annotate }
+    display:
+      - platform: addressable_light
+        id: ehmtx_display
+        addressable_light_id: ehmtx_light
+        width: 32
+        height: 8
+        pixel_mapper: |-
+          if (y % 2 == 0) {
+            return (y * 32) + x;
+          }
+          return (y * 32) + (31 - x);
+        lambda: |-
+          id(rgb8x32)->tick();
+          id(rgb8x32)->draw();
+    ```
+
+Depending on your LED matrix wiring, use the corresponding `pixel_mapper` formula:
+
+=== "Ulanzi TC001"
+
+    ``` { .cpp .copy .annotate }
+    if (y % 2 == 0) {
+      return (y * 32) + x;
+    }
+    return (y * 32) + (31 - x);
+    ```
+
+=== "Flexible 8x32 RGB matrices"
+
+    ``` { .cpp .copy .annotate }
+    if (x % 2 == 0) {
+      return (x * 8) + y;
+    }
+    return (x * 8) + (7 - y);
+    ```
+
+=== "Daisy-chained 8x8 panels"
+
+    ``` { .cpp .copy .annotate }
+    return ((int) (x / 8 * 64)) + x % 8 + y * 8;
+    ```
+
 ## ESPHome configuration
 
 ### Arduino
@@ -606,3 +855,6 @@ A common format for specifying output options: `icon|mode#draw_mode`
 
 !!! tip
     To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
+
+*[ESP32]: A series of system-on-chip (SoC) microcontrollers from the Chinese manufacturer Espressif, featuring integrated Wi-Fi and Bluetooth controllers, low power consumption, and a low price point.
+*[ESP8266]: A microcontroller from the Chinese manufacturer Espressif with a Wi-Fi interface. Examples include NodeMCU or Wemos D1 Mini.
