@@ -275,7 +275,7 @@ Screen|Mode|Value|
 |clock_screen|MODE_CLOCK| 2|
 |date_screen|MODE_DATE| 3|
 |full_screen|MODE_FULL_SCREEN| 4|
-|icon_screen|MODE_ICON_SCREEN| 5|
+|icon_screen|[MODE_ICON_SCREEN](screens.md#mode_icon_screen)| 5|
 |text_screen|MODE_TEXT_SCREEN| 6|
 |rainbow_icon_screen|MODE_RAINBOW_ICON| 7|
 |rainbow_text_screen|MODE_RAINBOW_TEXT| 8|

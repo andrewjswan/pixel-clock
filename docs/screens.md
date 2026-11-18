@@ -1,3 +1,27 @@
+## MODE_ICON_SCREEN
+
+![MODE_ICON_SCREEN](img/screens/mode_icon_screen.gif)
+
+!!! example annotate "Icon screen"
+
+    ``` { .yaml .copy .annotate }
+    service: esphome.pixel_clock_icon_screen
+    data:
+      default_font: true
+      icon_name: pumkin
+      text: Halloween
+      lifetime: 2
+      screen_time: 10
+      r: 255
+      g: 165
+      b: 0
+    ```
+
+!!! tip Pumkin icon
+    To use the Pumkin icon, you need to add it to the configuration.
+    For example, icon **4033** from the website [Lametric](https://developer.lametric.com/icons)
+    [More info](esphomatrix.md#icons-and-animations)
+
 ## MODE_ICON_CLOCK
 
 ![MODE_ICON_CLOCK](img/screens/mode_icon_clock.gif)
@@ -46,6 +70,7 @@
           b: 0
     mode: restart
     ```
+
 ## MODE_PROGNOSIS_SCREEN
 
 ![MODE_PROGNOSIS_SCREEN](img/screens/mode_prognosis_screen.png)
