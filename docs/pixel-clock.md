@@ -158,7 +158,7 @@ Shows text in different colors, `Default Color Text` in the default color `#FFFF
 
 !!! warning
     In this mode, with a large number of color changes, or with long lines, a short-term decrease in performance is possible.
-    
+
     !!! quote "Log"
 
         ```
@@ -186,7 +186,7 @@ Shows text in different colors, `Default Color Text` in the default color `#FFFF
     - 6 - Display boot_logo in white color, in pseudo-animation mode, this mode for true starship astronavigators.
     - 7 - Display boot_logo in rainbow color, in pseudo-animation mode, this mode for true starship astronavigators.
 
-!!! note 
+!!! note
     Mode 3 is best used with the option
 
     ``` { .yaml .copy .annotate }
@@ -202,7 +202,7 @@ Shows text in different colors, `Default Color Text` in the default color `#FFFF
     ```
 
 `Mode 6,7` - True starship astronavigator modes.
-Each element of the image mask array can take values from 0 to 255 (if the value is greater than 255, it is automatically reset to 255). 
+Each element of the image mask array can take values from 0 to 255 (if the value is greater than 255, it is automatically reset to 255).
 Each pixel is output depending on the bit that is set in its value byte, for example:
 
 !!! abstract
@@ -317,7 +317,7 @@ You can also specify a URL to directly download the image file. The URLs will on
 All other solutions provide ready-made icons, especially **Lametric** has a big database of [icons](https://developer.lametric.com/icons). If you find an icon, you can use it with its ID. e.g., `lameid: 1234`.
 
 !!! note
-    Please, check the copyright of the icons you use. 
+    Please, check the copyright of the icons you use.
 
 !!! note
     The maximum number of icons is limited to **100** in the code and also by the flash space and the RAM of your board.
@@ -327,11 +327,11 @@ All other solutions provide ready-made icons, especially **Lametric** has a big 
     ``` { .yaml .copy .annotate }
     pixel_clock:
       display: ...
-      icons: 
-        - id: boot 
+      icons:
+        - id: boot
           file: icons/rocket.GIF
-          duration: 75     
-        - id: temp 
+          duration: 75
+        - id: temp
           lameid: 1234
         - id: yoga
           file: icons/yoga-bridge.GIF
@@ -343,7 +343,7 @@ All other solutions provide ready-made icons, especially **Lametric** has a big 
           lameid: 1234
           duration: 100
         - id: homeassistant
-          url: https://github.com/home-assistant/assets/raw/master/logo/logo-special.png      
+          url: https://github.com/home-assistant/assets/raw/master/logo/logo-special.png
     ```
 
 !!! tip
@@ -351,7 +351,7 @@ All other solutions provide ready-made icons, especially **Lametric** has a big 
 
 ### Parameters reference
 
-The ID of the icons is used later to icon display. So, you should name them wisely. 
+The ID of the icons is used later to icon display. So, you should name them wisely.
 
 !!! tip
     If you like to group icons, you should prefix them, e.g., with `weather_`.
@@ -457,7 +457,7 @@ Numerous features are accessible with services from home assistant and lambdas t
 - **default_font**: use the default font (true) or the special font (false)
 - **progress**: can take a value from -100 to 100, the color of the progress bar is calculated automatically, if no colors are specified in the function `set_progressbar_color`, then if the progress is in the range `0..100`, then `from red to green`, if in the range `-100..0`, then from `green to red`.
 - **value_color_as_progress**: display the value with the color of the current color on the progress bar
-- **value**: the brightness 0...255 
+- **value**: the brightness 0...255
 - **prognosis**: 24 triplets of digits (72 in total), each triplet, one point on the prognosis bar in the specified color in the triplet color. Like: [200,200,200, ..., 100,100,100] see [details](https://github.com/lubeda/EspHoMaTriXv2/issues/149)
 
 !!! example annotate "Text Screen like Alert Text Screen"
@@ -538,7 +538,7 @@ A common format for specifying output options: `icon|mode#draw_mode`
 **mode** that are supported:
 
 - `day` - Displays the current day of the month on the icon
-- `weekday` - Displays the current day of the week on the icon 
+- `weekday` - Displays the current day of the week on the icon
 
 **draw_mode** that are supported:
 
@@ -576,7 +576,7 @@ You can use the `|two` modifier in the `icons` list (supported for 1, 2, or 3 ic
     data:
       icons: "skull,skull,skull"
       lifetime: 1
-      screen_time: 10    
+      screen_time: 10
     ```
 
 !!! tip
@@ -767,7 +767,7 @@ You can expose interactive controls (such as `brightness`, `display power`, `nig
           icon_name: >-
             trash_{{ states("sensor.mulldetails") | replace("Organic", "brow")|
                      replace("Papiertonne","blue")| replace("Residual", "grey")|
-                     replace("gelbe Tonne","yell|") | truncate(4,true,"") }}     
+                     replace("gelbe Tonne","yell|") | truncate(4,true,"") }}    
           text: >-
             {{ states("sensor.mulldetails") }}
           lifetime: 120

@@ -15,4 +15,3 @@ ESPHome firmware for **Ulanzi TC001** Clock using [**Pixel-Clock**](https://andr
 
 ## Firmware
 You can install the firmware using [ESPHome](https://esphome.io/) using one of the ready-made configuration files or use [**PixelClock - ESP Web Tools**](firmware.md) - a convenient tool for installing and updating the firmware of ESP32 devices in the browser.
-
