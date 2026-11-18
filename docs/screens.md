@@ -22,7 +22,7 @@
     
     For example, icon **4033** from the website [Lametric](https://developer.lametric.com/icons)
     
-    [More info](esphomatrix.md#icons-and-animations)
+    [More info](pixel-clock.md#icons-and-animations)
 
 ## MODE_ICON_CLOCK
 

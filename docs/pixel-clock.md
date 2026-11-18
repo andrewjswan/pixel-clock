@@ -1,11 +1,11 @@
 ## Introduction
 
-[**EspHoMaTriXv2**](https://github.com/andrewjswan/EspHoMaTriXv2) is a flexible, highly customizable DIY LED Matrix display, built with a 8×32 RGB LED panel and implemented with [**ESPHome**](https://esphome.io)
+[**Pixel-Clock**](https://andrewjswan.github.io/pixel-clock/pixel-clock/) ex **EspHoMaTriXv2** component is a flexible, highly customizable DIY LED Matrix display, built with a 8×32 RGB LED panel and implemented with [**ESPHome**](https://esphome.io)
 
 ![Ulanzi TC001](./img/ulanzi-tc001.png)
 
 !!! info "Project Status"
-    Development of the original [lubeda/EspHoMaTriXv2](https://github.com/lubeda/EspHoMaTriXv2) repository officially ended after release `2026.9.1`. Active maintenance, bug fixes, and compatibility updates for newer ESPHome versions are continued in the [andrewjswan/EspHoMaTriXv2](https://github.com/andrewjswan/EspHoMaTriXv2) fork.
+    Development of the original [lubeda/EspHoMaTriXv2](https://github.com/lubeda/EspHoMaTriXv2) repository officially ended after release `2026.9.1`. Active maintenance, bug fixes, and compatibility updates for newer ESPHome versions are continued in the [**Pixel-Clock**](https://andrewjswan.github.io/pixel-clock/) repository.
 
 ### Microcontroller Requirements
 
@@ -21,10 +21,10 @@ This component is highly customizable.
 
 ### Example
 
-!!! example annotate "EspHoMaTriX Configuration"
+!!! example annotate "Pixel-Clock Configuration"
 
     ``` { .yaml .copy .annotate }
-    ehmtxv2:
+    pixel_clock:
       id: rgb8x32
       show_seconds: true
       advanced_clock: false
@@ -78,7 +78,7 @@ This component is highly customizable.
     !!! example annotate "Enable advanced bitmap mode"
 
         ``` { .yaml .copy .annotate }
-        ehmtxv2:
+        pixel_clock:
           advanced_bitmap: true
         ```
 
@@ -135,7 +135,7 @@ This component is highly customizable.
 !!! example annotate "Enable multi color text"
 
     ``` { .yaml .copy .annotate }
-    ehmtxv2:
+    pixel_clock:
       id: rgb8x32
     ...
       multicolor_text: true
@@ -228,7 +228,7 @@ Each pixel is output depending on the bit that is set in its value byte, for exa
     !!! example "Icon indicator screens configuration"
 
         ``` { .yaml .copy .annotate }
-        ehmtxv2:
+        pixel_clock:
         ...
           icon_indicator_screens:
             - 15
@@ -304,7 +304,7 @@ Screen|Mode|Value|
 
 ## Icons and Animations
 
-Download and install all needed icons `(.jpg/.png)` and animations `(.gif)` under the `ehmtxv2:` key. All icons have to be `8x8` or `8x32` pixels in size. If necessary, you can scale them with the option `resize: 8x8` or `resize: 8x32`.
+Download and install all needed icons `(.jpg/.png)` and animations `(.gif)` under the `pixel_clock:` key. All icons have to be `8x8` or `8x32` pixels in size. If necessary, you can scale them with the option `resize: 8x8` or `resize: 8x32`.
 
 !!! note
     The first defined icon will be used as a fallback icon in case of an error (e.g., if you use a non-existing icon ID).
@@ -325,7 +325,7 @@ All other solutions provide ready-made icons, especially **Lametric** has a big 
 !!! example annotate "Icons and Animations"
 
     ``` { .yaml .copy .annotate }
-    ehmtxv2:
+    pixel_clock:
       display: ...
       icons: 
         - id: boot 
@@ -601,7 +601,7 @@ Component triggers and C++ lambdas allow local management without relying on Hom
 !!! example annotate "Triggers and physical buttons usage"
 
     ``` { .yaml .copy .annotate }
-    ehmtxv2:
+    pixel_clock:
       id: rgb8x32
       on_empty_queue:
         then:
@@ -812,7 +812,7 @@ The `light` component is used by the `addressable_light` display and referenced 
 
 ### Display Component and Pixel Mappers
 
-The `ehmtxv2` component requires an `8x32` addressable display calling `tick()` and `draw()` inside its lambda:
+The `pixel-clock` component requires an `8x32` addressable display calling `tick()` and `draw()` inside its lambda:
 
 !!! example annotate "Display component"
 
@@ -871,14 +871,11 @@ To always use the latest version and fixes directly from the repository, add the
     external_components:
       - source:
           type: git
-          url: https://github.com/andrewjswan/EspHoMaTriXv2
-          ref: 202X.XX.X
+          url: https://github.com/andrewjswan/pixel-clock
+          ref: main
         refresh: 60s
-        components: [ ehmtxv2 ]
+        components: [pixel-clock]
     ```
-
-!!! tip
-    Always specify the latest default branch in the `ref:` parameter (example `202X.XX.X`) so that ESPHome pulls the most up-to-date version and compatibility fixes.
 
 ### Arduino
 
@@ -892,7 +889,7 @@ To always use the latest version and fixes directly from the repository, add the
       project_name: "ajs.Pixel_Clock"
       project_version: "1.1.5"
       update_interval: 60s
-      comment: "Ulanzi Pixel Clock | EHMTXv2"
+      comment: "Ulanzi | Pixel Clock"
       weekdays: "ВСПНВТСРЧТПТСБ"
       date_to: "ВС ПН ВТ СР ЧТ ПТ СБ Січ Лют Бер Кві Тра Чер Лип Сер Вер Жов Лис Гру"
 
@@ -920,7 +917,7 @@ To always use the latest version and fixes directly from the repository, add the
       project_name: "ajs.Pixel_Clock"
       project_version: "1.1.5"
       update_interval: 60s
-      comment: "Ulanzi Pixel Clock | EHMTXv2"
+      comment: "Ulanzi | Pixel Clock"
       weekdays: "ВСПНВТСРЧТПТСБ"
       date_to: "ВС ПН ВТ СР ЧТ ПТ СБ Січ Лют Бер Кві Тра Чер Лип Сер Вер Жов Лис Гру"
 

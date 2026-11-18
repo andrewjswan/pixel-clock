@@ -60,7 +60,7 @@ Sample automation to show the weather with local temperature
             {{ states("sensor.outside_temperature") }}°C
     ```
 1. See the list of all possible [icons](icons.md)
-2. See the list of all possible [modes](esphomatrix.md#screens-and-modes) and their values
+2. See the list of all possible [modes](pixel-clock.md#screens-and-modes) and their values
 
 Sample automation for the trashcan type
 
@@ -95,7 +95,7 @@ Sample automation for the trashcan type
         lifetime: 120
     ```
 1. See the list of all possible [icons](icons.md)
-2. See the list of all possible [modes](esphomatrix.md#screens-and-modes) and their values
+2. See the list of all possible [modes](pixel-clock.md#screens-and-modes) and their values
 
 #### Tips
 

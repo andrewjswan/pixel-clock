@@ -3,7 +3,7 @@ site_name: ESPHome Pixel Clock aka TRAM by Andrew J.Swan
 site_url: https://andrewjswan.github.io/pixel-clock
 site_author: Andrew J.Swan
 site_description: >-
-  ESPHome firmware for Ulanzi TC001 Clock using EspHoMaTriX component.
+  ESPHome firmware for Ulanzi TC001 Clock using Pixel-Clock component.
 
 # Repository
 repo_name: andrewjswan/pixel-clock
@@ -99,7 +99,7 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Pixel Clock:
-      - EspHoMaTriX: esphomatrix.md
+      - Component: pixel-clock.md
       - Screens: screens.md
       - Icons: icons.md
       - Home Assistant: home-assistant.md
