@@ -1,3 +1,7 @@
+## MODE_ICON_CLOCK
+
+![MODE_ICON_CLOCK](img/screens/mode_icon_clock.gif)
+
 ## MODE_ICON_PROGRESS
 
 ![MODE_ICON_PROGRESS](img/screens/mode_icon_progress.png)

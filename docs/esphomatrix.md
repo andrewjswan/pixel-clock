@@ -285,7 +285,7 @@ Screen|Mode|Value|
 |bitmap_small|MODE_BITMAP_SMALL| 12|
 |color_screen|MODE_COLOR| 13|
 |fire_screen|MODE_FIRE| 14|
-|icon_clock|MODE_ICON_CLOCK| 15|
+|icon_clock|[MODE_ICON_CLOCK](screens.md#mode_icon_clock)| 15|
 |alert_screen|MODE_ALERT_SCREEN| 16|
 |set_graph|MODE_GRAPH_SCREEN| 17|
 |icon_date|MODE_ICON_DATE| 18|
