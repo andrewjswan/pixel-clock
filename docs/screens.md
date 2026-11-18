@@ -1,3 +1,7 @@
+## MODE_ICON_SCREEN
+
+![MODE_ICON_SCREEN](img/screens/mode_icon_screen.gif)
+
 ## MODE_ICON_CLOCK
 
 ![MODE_ICON_CLOCK](img/screens/mode_icon_clock.gif)
