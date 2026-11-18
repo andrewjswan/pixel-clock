@@ -4,6 +4,9 @@
 
 ![Ulanzi TC001](./img/ulanzi-tc001.png)
 
+!!! info "Project Status"
+    Development of the original [lubeda/EspHoMaTriXv2](https://github.com/lubeda/EspHoMaTriXv2) repository officially ended after release `2026.9.1`. Active maintenance, bug fixes, and compatibility updates for newer ESPHome versions are continued in the [andrewjswan/EspHoMaTriXv2](https://github.com/andrewjswan/EspHoMaTriXv2) fork.
+
 ### Microcontroller Requirements
 
 It is highly recommended to use an **ESP32** device. On **ESP8266** boards, limited RAM causes certain memory-intensive features (such as `bitmap_screen`) to be disabled automatically.
@@ -222,7 +225,7 @@ Each pixel is output depending on the bit that is set in its value byte, for exa
 !!! note annotate
     Shows the line indicator in the Icons area on the specified screens (1), in the specified color and at the specified vertical position. { .annotate }
 
-    !!! example "Icon indicator screens confuguration"
+    !!! example "Icon indicator screens configuration"
 
         ``` { .yaml .copy .annotate }
         ehmtxv2:
@@ -684,6 +687,34 @@ You can expose interactive controls (such as `brightness`, `display power`, `nig
             id(rgb8x32)->set_night_mode_off();
     ```
 
+!!! example annotate "Expand icon to 9"
+
+    ``` { .yaml .copy .annotate }
+    select:
+      - platform: template
+        name: "Expand icon to 9"
+        optimistic: true
+        options:
+          - "not"
+          - "clock"
+          - "date"
+          - "clock and date"
+        restore_value: true
+        on_value:
+          then:
+            - lambda: |-
+                if (x == "not") {
+                  id(rgb8x32)->expand_icon_to_9(0);
+                } else if (x == "clock") {
+                  id(rgb8x32)->expand_icon_to_9(1);
+                } else if (x == "date") {
+                  id(rgb8x32)->expand_icon_to_9(2);
+                } else if (x == "clock and date") {
+                  id(rgb8x32)->expand_icon_to_9(3);
+                }
+    ```
+
+
 ### Automation Examples
 
 !!! example annotate "Automation to show the weather with local temperature"
@@ -749,11 +780,41 @@ You can expose interactive controls (such as `brightness`, `display power`, `nig
 
 ## Display Configuration
 
+### Light Component
+
+The `light` component is used by the `addressable_light` display and referenced by ID under `addressable_light_id:`.
+
+!!! warning
+    `neopixelbus` on ESP32 is deprecated because the upstream library (`makuna/NeoPixelBus`) is no longer actively maintained. Removal is targeted for ESPHome `2027.1` (or sooner with ESP-IDF 6). Migrate to `esp32_rmt_led_strip` instead.
+
+!!! example annotate "Light component"
+
+    ``` { .yaml .copy .annotate }
+    light:
+      - platform: esp32_rmt_led_strip
+        id: ehmtx_light
+        channel_colors: GRB
+        pin: ${matrix_pin}
+        num_leds: 256
+        chipset: ws2812
+        name: "${devicename} Light"
+        restore_mode: ALWAYS_OFF
+        on_turn_on:
+          lambda: |-
+            id(ehmtx_display)->set_enabled(false);
+        on_turn_off:
+          lambda: |-
+            id(ehmtx_display)->set_enabled(true);
+    ```
+
+!!! tip
+    To hide the light entity from Home Assistant, add `internal: true` under the `light:` platform configuration.
+
 ### Display Component and Pixel Mappers
 
 The `ehmtxv2` component requires an `8x32` addressable display calling `tick()` and `draw()` inside its lambda:
 
-!!! example annotate "Light component"
+!!! example annotate "Display component"
 
     ``` { .yaml .copy .annotate }
     display:
