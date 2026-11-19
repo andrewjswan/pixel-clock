@@ -99,7 +99,7 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Pixel Clock:
-      - Component: pixel-clock.md
+      - Component: pixel-clock-component.md
       - Screens: screens.md
       - Icons: icons.md
       - Home Assistant: home-assistant.md
