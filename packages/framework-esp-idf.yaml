@@ -11,7 +11,7 @@ wifi:
 light:
   - platform: esp32_rmt_led_strip
     name: "Light"
-    id: ehmtx_light
+    id: pixel_clock_light
     rgb_order: GRB
     internal: true
     chipset: WS2812
