@@ -6,8 +6,8 @@
     * [ESPHome Components](https://andrewjswan.github.io/esphome-components)
     * [Matrix Lamp](https://andrewjswan.github.io/matrix-lamp)
 
-!!! note "Home Assisatant Add-ons"
-    * [Home Assistant Add-ons](https://github.com/andrewjswan/home-assistant-addons)
+!!! note "Home Assistant App-s"
+    * [Home Assistant App-s](https://github.com/andrewjswan/home-assistant-addons)
 
 !!! note "Home Assistant Integrations"
     * [SwatchTime for Home Assistant](https://github.com/andrewjswan/SwatchTime)
