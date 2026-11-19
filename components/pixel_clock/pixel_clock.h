@@ -84,17 +84,17 @@ enum show_mode : uint8_t {
   MODE_ALERT_TEXT_SCREEN = 27
 };
 
-class EHMTX_queue;
-class EHMTX_Icon;
-class EHMTXNextScreenTrigger;
-class EHMTXEmptyQueueTrigger;
-class EHMTXAddScreenTrigger;
-class EHMTXIconErrorTrigger;
-class EHMTXExpiredScreenTrigger;
-class EHMTXNextClockTrigger;
-class EHMTXStartRunningTrigger;
-class EHMTXShowDisplayTrigger;
-class EHMTXNightModeTrigger;
+class PixelClock_Queue;
+class PixelClock_Icon;
+class PixelClockNextScreenTrigger;
+class PixelClockEmptyQueueTrigger;
+class PixelClockAddScreenTrigger;
+class PixelClockIconErrorTrigger;
+class PixelClockExpiredScreenTrigger;
+class PixelClockNextClockTrigger;
+class PixelClockStartRunningTrigger;
+class PixelClockShowDisplayTrigger;
+class PixelClockNightModeTrigger;
 
 #if defined(USE_API)
 class PixelClock final : public PollingComponent,
