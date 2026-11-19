@@ -109,9 +109,9 @@ This component is highly customizable.
 
 **time_component** (required, ID): ID of the time component. The display shows `!t!` until the time source is valid.
 
-**default_font** (required, ID): ID of the default font
+**default_font_id** (required, ID): ID of the default font
 
-**special_font** (required, ID): ID of the special font, you can reuse your default font, but occasionally, it's nice to have a special font to minimize scrolling
+**special_font_id** (required, ID): ID of the special font, you can reuse your default font, but occasionally, it's nice to have a special font to minimize scrolling
 
 **week_start_monday** (optional, boolen): default Monday is first day of week, false => Sunday
 
@@ -423,15 +423,20 @@ Numerous features are accessible with services from home assistant and lambdas t
 |Service|Parameter|Description|
 |---|---|---|
 |get_status|none|write some status information to the esphome logs|
-|display_on|none|turn display off|
-|display_off|none|turn display on|
-|hold_screen|none|show the screen that is currently displayed for the number of seconds longer|
-|hide_rindicator|none|hides the rindicator|
+|display_on|none|turn display on|
+|display_off|none|turn display off|
+|hold_screen|"time"|show the screen that is currently displayed for the number of seconds longer|
+|hide_rindicator|none|hides the bottom-right indicator|
+|hide_rcindicator|none|hides the center-right indicator|
+|hide_ltindicator|none|hides the top-left indicator|
+|hide_lcindicator|none|hides the center-left indicator|
+|hide_lindicator|none|hides the bottom-left indicator|
 |hide_gauge|none|hides the gauge|
 |hide_alarm|none|hides the alarm|
 |night_mode_on|none|turn night mode on|
 |night_mode_off|none|turn night mode off|
-|show_gauge|"percent", "r", "g", "b"|set the height of the gauge according to the percentage in the given color|
+|show_gauge|"percent", "r", "g", "b", "bg_r", "bg_g", "bg_b"|set the height of the gauge according to the percentage in the given color and background color|
+|color_gauge|"colors"|set individual colors for each of the 8 pixels of the gauge using a JSON array of 8 RGB565 values (ESP32 only)|
 |show_alarm|"r", "g", "b", "size"|shows the color with the given size in the upper-right corner|
 |show_rcindicator|"r", "g", "b", "size"|shows the color with the given size in the center-right|
 |show_rindicator|"r", "g", "b", "size"|shows the color with the given size in the lower-right corner|
@@ -441,24 +446,28 @@ Numerous features are accessible with services from home assistant and lambdas t
 |set_today_color|"r", "g", "b"|set the special color for today in the day of week line|
 |set_weekday_color|"r", "g", "b"|set the default color in the day of week line|
 |set_clock_color|"r", "g", "b"|set the default color of clock and date display|
+|set_text_color|"r", "g", "b"|set the default color of text display|
 |set_solid_color|"r", "g", "b"|set the color for solid pseudo icon|
 |set_calendar_color|"r", "g", "b"|set the header color for calendar pseudo icon|
 |set_weekday_accent_on|none|turns on the display of small days (accent) of the week when brightness is insufficient|
 |set_weekday_accent_off|none|turns off the display of small days (accent) of the week when brightness is insufficient|
-|del_screen|"icon_name", “mode”|deletes the specified icon screen from the queue, the [mode](#screens-and-modes) is a filter|
-|force_screen|"icon_name", “mode”|displays the selected the specified icon screen from the queue, the [mode](#screens-and-modes) is a filter|
+|del_screen|"icon_name", "mode"|deletes the specified icon screen from the queue, the [mode](#screens-and-modes) is a filter|
+|force_screen|"icon_name", "mode"|displays the selected icon screen from the queue, the [mode](#screens-and-modes) is a filter|
 |full_screen|"icon_name", "lifetime", "screen_time"|show the specified 8x32 icon as full screen|
 |icon_screen|"icon_name", "text", "lifetime", "screen_time", "default_font", "r", "g", "b"|show the specified icon with text|
 |rainbow_icon_screen|"icon_name", "text", "lifetime", "screen_time", "default_font"|show the specified icon with text in rainbow color|
 |text_screen|"text", "lifetime", "screen_time", "default_font", "r", "g", "b"|show the specified text|
 |rainbow_text_screen|"text", "lifetime", "screen_time", "default_font"|show the specified text in rainbow colors|
-|alert_text_screen|"text", "screen_time", "default_font"|show the specified text, screen forced and lifetime = screen_time|
 |clock_screen|"lifetime", "screen_time", "default_font", "r", "g", "b"|show the clock|
 |rainbow_clock_screen|"lifetime", "screen_time", "default_font"|show the clock in rainbow color|
 |blank_screen|"lifetime", "screen_time"|"show" an empty screen|
+|color_screen|"lifetime", "screen_time", "r", "g", "b"|fill the screen with a solid color|
 |date_screen|"lifetime", "screen_time", "default_font", "r", "g", "b"|show the date|
+|rainbow_date_screen|"lifetime", "screen_time", "default_font"|show the date in rainbow color|
+|bitmap_screen|"icon", "lifetime", "screen_time"|show an 8x32 image defined as a JSON array of 256 RGB565 values (ESP32 only)|
 |brightness|"value"|set the display brightness|
 |alert_screen|"icon_name", "text", "screen_time", "default_font", "r", "g", "b"|show the specified icon with text, screen forced and lifetime = screen_time|
+|alert_text_screen|"text", "screen_time", "default_font", "r", "g", "b"|show the specified text, screen forced and lifetime = screen_time|
 |rainbow_alert_screen|"icon_name", "text", "screen_time", "default_font"|show the specified icon with text in rainbow color, screen forced and lifetime = screen_time|
 |icon_screen_progress|"icon_name", "text", "progress", "lifetime", "screen_time", "default_font", "r", "g", "b"|show the specified icon with text and with progress bar on bottom|
 |set_progressbar_color|"icon_name", "mode", "r", "g", "b", "bg_r", "bg_g", "bg_b"|sets the specified by name and [mode](#screens-and-modes) screen with progress bar, the specified color of the progress bar, and the background color of the progress bar. if you set the color to black, the color display will work according to the progress value|
@@ -898,12 +907,12 @@ To always use the latest version and fixes directly from the repository, add the
           url: https://github.com/andrewjswan/pixel-clock
           ref: main
         refresh: 60s
-        components: [pixel-clock]
+        components: [pixel_clock]
     ```
 
 ### Framework
 
-=== Arduino
+=== "Arduino"
 
     !!! example annotate "Local configuration file | Arduino"
 
@@ -931,7 +940,7 @@ To always use the latest version and fixes directly from the repository, add the
     !!! tip
         To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
 
-=== ESP-IDF
+=== "ESP-IDF"
 
     !!! example annotate "Local configuration file | ESP-IDF"
 
