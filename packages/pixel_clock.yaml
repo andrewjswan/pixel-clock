@@ -17,7 +17,7 @@ external_components:
       type: git
       url: https://github.com/andrewjswan/pixel-clock
       ref: main
-    components: [pixel-clock]
+    components: [pixel_clock]
     refresh: 60s
 
 esphome:
