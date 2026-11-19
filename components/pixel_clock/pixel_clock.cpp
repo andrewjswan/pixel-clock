@@ -1512,7 +1512,7 @@ void PixelClock::tick() {
     if (millis() - this->last_scroll_time >= PIXEL_CLOCK_SCROLL_INTERVAL) {
       this->scroll_step++;
       this->last_scroll_time = millis();
-      if (this->scroll_step > this->queue[this->screen_pointer]->scroll_reset) {
+      if (this->screen_pointer != MAXQUEUE && this->scroll_step > this->queue[this->screen_pointer]->scroll_reset) {
         this->scroll_step = 0;
       }
     }
@@ -3104,36 +3104,45 @@ uint32_t PixelClock::BitsToInt(uint32_t source, unsigned from, unsigned to) {
 }
 
 void PixelClock::dump_config() {
-  ESP_LOGCONFIG(TAG, "Pixel Clock version: %s", PIXEL_CLOCK_VERSION);
-  ESP_LOGCONFIG(TAG, "Icons: %d of %d", this->icon_count, MAXICONS);
-  ESP_LOGCONFIG(TAG, "Clock interval: %d s", PIXEL_CLOCK_CLOCK_INTERVAL);
-  ESP_LOGCONFIG(TAG, "Date format: %s", PIXEL_CLOCK_DATE_FORMAT);
-  ESP_LOGCONFIG(TAG, "Time format: %s", PIXEL_CLOCK_TIME_FORMAT);
-  ESP_LOGCONFIG(TAG, "Interval (ms) scroll: %d", PIXEL_CLOCK_SCROLL_INTERVAL);
+  ESP_LOGCONFIG(TAG,
+                "Pixel Clock: %s\n"
+                "  Icons: %d of %d\n"
+                "  Clock interval: %d s\n"
+                "  Date format: %s\n"
+                "  Time format: %s\n"
+                "  Interval (ms) scroll: %d",
+                PIXEL_CLOCK_VERSION, this->icon_count, MAXICONS, PIXEL_CLOCK_CLOCK_INTERVAL, PIXEL_CLOCK_DATE_FORMAT,
+                PIXEL_CLOCK_TIME_FORMAT, PIXEL_CLOCK_SCROLL_INTERVAL);
   if (this->show_day_of_week) {
-    ESP_LOGCONFIG(TAG, "Show day of week");
+    ESP_LOGCONFIG(TAG, "  Show day of week");
   }
 #ifdef PIXEL_CLOCK_USE_RTL
-  ESP_LOGCONFIG(TAG, "RTL activated");
+  ESP_LOGCONFIG(TAG, "  RTL Activated");
 #endif
 #ifdef PIXEL_CLOCK_BLEND_STEPS
-  ESP_LOGCONFIG(TAG, "Fade in activated: %d steps", PIXEL_CLOCK_BLEND_STEPS);
+  ESP_LOGCONFIG(TAG, "  Fade In Activated: %d steps", PIXEL_CLOCK_BLEND_STEPS);
 #endif
-  ESP_LOGCONFIG(TAG, "Weekstart: %s", PIXEL_CLOCK_WEEK_START ? ESPHOME_F("Monday") : ESPHOME_F("Sunday"));
-  ESP_LOGCONFIG(TAG, "Weekdays: %s Count: %d", PIXEL_CLOCK_WEEKDAYTEXT, this->weekday_char_count);
-  ESP_LOGCONFIG(TAG, "Display: %s", this->show_display ? ESPHOME_F("On") : ESPHOME_F("Off"));
-  ESP_LOGCONFIG(TAG, "Night mode: %s", this->night_mode ? ESPHOME_F("On") : ESPHOME_F("Off"));
-  ESP_LOGCONFIG(TAG, "Weekday accent: %s", this->weekday_accent ? ESPHOME_F("On") : ESPHOME_F("Off"));
-  ESP_LOGCONFIG(TAG, "Replace Time and Date: %s", this->replace_time_date_active ? ESPHOME_F("On") : ESPHOME_F("Off"));
+  ESP_LOGCONFIG(TAG,
+                "  Weekstart: %s\n"
+                "  Weekdays: %s (Count: %d)\n"
+                "  Display: %s\n"
+                "  Night mode: %s\n"
+                "  Weekday accent: %s\n"
+                "  Replace Time and Date: %s",
+                PIXEL_CLOCK_WEEK_START ? "Monday" : "Sunday", PIXEL_CLOCK_WEEKDAYTEXT, this->weekday_char_count,
+                ONOFF(this->show_display), ONOFF(this->night_mode), ONOFF(this->weekday_accent),
+                ONOFF(this->replace_time_date_active));
   if (this->replace_time_date_active) {
-    ESP_LOGCONFIG(TAG, "Replace from: %s", PIXEL_CLOCK_REPLACE_TIME_DATE_FROM);
-    ESP_LOGCONFIG(TAG, "Replace to  : %s", PIXEL_CLOCK_REPLACE_TIME_DATE_TO);
+    ESP_LOGCONFIG(TAG,
+                  "  Replace from: %s\n"
+                  "  Replace to  : %s",
+                  PIXEL_CLOCK_REPLACE_TIME_DATE_FROM, PIXEL_CLOCK_REPLACE_TIME_DATE_TO);
   }
 }
 
 void PixelClock::add_icon(PixelClock_Icon *icon) {
   this->icons[this->icon_count] = icon;
-  ESP_LOGD(TAG, "add_icon no.: %d name: %s frame_duration: %d ms", this->icon_count, icon->name.c_str(),
+  ESP_LOGD(TAG, "add_icon No.: %d name: %s frame_duration: %d ms", this->icon_count, icon->name.c_str(),
            icon->frame_duration);
   this->icon_count++;
 }
@@ -3253,78 +3262,73 @@ void PixelClock::draw_icon_indicator() {
 #endif
 
 void HOT PixelClock::draw() {
-  if ((this->is_running) && (this->show_display)) {
-    if (this->screen_pointer != MAXQUEUE) {
-      this->queue[this->screen_pointer]->draw();
-    }
+  if (!this->is_running || !this->show_display || this->screen_pointer == MAXQUEUE) {
+    return;
+  }
+
+  this->queue[this->screen_pointer]->draw();
 
 #ifdef PIXEL_CLOCK_GAUGE
-    if (this->queue[this->screen_pointer]->mode != MODE_FULL_SCREEN &&
-        this->queue[this->screen_pointer]->mode != MODE_BITMAP_SCREEN &&
-        this->queue[this->screen_pointer]->mode != MODE_ICON_PROGRESS &&
-        this->queue[this->screen_pointer]->mode != MODE_TEXT_PROGRESS) {
-      this->draw_gauge();
-    }
+  if (this->queue[this->screen_pointer]->mode != MODE_FULL_SCREEN &&
+      this->queue[this->screen_pointer]->mode != MODE_BITMAP_SCREEN &&
+      this->queue[this->screen_pointer]->mode != MODE_ICON_PROGRESS &&
+      this->queue[this->screen_pointer]->mode != MODE_TEXT_PROGRESS) {
+    this->draw_gauge();
+  }
 #endif
 
 #ifndef PIXEL_CLOCK_ALWAYS_SHOW_RLINDICATORS
-    if (this->queue[this->screen_pointer]->mode != MODE_CLOCK && this->queue[this->screen_pointer]->mode != MODE_DATE &&
-        this->queue[this->screen_pointer]->mode != MODE_FULL_SCREEN &&
-        this->queue[this->screen_pointer]->mode != MODE_BITMAP_SCREEN) {
+  if (this->queue[this->screen_pointer]->mode != MODE_CLOCK && this->queue[this->screen_pointer]->mode != MODE_DATE &&
+      this->queue[this->screen_pointer]->mode != MODE_FULL_SCREEN &&
+      this->queue[this->screen_pointer]->mode != MODE_BITMAP_SCREEN) {
 #endif
+
 #ifdef PIXEL_CLOCK_RCINDICATOR
-      this->draw_rcindicator();
+    this->draw_rcindicator();
 #endif
+
 #ifdef PIXEL_CLOCK_RBINDICATOR
-      this->draw_rindicator();
+    this->draw_rindicator();
 #endif
 
 #ifndef PIXEL_CLOCK_ALWAYS_SHOW_RLINDICATORS
-      if (this->queue[this->screen_pointer]->mode != MODE_ICON_SCREEN &&
-          this->queue[this->screen_pointer]->mode != MODE_RAINBOW_ICON &&
-          this->queue[this->screen_pointer]->mode != MODE_PROGNOSIS_SCREEN
+    if (this->queue[this->screen_pointer]->mode != MODE_ICON_SCREEN &&
+        this->queue[this->screen_pointer]->mode != MODE_RAINBOW_ICON &&
+        this->queue[this->screen_pointer]->mode != MODE_PROGNOSIS_SCREEN
 #ifdef PIXEL_CLOCK_GAUGE
-          && !this->display_gauge
+        && !this->display_gauge
 #endif
-      ) {
+    ) {
 #endif
 #ifdef PIXEL_CLOCK_LTINDICATOR
-        this->draw_ltindicator();
+      this->draw_ltindicator();
 #endif
 #ifdef PIXEL_CLOCK_LCINDICATOR
-        this->draw_lcindicator();
+      this->draw_lcindicator();
 #endif
 #ifdef PIXEL_CLOCK_LBINDICATOR
-        this->draw_lindicator();
+      this->draw_lindicator();
 #endif
 
 #ifndef PIXEL_CLOCK_ALWAYS_SHOW_RLINDICATORS
-      }
     }
+  }
 #endif
 
-    this->draw_alarm();
+  this->draw_alarm();
+
 #ifdef PIXEL_CLOCK_ICINDICATOR
-    this->draw_icon_indicator();
+  this->draw_icon_indicator();
 #endif
-  }
 }
 
 void PixelClockStartRunningTrigger::process() { this->trigger(); }
-
 void PixelClockEmptyQueueTrigger::process() { this->trigger(); }
-
 void PixelClockNextScreenTrigger::process(std::string iconname, std::string text) { this->trigger(iconname, text); }
-
 void PixelClockAddScreenTrigger::process(std::string iconname, uint8_t mode) { this->trigger(iconname, mode); }
-
 void PixelClockIconErrorTrigger::process(std::string iconname) { this->trigger(iconname); }
-
 void PixelClockExpiredScreenTrigger::process(std::string iconname, std::string text) { this->trigger(iconname, text); }
-
 void PixelClockNextClockTrigger::process() { this->trigger(); }
-
 void PixelClockShowDisplayTrigger::process(bool state) { this->trigger(state); }
-
 void PixelClockNightModeTrigger::process(bool state) { this->trigger(state); }
 }  // namespace esphome::pixel_clock
