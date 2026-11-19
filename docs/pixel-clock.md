@@ -816,7 +816,7 @@ To always use the latest version and fixes directly from the repository, add the
 === Arduino
 
     !!! example annotate "Local configuration file | Arduino"
-    
+
         ``` { .yaml .copy .annotate }
         substitutions:
           device: esp_pixel_clock
@@ -828,7 +828,7 @@ To always use the latest version and fixes directly from the repository, add the
           comment: "Ulanzi TC001 | Pixel Clock"
           weekdays: "ВСПНВТСРЧТПТСБ"
           date_to: "ВС ПН ВТ СР ЧТ ПТ СБ Січ Лют Бер Кві Тра Чер Лип Сер Вер Жов Лис Гру"
-    
+
         packages:
           common: !include packages/common.yaml (1)
           framework: !include packages/framework-arduino.yaml (2)
@@ -844,7 +844,7 @@ To always use the latest version and fixes directly from the repository, add the
 === ESP-IDF
 
     !!! example annotate "Local configuration file | ESP-IDF"
-    
+
         ``` { .yaml .copy .annotate }
         substitutions:
           device: esp_pixel_clock
@@ -856,7 +856,7 @@ To always use the latest version and fixes directly from the repository, add the
           comment: "Ulanzi TC001 | Pixel Clock"
           weekdays: "ВСПНВТСРЧТПТСБ"
           date_to: "ВС ПН ВТ СР ЧТ ПТ СБ Січ Лют Бер Кві Тра Чер Лип Сер Вер Жов Лис Гру"
-    
+
         packages:
           common: !include packages/common.yaml (1)
           framework: !include packages/framework-esp-idf.yaml (2)
@@ -865,7 +865,7 @@ To always use the latest version and fixes directly from the repository, add the
     1. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
     2. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
     3. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
-    
+
     !!! tip
         To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
 
