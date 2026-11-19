@@ -8,7 +8,7 @@ esp32:
 light:
   - platform: neopixelbus
     name: "Light"
-    id: ehmtx_light
+    id: pixel_clock_light
     type: GRB
     internal: true
     variant: WS2812

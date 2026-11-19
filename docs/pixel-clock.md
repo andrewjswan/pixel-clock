@@ -1,11 +1,11 @@
 ## Introduction
 
-[**EspHoMaTriXv2**](https://github.com/andrewjswan/EspHoMaTriXv2) is a flexible, highly customizable DIY LED Matrix display, built with a 8×32 RGB LED panel and implemented with [**ESPHome**](https://esphome.io)
+[**Pixel-Clock**](https://andrewjswan.github.io/pixel-clock/pixel-clock/) ex **EspHoMaTriXv2** component is a flexible, highly customizable DIY LED Matrix display, built with a 8×32 RGB LED panel and implemented with [**ESPHome**](https://esphome.io)
 
 ![Ulanzi TC001](./img/ulanzi-tc001.png)
 
 !!! info "Project Status"
-    Development of the original [lubeda/EspHoMaTriXv2](https://github.com/lubeda/EspHoMaTriXv2) repository officially ended after release `2026.9.1`. Active maintenance, bug fixes, and compatibility updates for newer ESPHome versions are continued in the [andrewjswan/EspHoMaTriXv2](https://github.com/andrewjswan/EspHoMaTriXv2) fork.
+    Development of the original [lubeda/EspHoMaTriXv2](https://github.com/lubeda/EspHoMaTriXv2) repository officially ended after release `2026.9.1`. Active maintenance, bug fixes, and compatibility updates for newer ESPHome versions are continued in the [**Pixel-Clock**](https://andrewjswan.github.io/pixel-clock/) repository.
 
 ### Microcontroller Requirements
 
@@ -21,10 +21,10 @@ This component is highly customizable.
 
 ### Example
 
-!!! example annotate "EspHoMaTriX Configuration"
+!!! example annotate "Pixel-Clock Configuration"
 
     ``` { .yaml .copy .annotate }
-    ehmtxv2:
+    pixel_clock:
       id: rgb8x32
       show_seconds: true
       advanced_clock: false
@@ -78,7 +78,7 @@ This component is highly customizable.
     !!! example annotate "Enable advanced bitmap mode"
 
         ``` { .yaml .copy .annotate }
-        ehmtxv2:
+        pixel_clock:
           advanced_bitmap: true
         ```
 
@@ -109,9 +109,9 @@ This component is highly customizable.
 
 **time_component** (required, ID): ID of the time component. The display shows `!t!` until the time source is valid.
 
-**default_font** (required, ID): ID of the default font
+**default_font_id** (required, ID): ID of the default font
 
-**special_font** (required, ID): ID of the special font, you can reuse your default font, but occasionally, it's nice to have a special font to minimize scrolling
+**special_font_id** (required, ID): ID of the special font, you can reuse your default font, but occasionally, it's nice to have a special font to minimize scrolling
 
 **week_start_monday** (optional, boolen): default Monday is first day of week, false => Sunday
 
@@ -126,6 +126,40 @@ This component is highly customizable.
     - `weekdays: "DiLuMaMeJeVeSa" # french`
     ```
 
+**replace_time_date_from** (optional, string): Space-separated list of source substrings to replace in formatted time and date strings (up to 50 pairs).
+
+**replace_time_date_to** (optional, string): Space-separated list of replacement substrings corresponding to `replace_time_date_from` (must have the exact same number of elements).
+
+!!! tip "Localizing Date and Time (`replace_time_date_from` / `replace_time_date_to`)"
+
+    ESPHome does not pass localized time and date formats through compilation by default. You can replace specific substrings (such as `AM`/`PM`, day names, or month names) using `replace_time_date_from` and `replace_time_date_to` (up to 50 pairs, spaces are not allowed). Make sure to include all matching glyphs in your `font:` configuration!
+
+    !!! example annotate "Localizing Date and Time"
+
+        ``` { .yaml .copy .annotate }
+        pixel_clock:
+          # Example 1: Ukrainian date format (e.g., "Жовт 11")
+          date_format: "%b %d"
+          replace_time_date_from: " Sun Mon Tue Wed Thu Fri Sat Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec"
+          replace_time_date_to: " ПН ВТ СР ЧТ ПТ СБ ВС Січ Лют Бер Квіт Трав Черв Лип Серп Вер Жовт Лист Груд"
+
+          # Example 2: Korean date and time format (e.g., "4:30오후" and "10월11일")
+          time_format: "%p%l:%M"
+          date_format: "%b%d일"
+          replace_time_date_from: " AM PM Sun Mon Tue Wed Thu Fri Sat Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec"
+          replace_time_date_to: " 오전 오후 일 월 화 수 목 금 토 1월 2월 3월 4월 5월 6월 7월 8월 9월 10월 11월 12월"
+        ```
+
+**brightness** (optional, int, default: 80): Initial display brightness on startup (range `0..255`).
+
+**clock_interval** (optional, int, default: 0): Interval in seconds to force displaying the clock screen (set to `0` to disable).
+
+**frame_interval** (optional, ms, default: 192): Default frame duration in milliseconds for animated GIF icons when not specified per icon.
+
+**rtl** (optional, boolean, default: false): Enables right-to-left (RTL) text rendering direction.
+
+**scroll_count** (optional, int, default: 2): Minimum number of times long text is scrolled before advancing to the next screen.
+
 **scroll_interval** (optional, ms): the interval in ms to scroll the text (default=80), should be a multiple of the `update_interval` of [display](https://esphome.io/components/display/addressable_light.html)
 
 **rainbow_shimmer** (optional, boolean): If true, enables color shimmer when displaying text in rainbow modes.
@@ -135,7 +169,7 @@ This component is highly customizable.
 !!! example annotate "Enable multi color text"
 
     ``` { .yaml .copy .annotate }
-    ehmtxv2:
+    pixel_clock:
       id: rgb8x32
     ...
       multicolor_text: true
@@ -158,7 +192,7 @@ Shows text in different colors, `Default Color Text` in the default color `#FFFF
 
 !!! warning
     In this mode, with a large number of color changes, or with long lines, a short-term decrease in performance is possible.
-    
+
     !!! quote "Log"
 
         ```
@@ -186,7 +220,7 @@ Shows text in different colors, `Default Color Text` in the default color `#FFFF
     - 6 - Display boot_logo in white color, in pseudo-animation mode, this mode for true starship astronavigators.
     - 7 - Display boot_logo in rainbow color, in pseudo-animation mode, this mode for true starship astronavigators.
 
-!!! note 
+!!! note
     Mode 3 is best used with the option
 
     ``` { .yaml .copy .annotate }
@@ -202,7 +236,7 @@ Shows text in different colors, `Default Color Text` in the default color `#FFFF
     ```
 
 `Mode 6,7` - True starship astronavigator modes.
-Each element of the image mask array can take values from 0 to 255 (if the value is greater than 255, it is automatically reset to 255). 
+Each element of the image mask array can take values from 0 to 255 (if the value is greater than 255, it is automatically reset to 255).
 Each pixel is output depending on the bit that is set in its value byte, for example:
 
 !!! abstract
@@ -228,7 +262,7 @@ Each pixel is output depending on the bit that is set in its value byte, for exa
     !!! example "Icon indicator screens configuration"
 
         ``` { .yaml .copy .annotate }
-        ehmtxv2:
+        pixel_clock:
         ...
           icon_indicator_screens:
             - 15
@@ -268,19 +302,21 @@ Each pixel is output depending on the bit that is set in its value byte, for exa
 
 **gauge** (optional, boolean, default: true): Controls the ability to use the gauge indicator.
 
+**display_graph** (optional, ID): ID of the ESPHome `graph` component to display via `graph_screen` and `icon_graph_screen`.
+
 **fire_screen** (optional, boolean, default: true): Controls the ability to use the fire screen. Not available with the `esp-idf` framework (disabled automatically).
 
 ## Screens and Modes
 
 Screen|Mode|Value|
 |----|----|----|
-|blank_screen|MODE_BLANK| 1|
+|blank_screen|[MODE_BLANK](screens.md#mode_blank)| 1|
 |clock_screen|MODE_CLOCK| 2|
 |date_screen|MODE_DATE| 3|
 |full_screen|MODE_FULL_SCREEN| 4|
 |icon_screen|[MODE_ICON_SCREEN](screens.md#mode_icon_screen)| 5|
-|text_screen|MODE_TEXT_SCREEN| 6|
-|rainbow_icon_screen|MODE_RAINBOW_ICON| 7|
+|text_screen|[MODE_TEXT_SCREEN](screens.md#mode_text_screen)| 6|
+|rainbow_icon_screen|[MODE_RAINBOW_ICON](screens.md#mode_rainbow_icon)| 7|
 |rainbow_text_screen|MODE_RAINBOW_TEXT| 8|
 |rainbow_clock_screen|MODE_RAINBOW_CLOCK| 9|
 |rainbow_date_screen|MODE_RAINBOW_DATE| 10|
@@ -289,14 +325,14 @@ Screen|Mode|Value|
 |color_screen|MODE_COLOR| 13|
 |fire_screen|MODE_FIRE| 14|
 |icon_clock|[MODE_ICON_CLOCK](screens.md#mode_icon_clock)| 15|
-|alert_screen|MODE_ALERT_SCREEN| 16|
+|alert_screen|[MODE_ALERT_SCREEN](screens.md#mode_alert_screen)| 16|
 |set_graph|MODE_GRAPH_SCREEN| 17|
 |icon_date|MODE_ICON_DATE| 18|
 |icon_screen_progress|[MODE_ICON_PROGRESS](screens.md#mode_icon_progress)| 19|
 |rainbow_bitmap_small|MODE_RAINBOW_BITMAP_SMALL| 20|
 |icon_text_screen|MODE_ICON_TEXT_SCREEN| 21|
 |rainbow_icon_text_screen|MODE_RAINBOW_ICON_TEXT_SCREEN| 22|
-|bitmap_stack|MODE_BITMAP_STACK_SCREEN| 23|
+|bitmap_stack|[MODE_BITMAP_STACK_SCREEN](screens.md#mode_bitmap_stack_screen)| 23|
 |text_screen_progress|MODE_TEXT_PROGRESS| 24|
 |icon_prognosis_screen|[MODE_PROGNOSIS_SCREEN](screens.md#mode_prognosis_screen)| 25|
 |rainbow_alert_screen|MODE_RAINBOW_ALERT_SCREEN| 26|
@@ -304,7 +340,7 @@ Screen|Mode|Value|
 
 ## Icons and Animations
 
-Download and install all needed icons `(.jpg/.png)` and animations `(.gif)` under the `ehmtxv2:` key. All icons have to be `8x8` or `8x32` pixels in size. If necessary, you can scale them with the option `resize: 8x8` or `resize: 8x32`.
+Download and install all needed icons `(.jpg/.png)` and animations `(.gif)` under the `pixel_clock:` key. All icons have to be `8x8` or `8x32` pixels in size. If necessary, you can scale them with the option `resize: 8x8` or `resize: 8x32`.
 
 !!! note
     The first defined icon will be used as a fallback icon in case of an error (e.g., if you use a non-existing icon ID).
@@ -317,7 +353,7 @@ You can also specify a URL to directly download the image file. The URLs will on
 All other solutions provide ready-made icons, especially **Lametric** has a big database of [icons](https://developer.lametric.com/icons). If you find an icon, you can use it with its ID. e.g., `lameid: 1234`.
 
 !!! note
-    Please, check the copyright of the icons you use. 
+    Please, check the copyright of the icons you use.
 
 !!! note
     The maximum number of icons is limited to **100** in the code and also by the flash space and the RAM of your board.
@@ -325,13 +361,13 @@ All other solutions provide ready-made icons, especially **Lametric** has a big 
 !!! example annotate "Icons and Animations"
 
     ``` { .yaml .copy .annotate }
-    ehmtxv2:
+    pixel_clock:
       display: ...
-      icons: 
-        - id: boot 
+      icons:
+        - id: boot
           file: icons/rocket.GIF
-          duration: 75     
-        - id: temp 
+          duration: 75
+        - id: temp
           lameid: 1234
         - id: yoga
           file: icons/yoga-bridge.GIF
@@ -343,7 +379,7 @@ All other solutions provide ready-made icons, especially **Lametric** has a big 
           lameid: 1234
           duration: 100
         - id: homeassistant
-          url: https://github.com/home-assistant/assets/raw/master/logo/logo-special.png      
+          url: https://github.com/home-assistant/assets/raw/master/logo/logo-special.png
     ```
 
 !!! tip
@@ -351,7 +387,7 @@ All other solutions provide ready-made icons, especially **Lametric** has a big 
 
 ### Parameters reference
 
-The ID of the icons is used later to icon display. So, you should name them wisely. 
+The ID of the icons is used later to icon display. So, you should name them wisely.
 
 !!! tip
     If you like to group icons, you should prefix them, e.g., with `weather_`.
@@ -367,6 +403,8 @@ There are some more advanced parameters:
 - **url** (Exclusive, `url`): a URL to download the icon
 
 - **lameid** (Exclusive, `number`): the ID from the **LaMetric** [icon](https://developer.lametric.com/icons) database
+
+- **str565** (Exclusive, `string`): JSON array string of 64 (for `8x8`) or 256 (for `8x32`) 16-bit RGB565 integer values defining the icon directly in YAML.
 
 - **resize** (Optional, `8x8` or `8x32`): If the source file hasn't the right dimensions.
 
@@ -385,15 +423,20 @@ Numerous features are accessible with services from home assistant and lambdas t
 |Service|Parameter|Description|
 |---|---|---|
 |get_status|none|write some status information to the esphome logs|
-|display_on|none|turn display off|
-|display_off|none|turn display on|
-|hold_screen|none|show the screen that is currently displayed for the number of seconds longer|
-|hide_rindicator|none|hides the rindicator|
+|display_on|none|turn display on|
+|display_off|none|turn display off|
+|hold_screen|"time"|show the screen that is currently displayed for the number of seconds longer|
+|hide_rindicator|none|hides the bottom-right indicator|
+|hide_rcindicator|none|hides the center-right indicator|
+|hide_ltindicator|none|hides the top-left indicator|
+|hide_lcindicator|none|hides the center-left indicator|
+|hide_lindicator|none|hides the bottom-left indicator|
 |hide_gauge|none|hides the gauge|
 |hide_alarm|none|hides the alarm|
 |night_mode_on|none|turn night mode on|
 |night_mode_off|none|turn night mode off|
-|show_gauge|"percent", "r", "g", "b"|set the height of the gauge according to the percentage in the given color|
+|show_gauge|"percent", "r", "g", "b", "bg_r", "bg_g", "bg_b"|set the height of the gauge according to the percentage in the given color and background color|
+|color_gauge|"colors"|set individual colors for each of the 8 pixels of the gauge using a JSON array of 8 RGB565 values (ESP32 only)|
 |show_alarm|"r", "g", "b", "size"|shows the color with the given size in the upper-right corner|
 |show_rcindicator|"r", "g", "b", "size"|shows the color with the given size in the center-right|
 |show_rindicator|"r", "g", "b", "size"|shows the color with the given size in the lower-right corner|
@@ -403,24 +446,28 @@ Numerous features are accessible with services from home assistant and lambdas t
 |set_today_color|"r", "g", "b"|set the special color for today in the day of week line|
 |set_weekday_color|"r", "g", "b"|set the default color in the day of week line|
 |set_clock_color|"r", "g", "b"|set the default color of clock and date display|
+|set_text_color|"r", "g", "b"|set the default color of text display|
 |set_solid_color|"r", "g", "b"|set the color for solid pseudo icon|
 |set_calendar_color|"r", "g", "b"|set the header color for calendar pseudo icon|
 |set_weekday_accent_on|none|turns on the display of small days (accent) of the week when brightness is insufficient|
 |set_weekday_accent_off|none|turns off the display of small days (accent) of the week when brightness is insufficient|
-|del_screen|"icon_name", “mode”|deletes the specified icon screen from the queue, the [mode](#screens-and-modes) is a filter|
-|force_screen|"icon_name", “mode”|displays the selected the specified icon screen from the queue, the [mode](#screens-and-modes) is a filter|
+|del_screen|"icon_name", "mode"|deletes the specified icon screen from the queue, the [mode](#screens-and-modes) is a filter|
+|force_screen|"icon_name", "mode"|displays the selected icon screen from the queue, the [mode](#screens-and-modes) is a filter|
 |full_screen|"icon_name", "lifetime", "screen_time"|show the specified 8x32 icon as full screen|
 |icon_screen|"icon_name", "text", "lifetime", "screen_time", "default_font", "r", "g", "b"|show the specified icon with text|
 |rainbow_icon_screen|"icon_name", "text", "lifetime", "screen_time", "default_font"|show the specified icon with text in rainbow color|
 |text_screen|"text", "lifetime", "screen_time", "default_font", "r", "g", "b"|show the specified text|
 |rainbow_text_screen|"text", "lifetime", "screen_time", "default_font"|show the specified text in rainbow colors|
-|alert_text_screen|"text", "screen_time", "default_font"|show the specified text, screen forced and lifetime = screen_time|
 |clock_screen|"lifetime", "screen_time", "default_font", "r", "g", "b"|show the clock|
 |rainbow_clock_screen|"lifetime", "screen_time", "default_font"|show the clock in rainbow color|
 |blank_screen|"lifetime", "screen_time"|"show" an empty screen|
+|color_screen|"lifetime", "screen_time", "r", "g", "b"|fill the screen with a solid color|
 |date_screen|"lifetime", "screen_time", "default_font", "r", "g", "b"|show the date|
+|rainbow_date_screen|"lifetime", "screen_time", "default_font"|show the date in rainbow color|
+|bitmap_screen|"icon", "lifetime", "screen_time"|show an 8x32 image defined as a JSON array of 256 RGB565 values (ESP32 only)|
 |brightness|"value"|set the display brightness|
 |alert_screen|"icon_name", "text", "screen_time", "default_font", "r", "g", "b"|show the specified icon with text, screen forced and lifetime = screen_time|
+|alert_text_screen|"text", "screen_time", "default_font", "r", "g", "b"|show the specified text, screen forced and lifetime = screen_time|
 |rainbow_alert_screen|"icon_name", "text", "screen_time", "default_font"|show the specified icon with text in rainbow color, screen forced and lifetime = screen_time|
 |icon_screen_progress|"icon_name", "text", "progress", "lifetime", "screen_time", "default_font", "r", "g", "b"|show the specified icon with text and with progress bar on bottom|
 |set_progressbar_color|"icon_name", "mode", "r", "g", "b", "bg_r", "bg_g", "bg_b"|sets the specified by name and [mode](#screens-and-modes) screen with progress bar, the specified color of the progress bar, and the background color of the progress bar. if you set the color to black, the color display will work according to the progress value|
@@ -457,13 +504,13 @@ Numerous features are accessible with services from home assistant and lambdas t
 - **default_font**: use the default font (true) or the special font (false)
 - **progress**: can take a value from -100 to 100, the color of the progress bar is calculated automatically, if no colors are specified in the function `set_progressbar_color`, then if the progress is in the range `0..100`, then `from red to green`, if in the range `-100..0`, then from `green to red`.
 - **value_color_as_progress**: display the value with the color of the current color on the progress bar
-- **value**: the brightness 0...255 
+- **value**: the brightness 0...255
 - **prognosis**: 24 triplets of digits (72 in total), each triplet, one point on the prognosis bar in the specified color in the triplet color. Like: [200,200,200, ..., 100,100,100] see [details](https://github.com/lubeda/EspHoMaTriXv2/issues/149)
 
 !!! example annotate "Text Screen like Alert Text Screen"
 
     ``` { .yaml .copy .annotate }
-    - action: esphome.ulanzi_text_screen (1)
+    - action: esphome.pixel_clock_text_screen (1)
       continue_on_error: true
       data:
         default_font: true
@@ -474,7 +521,7 @@ Numerous features are accessible with services from home assistant and lambdas t
         g: 200
         b: 200
 
-    - action: esphome.ulanzi_force_screen
+    - action: esphome.pixel_clock_force_screen
       continue_on_error: true
       data:
         mode: 6 (4)
@@ -538,7 +585,7 @@ A common format for specifying output options: `icon|mode#draw_mode`
 **mode** that are supported:
 
 - `day` - Displays the current day of the month on the icon
-- `weekday` - Displays the current day of the week on the icon 
+- `weekday` - Displays the current day of the week on the icon
 
 **draw_mode** that are supported:
 
@@ -576,7 +623,7 @@ You can use the `|two` modifier in the `icons` list (supported for 1, 2, or 3 ic
     data:
       icons: "skull,skull,skull"
       lifetime: 1
-      screen_time: 10    
+      screen_time: 10
     ```
 
 !!! tip
@@ -597,11 +644,12 @@ Component triggers and C++ lambdas allow local management without relying on Hom
 - **`on_next_clock`**: Triggered at the start of a new clock display cycle.
 - **`on_show_display`**: Triggered on display state changes (provides `state`).
 - **`on_night_mode`**: Triggered when night mode toggles (provides `state`).
+- **`on_expired_screen`**: Triggered when a screen expires and is removed from the queue (provides `icon` and `text`).
 
 !!! example annotate "Triggers and physical buttons usage"
 
     ``` { .yaml .copy .annotate }
-    ehmtxv2:
+    pixel_clock:
       id: rgb8x32
       on_empty_queue:
         then:
@@ -629,9 +677,22 @@ Component triggers and C++ lambdas allow local management without relying on Hom
           lambda: id(rgb8x32)->hold_screen(120);
     ```
 
-## Home Assistant Integration
+!!! tip "Customizing Default Screens on Boot (`on_start_running`)"
 
-### UI Controls
+    You can use the `on_start_running` trigger with a lambda to replace default boot screens or customize the initial clock color and duration right after time synchronization:
+
+    ``` { .yaml .copy }
+    pixel_clock:
+      id: rgb8x32
+      on_start_running:
+        then:
+          - lambda: |-
+              // Remove the default clock screen (mode 2) and add a custom colored one
+              id(rgb8x32)->del_screen("*", 2);
+              id(rgb8x32)->clock_screen(10, 10, true, 200, 10, 100);
+    ```
+
+## UI Controls
 
 You can expose interactive controls (such as `brightness`, `display power`, `night mode`, and `icon expansion`) to your Home Assistant dashboard using template entities in your ESPHome YAML configuration (`number`, `switch`, and `select` platforms).
 
@@ -714,70 +775,6 @@ You can expose interactive controls (such as `brightness`, `display power`, `nig
                 }
     ```
 
-
-### Automation Examples
-
-!!! example annotate "Automation to show the weather with local temperature"
-
-    ``` { .yaml .copy .annotate }
-    alias: Current weather
-    description: Weather with icon per condition
-    trigger:
-      - platform: state
-        entity_id: weather.current_weather
-    action:
-      - service: esphome.pixel_clock_del_screen
-        data:
-          icon_name: weather_*
-          mode: 5
-      - service: esphome.pixel_clock_icon_screen
-        data:
-          icon_name: weather_{{ trigger.to_state.state }}
-          text: >-
-            {{ states("sensor.external_temperature") }}°C
-          lifetime: 60
-          screen_time: 10
-    ```
-
-!!! example annotate "Automation for the trashcan type"
-
-    ``` { .yaml .copy .annotate }
-    alias: "Waste indicator"
-    description: Indicates which bin needs to be put out. Icon names shortened.
-    trigger:
-      - platform: time
-        at:
-          - "06:30"
-          - "08:30"
-          - "10:30"
-          - "15:00"
-          - "17:00"
-          - "19:00"
-    condition:
-      - condition: numeric_state
-        entity_id: sensor.mulltrigger
-        below: "3"
-    action:
-      - service: esphome.pixel_clock_del_screen
-        data:
-          icon_name: trash_*
-          mode: 5
-      - service: esphome.pixel_clock_icon_screen
-        data:
-          icon_name: >-
-            trash_{{ states("sensor.mulldetails") | replace("Organic", "brow")|
-                     replace("Papiertonne","blue")| replace("Residual", "grey")|
-                     replace("gelbe Tonne","yell|") | truncate(4,true,"") }}     
-          text: >-
-            {{ states("sensor.mulldetails") }}
-          lifetime: 120
-          ...
-    ```
-
-!!! tip
-
-    Use wildcard deletion (`*`) with `del_screen` in your Home Assistant automations to clean up and replace dynamic screens (like weather status) without duplicates in the queue.
-
 ## Display Configuration
 
 ### Light Component
@@ -812,7 +809,7 @@ The `light` component is used by the `addressable_light` display and referenced 
 
 ### Display Component and Pixel Mappers
 
-The `ehmtxv2` component requires an `8x32` addressable display calling `tick()` and `draw()` inside its lambda:
+The `pixel-clock` component requires an `8x32` addressable display calling `tick()` and `draw()` inside its lambda:
 
 !!! example annotate "Display component"
 
@@ -859,6 +856,42 @@ Depending on your LED matrix wiring, use the corresponding `pixel_mapper` formul
     return ((int) (x / 8 * 64)) + x % 8 + y * 8;
     ```
 
+### Graph Component (`graph_screen`)
+
+To display historical sensor graphs via `graph_screen` or `icon_graph_screen`, you need to define a `graph:` and `color:` component in your ESPHome YAML and link it via `display_graph:`.
+
+!!! tip "Configuring Graphs in ESPHome"
+
+    It is recommended to set the `graph` logger level to `error` to prevent excessive log output during updates:
+
+    ``` { .yaml .copy }
+    logger:
+      level: INFO
+      logs:
+        graph: error
+
+    color:
+      - id: graph_color
+        red: 100%
+        green: 20%
+        blue: 25%
+
+    graph:
+      - id: ehmtx_graph
+        width: 32
+        height: 8
+        traces:
+          - sensor: light_sensor
+            line_thickness: 1
+            color: graph_color
+
+    pixel_clock:
+      id: rgb8x32
+      display_graph: ehmtx_graph
+    ```
+
+    To trigger the graph from a lambda, call `id(rgb8x32)->graph_screen(10, 20);` (lifetime in minutes, screen time in seconds).
+
 ## ESPHome configuration
 
 ### External Component
@@ -871,70 +904,69 @@ To always use the latest version and fixes directly from the repository, add the
     external_components:
       - source:
           type: git
-          url: https://github.com/andrewjswan/EspHoMaTriXv2
-          ref: 202X.XX.X
+          url: https://github.com/andrewjswan/pixel-clock
+          ref: main
         refresh: 60s
-        components: [ ehmtxv2 ]
+        components: [pixel_clock]
     ```
 
-!!! tip
-    Always specify the latest default branch in the `ref:` parameter (example `202X.XX.X`) so that ESPHome pulls the most up-to-date version and compatibility fixes.
+### Framework
 
-### Arduino
+=== "Arduino"
 
-!!! example annotate "Local configuration file | Arduino"
+    !!! example annotate "Local configuration file | Arduino"
 
-    ``` { .yaml .copy .annotate }
-    substitutions:
-      device: esp_pixel_clock
-      name: pixel-clock
-      friendly_name: ESPHome Pixel Clock
-      project_name: "ajs.Pixel_Clock"
-      project_version: "1.1.5"
-      update_interval: 60s
-      comment: "Ulanzi Pixel Clock | EHMTXv2"
-      weekdays: "ВСПНВТСРЧТПТСБ"
-      date_to: "ВС ПН ВТ СР ЧТ ПТ СБ Січ Лют Бер Кві Тра Чер Лип Сер Вер Жов Лис Гру"
+        ``` { .yaml .copy .annotate }
+        substitutions:
+          device: esp_pixel_clock
+          name: pixel-clock
+          friendly_name: ESPHome Pixel Clock
+          project_name: "ajs.Pixel_Clock"
+          project_version: "1.5.0"
+          update_interval: 60s
+          comment: "Ulanzi TC001 | Pixel Clock"
+          weekdays: "ВСПНВТСРЧТПТСБ"
+          date_to: "ВС ПН ВТ СР ЧТ ПТ СБ Січ Лют Бер Кві Тра Чер Лип Сер Вер Жов Лис Гру"
 
-    packages:
-      common: !include packages/common.yaml (1)
-      framework: !include packages/framework-arduino.yaml (2)
-      pixel: !include packages/pixel_clock.yaml (3)
-    ```
-1. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
-2. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
-3. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
+        packages:
+          common: !include packages/common.yaml (1)
+          framework: !include packages/framework-arduino.yaml (2)
+          pixel: !include packages/pixel_clock.yaml (3)
+        ```
+    1. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
+    2. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
+    3. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
 
-!!! tip
-    To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
+    !!! tip
+        To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
 
-### ESP-IDF
+=== "ESP-IDF"
 
-!!! example annotate "Local configuration file | ESP-IDF"
+    !!! example annotate "Local configuration file | ESP-IDF"
 
-    ``` { .yaml .copy .annotate }
-    substitutions:
-      device: esp_pixel_clock
-      name: pixel-clock
-      friendly_name: ESPHome Pixel Clock
-      project_name: "ajs.Pixel_Clock"
-      project_version: "1.1.5"
-      update_interval: 60s
-      comment: "Ulanzi Pixel Clock | EHMTXv2"
-      weekdays: "ВСПНВТСРЧТПТСБ"
-      date_to: "ВС ПН ВТ СР ЧТ ПТ СБ Січ Лют Бер Кві Тра Чер Лип Сер Вер Жов Лис Гру"
+        ``` { .yaml .copy .annotate }
+        substitutions:
+          device: esp_pixel_clock
+          name: pixel-clock
+          friendly_name: ESPHome Pixel Clock
+          project_name: "ajs.Pixel_Clock"
+          project_version: "1.5.0"
+          update_interval: 60s
+          comment: "Ulanzi TC001 | Pixel Clock"
+          weekdays: "ВСПНВТСРЧТПТСБ"
+          date_to: "ВС ПН ВТ СР ЧТ ПТ СБ Січ Лют Бер Кві Тра Чер Лип Сер Вер Жов Лис Гру"
 
-    packages:
-      common: !include packages/common.yaml (1)
-      framework: !include packages/framework-esp-idf.yaml (2)
-      pixel: !include packages/pixel_clock.yaml (3)
-    ```
-1. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
-2. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
-3. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
+        packages:
+          common: !include packages/common.yaml (1)
+          framework: !include packages/framework-esp-idf.yaml (2)
+          pixel: !include packages/pixel_clock.yaml (3)
+        ```
+    1. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
+    2. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
+    3. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
 
-!!! tip
-    To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
+    !!! tip
+        To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
 
 *[ESP32]: A series of system-on-chip (SoC) microcontrollers from the Chinese manufacturer Espressif, featuring integrated Wi-Fi and Bluetooth controllers, low power consumption, and a low price point.
 *[ESP8266]: A microcontroller from the Chinese manufacturer Espressif with a Wi-Fi interface. Examples include NodeMCU or Wemos D1 Mini.

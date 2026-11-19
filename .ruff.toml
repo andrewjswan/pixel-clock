@@ -1,0 +1,24 @@
+target-version = "py313"
+
+# Allow lines to be as long as 100.
+line-length = 100
+
+[lint]
+select = [
+    "ALL",
+]
+
+ignore = [
+    "ANN401", # Dynamically typed expressions (typing.Any) are disallowed
+    "ASYNC210", # Async functions should not call blocking HTTP methods
+    "ASYNC230", # Async functions should not open files with blocking methods
+    "ASYNC240", # Async functions should not use pathlib.Path methods, use trio.Path or anyio.path
+    "CPY001", # Missing copyright notice at top of file
+    "D203", # no-blank-line-before-class (incompatible with formatter)
+    "D212", # multi-line-summary-first-line (incompatible with formatter)
+    "FIX002", # Line contains TODO, consider resolving an issue
+    "G004", # Logging statement uses f-string
+    "TD003", # Missing issue link on the line following this TODO
+    "LOG015", # info() call on root logger
+    "PLR2004" # Magic value used in comparison, consider replacing `XX` with a constant variable
+]

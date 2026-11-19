@@ -4,7 +4,7 @@ To control your display, it has to be integrated in Home Assistant. Then it prov
 
 ### Services
 
-All communication with Home Assistant use the homeasistant-api. The services can be provided by default or also defined additionally in the YAML. To define the additional services, you need the ID of the ehmtx-component e.g. `id(rgb8x32)`.
+All communication with Home Assistant uses the Home Assistant API. Services are provided by default, and you can also define custom services or lambdas in your YAML using the ID of the `pixel_clock` component (e.g., `id(rgb8x32)`).
 
 ### Use in Home Assistant automations
 
@@ -12,9 +12,9 @@ All communication with Home Assistant use the homeasistant-api. The services can
 
 The easiest way to use Pixel Clock as a status display is to use the icon names as trigger ID. In my example, I have an icon named `wind` when the `sensor.wind_speed` has a new state, this automation sends the new data to the screen with the icon named `wind` and so on.
 
-!!! example "Icon names as trigger ID"
+!!! example annotate "Icon names as trigger ID"
 
-    ``` { .yaml .copy }
+    ``` { .yaml .copy .annotate }
     alias: Pixel Clock - Icons
     trigger:
       - platform: numeric_state
@@ -60,7 +60,7 @@ Sample automation to show the weather with local temperature
             {{ states("sensor.outside_temperature") }}°C
     ```
 1. See the list of all possible [icons](icons.md)
-2. See the list of all possible [modes](esphomatrix.md#screens-and-modes) and their values
+2. See the list of all possible [modes](pixel-clock.md#screens-and-modes) and their values
 
 Sample automation for the trashcan type
 
@@ -82,11 +82,11 @@ Sample automation for the trashcan type
         entity_id: sensor.trash_trigger
         below: "3"
     action:
-      - service: esphome.ulanzi_del_screen
+      - service: esphome.pixel_clock_del_screen
         data:
           icon_name: trash_* (1)
           mode: 5 (2)
-      - service: esphome.ulanzi_icon_screen
+      - service: esphome.pixel_clock_icon_screen
         data:
           icon_name: >-
             trash_{{ states("sensor.trash_details") | replace("Organic", "brown") | replace("Paper","blue") | replace("Residual waste", "grey") | replace("Yellow bin","yellow") }}
@@ -95,13 +95,17 @@ Sample automation for the trashcan type
         lifetime: 120
     ```
 1. See the list of all possible [icons](icons.md)
-2. See the list of all possible [modes](esphomatrix.md#screens-and-modes) and their values
+2. See the list of all possible [modes](pixel-clock.md#screens-and-modes) and their values
 
 #### Tips
 
+!!! tip "Delete screen"
+
+    Use wildcard deletion (`*`) with `del_screen` in your Home Assistant automations to clean up and replace dynamic screens (like weather status) without duplicates in the queue.
+
 !!! tip "Display sensor precision after Home Assistant 2023.3"
 
-    See [templating](https://www.home-assistant.io/docs/configuration/templating/#states) for possibilities to optimize the output e.g. `{{ states(sensor.solarpower, rounded=True) }} kWh`
+    See [templating](https://www.home-assistant.io/docs/configuration/templating/#states) for possibilities to optimize the output e.g. `{{ states('sensor.solarpower', rounded=True) }} kWh`
 
 !!! tip "Time zone"
 

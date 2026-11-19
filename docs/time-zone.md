@@ -24,7 +24,7 @@
             - ds1307.write_time:
       - platform: ds1307
         update_interval: never
-        id: ehmtx_time
+        id: pixel_clock_time
 
     text:
       - platform: template
@@ -52,12 +52,12 @@
           - lambda: |-
               if (id(timezone_text).state != "" && id(timezone_text).state.c_str() != "${time_zone}") {
                 id(my_time)->set_timezone(id(timezone_text).state.c_str());
-                id(ehmtx_time)->set_timezone(id(timezone_text).state.c_str());
+                id(pixel_clock_time)->set_timezone(id(timezone_text).state.c_str());
                 // id(my_time)->call_setup();
                 ESP_LOGI("main", "Alt Time Zone Set");
               } else {
                 id(my_time)->set_timezone("${time_zone}");
-                id(ehmtx_time)->set_timezone("${time_zone}");
+                id(pixel_clock_time)->set_timezone("${time_zone}");
                 // id(my_time)->call_setup();
                 ESP_LOGI("main", "Default Time Zone");
                 id(timezone_text).state="${time_zone}";
@@ -71,4 +71,4 @@
     The first `set_timezone` changes the ESP's time, the second changes the RTC's time. The `call_setup` calls internal code to restart the time module (which will also trigger a sync).
 
 !!! note
-    Thanks @trip5 https://github.com/andrewjswan/pixel-clock/issues/56
+    Thanks @trip5 [issues/56](https://github.com/andrewjswan/pixel-clock/issues/56)

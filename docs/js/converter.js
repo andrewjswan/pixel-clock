@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function processImage(img, targetW, targetH, imgId, codeId) {
         canvas.width = targetW;
         canvas.height = targetH;
-        
+
         ctx.clearRect(0, 0, targetW, targetH);
         ctx.drawImage(img, 0, 0, targetW, targetH);
 
@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const b5 = (b >> 3) & 0x1F;
 
             const rgb565 = (r5 << 11) | (g6 << 5) | b5;
-            
+
             rgb565Array.push(`0x${rgb565.toString(16).toUpperCase().padStart(4, '0')}`);
             rgb565ArrayPlain.push(rgb565);
         }
@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const originalText = btn.textContent;
             btn.textContent = "✅ Copied!";
             btn.classList.add('md-button--primary');
-            
+
             setTimeout(() => {
                 btn.textContent = originalText;
                 btn.classList.remove('md-button--primary');

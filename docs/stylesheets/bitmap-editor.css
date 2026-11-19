@@ -1,5 +1,5 @@
 .editor-layout {
-    display: flex; gap: 20px; flex-wrap: wrap; 
+    display: flex; gap: 20px; flex-wrap: wrap;
     justify-content: center; flex-direction: row-reverse;
     padding: 10px;
 }
@@ -9,7 +9,7 @@
 }
 
 .pixel-cell {
-    width: 20px !important; 
+    width: 20px !important;
     height: 20px !important;
     cursor: crosshair;
     background-color: #000;

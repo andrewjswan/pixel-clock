@@ -1,6 +1,6 @@
 substitutions:
-  project_name: "Ulanzi.EHMTXv2"
-  project_version: "2026.7.1"
+  project_name: "Ulanzi.Pixel_Clock"
+  project_version: "2026.11.1"
   # Pin definition from https://github.com/aptonline/PixelIt_Ulanzi
   battery_pin: GPIO34
   buzzer_pin: GPIO15
@@ -15,9 +15,9 @@ substitutions:
 external_components:
   - source:
       type: git
-      url: https://github.com/andrewjswan/EspHoMaTriXv2
-      ref: 2026.7.1
-    components: [ehmtxv2]
+      url: https://github.com/andrewjswan/pixel-clock
+      ref: main
+    components: [pixel-clock]
     refresh: 60s
 
 esphome:
@@ -164,12 +164,12 @@ time:
 
   - platform: ds1307
     update_interval: never
-    id: ehmtx_time
+    id: pixel_clock_time
 
 display:
   - platform: addressable_light
-    id: ehmtx_display
-    addressable_light_id: ehmtx_light
+    id: pixel_clock_display
+    addressable_light_id: pixel_clock_light
     width: 32
     height: 8
     pixel_mapper: |-
@@ -185,12 +185,12 @@ display:
       id(rgb8x32)->tick();
       id(rgb8x32)->draw();
 
-ehmtxv2:
+pixel-clock:
   id: rgb8x32
   icons2html: true
   iconscache: true
-  matrix_component: ehmtx_display
-  time_component: ehmtx_time
+  matrix_component: pixel_clock_display
+  time_component: pixel_clock_time
   time_format: "%H:%M"
   time_format_big: "%H:%M:%S"
   date_format: "%d•%m"
