@@ -410,7 +410,7 @@ async def to_code(config: dict[str, Any]) -> None:  # noqa: C901, PLR0912, PLR09
                 logging.info("  Icons: Load %s from cache.", conf[CONF_LAMEID])
             else:
                 r = requests.get(
-                    "https://lametric.com" + conf[CONF_LAMEID],
+                    "https://developer.lametric.com/content/apps/icon_thumbs/" + conf[CONF_LAMEID],
                     headers={
                         "Cache-Control": "no-cache, no-store, must-revalidate",
                         "Pragma": "no-cache",
