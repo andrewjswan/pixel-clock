@@ -1,5 +1,5 @@
 # ESPHome Pixel Clock aka TRAM
-[![esphome_badge](https://img.shields.io/badge/ESPHome-Component-blue.svg)](https://esphome.io/)
+[![esphome_badge](https://img.shields.io/badge/ESPHome-Based-blue.svg)](https://esphome.io/)
 [![pixel-clock_badge](https://img.shields.io/badge/Pixel-Clock-orange.svg)](https://github.com/andrewjswan/pixel-clock/)
 [![esp32_arduino](https://img.shields.io/badge/ESP32-Arduino-darkcyan.svg)](https://esphome.io/)
 [![Build](https://github.com/andrewjswan/pixel-clock/actions/workflows/build.yaml/badge.svg)](https://github.com/andrewjswan/pixel-clock/actions/workflows/build.yaml)
