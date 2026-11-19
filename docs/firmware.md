@@ -11,7 +11,7 @@
 [![Made for ESPHome](img/made-for-esphome.svg){ align=right loading=lazy style="width:30%" }](https://esphome.io/guides/made_for_esphome.html)
 
 !!! info "ESP Web Tools"
-    User friendly tools to manage `ESP8266` and `ESP32` devices in the browser:
+    User friendly tools to manage ESPHome devices in the browser:
 
     * Install &amp; update firmware.
     * Connect device to the `Wi-Fi` network.
