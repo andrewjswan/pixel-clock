@@ -126,6 +126,40 @@ This component is highly customizable.
     - `weekdays: "DiLuMaMeJeVeSa" # french`
     ```
 
+**replace_time_date_from** (optional, string): Space-separated list of source substrings to replace in formatted time and date strings (up to 50 pairs).
+
+**replace_time_date_to** (optional, string): Space-separated list of replacement substrings corresponding to `replace_time_date_from` (must have the exact same number of elements).
+
+!!! tip "Localizing Date and Time (`replace_time_date_from` / `replace_time_date_to`)"
+
+    ESPHome does not pass localized time and date formats through compilation by default. You can replace specific substrings (such as `AM`/`PM`, day names, or month names) using `replace_time_date_from` and `replace_time_date_to` (up to 50 pairs, spaces are not allowed). Make sure to include all matching glyphs in your `font:` configuration!
+
+    !!! example annotate "Localizing Date and Time"
+
+        ``` { .yaml .copy .annotate }
+        pixel_clock:
+          # Example 1: Ukrainian date format (e.g., "Жовт 11")
+          date_format: "%b %d"
+          replace_time_date_from: " Sun Mon Tue Wed Thu Fri Sat Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec"
+          replace_time_date_to: " ПН ВТ СР ЧТ ПТ СБ ВС Січ Лют Бер Квіт Трав Черв Лип Серп Вер Жовт Лист Груд"
+    
+          # Example 2: Korean date and time format (e.g., "4:30오후" and "10월11일")
+          time_format: "%p%l:%M"
+          date_format: "%b%d일"
+          replace_time_date_from: " AM PM Sun Mon Tue Wed Thu Fri Sat Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec"
+          replace_time_date_to: " 오전 오후 일 월 화 수 목 금 토 1월 2월 3월 4월 5월 6월 7월 8월 9월 10월 11월 12월"
+        ```
+
+**brightness** (optional, int, default: 80): Initial display brightness on startup (range `0..255`).
+
+**clock_interval** (optional, int, default: 0): Interval in seconds to force displaying the clock screen (set to `0` to disable).
+
+**frame_interval** (optional, ms, default: 192): Default frame duration in milliseconds for animated GIF icons when not specified per icon.
+
+**rtl** (optional, boolean, default: false): Enables right-to-left (RTL) text rendering direction.
+
+**scroll_count** (optional, int, default: 2): Minimum number of times long text is scrolled before advancing to the next screen.
+
 **scroll_interval** (optional, ms): the interval in ms to scroll the text (default=80), should be a multiple of the `update_interval` of [display](https://esphome.io/components/display/addressable_light.html)
 
 **rainbow_shimmer** (optional, boolean): If true, enables color shimmer when displaying text in rainbow modes.
@@ -268,19 +302,21 @@ Each pixel is output depending on the bit that is set in its value byte, for exa
 
 **gauge** (optional, boolean, default: true): Controls the ability to use the gauge indicator.
 
+**display_graph** (optional, ID): ID of the ESPHome `graph` component to display via `graph_screen` and `icon_graph_screen`.
+
 **fire_screen** (optional, boolean, default: true): Controls the ability to use the fire screen. Not available with the `esp-idf` framework (disabled automatically).
 
 ## Screens and Modes
 
 Screen|Mode|Value|
 |----|----|----|
-|blank_screen|MODE_BLANK| 1|
+|blank_screen|[MODE_BLANK](screens.md#mode_blank)| 1|
 |clock_screen|MODE_CLOCK| 2|
 |date_screen|MODE_DATE| 3|
 |full_screen|MODE_FULL_SCREEN| 4|
 |icon_screen|[MODE_ICON_SCREEN](screens.md#mode_icon_screen)| 5|
-|text_screen|MODE_TEXT_SCREEN| 6|
-|rainbow_icon_screen|MODE_RAINBOW_ICON| 7|
+|text_screen|[MODE_TEXT_SCREEN](screens.md#mode_text_screen)| 6|
+|rainbow_icon_screen|[MODE_RAINBOW_ICON](screens.md#mode_rainbow_icon)| 7|
 |rainbow_text_screen|MODE_RAINBOW_TEXT| 8|
 |rainbow_clock_screen|MODE_RAINBOW_CLOCK| 9|
 |rainbow_date_screen|MODE_RAINBOW_DATE| 10|
@@ -289,14 +325,14 @@ Screen|Mode|Value|
 |color_screen|MODE_COLOR| 13|
 |fire_screen|MODE_FIRE| 14|
 |icon_clock|[MODE_ICON_CLOCK](screens.md#mode_icon_clock)| 15|
-|alert_screen|MODE_ALERT_SCREEN| 16|
+|alert_screen|[MODE_ALERT_SCREEN](screens.md#mode_alert_screen)| 16|
 |set_graph|MODE_GRAPH_SCREEN| 17|
 |icon_date|MODE_ICON_DATE| 18|
 |icon_screen_progress|[MODE_ICON_PROGRESS](screens.md#mode_icon_progress)| 19|
 |rainbow_bitmap_small|MODE_RAINBOW_BITMAP_SMALL| 20|
 |icon_text_screen|MODE_ICON_TEXT_SCREEN| 21|
 |rainbow_icon_text_screen|MODE_RAINBOW_ICON_TEXT_SCREEN| 22|
-|bitmap_stack|MODE_BITMAP_STACK_SCREEN| 23|
+|bitmap_stack|[MODE_BITMAP_STACK_SCREEN](screens.md#mode_bitmap_stack_screen)| 23|
 |text_screen_progress|MODE_TEXT_PROGRESS| 24|
 |icon_prognosis_screen|[MODE_PROGNOSIS_SCREEN](screens.md#mode_prognosis_screen)| 25|
 |rainbow_alert_screen|MODE_RAINBOW_ALERT_SCREEN| 26|
@@ -367,6 +403,8 @@ There are some more advanced parameters:
 - **url** (Exclusive, `url`): a URL to download the icon
 
 - **lameid** (Exclusive, `number`): the ID from the **LaMetric** [icon](https://developer.lametric.com/icons) database
+
+- **str565** (Exclusive, `string`): JSON array string of 64 (for `8x8`) or 256 (for `8x32`) 16-bit RGB565 integer values defining the icon directly in YAML.
 
 - **resize** (Optional, `8x8` or `8x32`): If the source file hasn't the right dimensions.
 
@@ -597,6 +635,7 @@ Component triggers and C++ lambdas allow local management without relying on Hom
 - **`on_next_clock`**: Triggered at the start of a new clock display cycle.
 - **`on_show_display`**: Triggered on display state changes (provides `state`).
 - **`on_night_mode`**: Triggered when night mode toggles (provides `state`).
+- **`on_expired_screen`**: Triggered when a screen expires and is removed from the queue (provides `icon` and `text`).
 
 !!! example annotate "Triggers and physical buttons usage"
 
@@ -627,6 +666,21 @@ Component triggers and C++ lambdas allow local management without relying on Hom
           inverted: true
         on_press:
           lambda: id(rgb8x32)->hold_screen(120);
+    ```
+
+!!! tip "Customizing Default Screens on Boot (`on_start_running`)"
+
+    You can use the `on_start_running` trigger with a lambda to replace default boot screens or customize the initial clock color and duration right after time synchronization:
+
+    ``` { .yaml .copy }
+    pixel_clock:
+      id: rgb8x32
+      on_start_running:
+        then:
+          - lambda: |-
+              // Remove the default clock screen (mode 2) and add a custom colored one
+              id(rgb8x32)->del_screen("*", 2);
+              id(rgb8x32)->clock_screen(10, 10, true, 200, 10, 100);
     ```
 
 ## UI Controls
@@ -792,6 +846,42 @@ Depending on your LED matrix wiring, use the corresponding `pixel_mapper` formul
     ``` { .cpp .copy .annotate }
     return ((int) (x / 8 * 64)) + x % 8 + y * 8;
     ```
+
+### Graph Component (`graph_screen`)
+
+To display historical sensor graphs via `graph_screen` or `icon_graph_screen`, you need to define a `graph:` and `color:` component in your ESPHome YAML and link it via `display_graph:`.
+
+!!! tip "Configuring Graphs in ESPHome"
+
+    It is recommended to set the `graph` logger level to `error` to prevent excessive log output during updates:
+
+    ``` { .yaml .copy }
+    logger:
+      level: INFO
+      logs:
+        graph: error
+
+    color:
+      - id: graph_color
+        red: 100%
+        green: 20%
+        blue: 25%
+
+    graph:
+      - id: ehmtx_graph
+        width: 32
+        height: 8
+        traces:
+          - sensor: light_sensor
+            line_thickness: 1
+            color: graph_color
+
+    pixel_clock:
+      id: rgb8x32
+      display_graph: ehmtx_graph
+    ```
+
+    To trigger the graph from a lambda, call `id(rgb8x32)->graph_screen(10, 20);` (lifetime in minutes, screen time in seconds).
 
 ## ESPHome configuration
 
