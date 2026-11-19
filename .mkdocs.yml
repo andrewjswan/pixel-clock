@@ -26,7 +26,7 @@ theme:
     - navigation.top
     - toc.integrate
     - search.suggest
-    - search.hightlight
+    - search.highlight
     - content.tabs.link
     - content.code.annotate
     - content.code.copy
@@ -84,7 +84,7 @@ markdown_extensions:
       repo_url_shorthand: true
       normalize_issue_symbols: true
       user: andrewjswan
-      repo: svitlobot
+      repo: pixel-clock
   - pymdownx.smartsymbols
   - pymdownx.snippets
   - pymdownx.superfences
