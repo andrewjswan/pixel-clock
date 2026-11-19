@@ -25,7 +25,7 @@
 
     For example, icon **1574** from the website [Lametric](https://developer.lametric.com/icons)
 
-    [More info](pixel-clock.md#icons-and-animations)
+    [More info](pixel-clock-component.md#icons-and-animations)
 
 ### MODE_TEXT_SCREEN
 
@@ -235,4 +235,4 @@ For **8x32** images as text. You can generate these images with, e.g., [Bitmap E
           mode: 5
         ```
 
-    *(Refer to the [Screens and Modes](pixel-clock.md#screens-and-modes) table for the corresponding `mode` numeric values).*
+    *(Refer to the [Screens and Modes](pixel-clock-component.md#screens-and-modes) table for the corresponding `mode` numeric values).*
