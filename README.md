@@ -1,5 +1,5 @@
 # ESPHome Pixel Clock aka TRAM
-[![esphome_badge](https://img.shields.io/badge/ESPHome-Config-blue.svg)](https://esphome.io/)
+[![esphome_badge](https://img.shields.io/badge/ESPHome-Component-blue.svg)](https://esphome.io/)
 [![pixel-clock_badge](https://img.shields.io/badge/Pixel-Clock-orange.svg)](https://github.com/andrewjswan/pixel-clock/)
 [![esp32_arduino](https://img.shields.io/badge/ESP32-Arduino-darkcyan.svg)](https://esphome.io/)
 [![Build](https://github.com/andrewjswan/pixel-clock/actions/workflows/build.yaml/badge.svg)](https://github.com/andrewjswan/pixel-clock/actions/workflows/build.yaml)
@@ -10,13 +10,18 @@
 
 ## Description
 
-ESPHome firmware for **Ulanzi TC001** Clock using [**Pixel-Clock**](https://andrewjswan.github.io/pixel-clock/pixel-clock/) ex **EspHoMaTriXv2** component.
+[**ESPHome**](https://esphome.io/) firmware and custom component for **Ulanzi TC001** and `8×32` RGB LED matrix displays.
+
+**Pixel Clock** is the actively maintained successor to [**EspHoMaTriXv2**](https://github.com/lubeda/EspHoMaTriXv2), originally created by [@lubeda](https://github.com/lubeda). Following the official end of development of the original repository at version `2026.9.1`, this project continues its evolution with ongoing maintenance, bug fixes, and compatibility updates for modern ESPHome releases.
 
 ![Ulanzi TC001](./docs/img/ulanzi-tc001.png)
 
 ## Documentation
 
-[Pixel Clock](https://andrewjswan.github.io/pixel-clock/)
+Full documentation, configuration guides, screen modes, and examples are available on the project website:
+
+👉 [**Pixel Clock Documentation**](https://andrewjswan.github.io/pixel-clock/)
+
 
 ## Firmware
 You can install the firmware using [ESPHome](https://esphome.io/) using one of the ready-made configuration files or use [**PixelClock - ESP Web Tools**](https://andrewjswan.github.io/pixel-clock/firmware.html) - a convenient tool for installing and updating the firmware of ESP32 devices in the browser.
