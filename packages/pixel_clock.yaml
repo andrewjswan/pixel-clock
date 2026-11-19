@@ -185,7 +185,7 @@ display:
       id(rgb8x32)->tick();
       id(rgb8x32)->draw();
 
-pixel-clock:
+pixel_clock:
   id: rgb8x32
   icons2html: true
   iconscache: true
