@@ -142,7 +142,7 @@ This component is highly customizable.
           date_format: "%b %d"
           replace_time_date_from: " Sun Mon Tue Wed Thu Fri Sat Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec"
           replace_time_date_to: " ПН ВТ СР ЧТ ПТ СБ ВС Січ Лют Бер Квіт Трав Черв Лип Серп Вер Жовт Лист Груд"
-    
+
           # Example 2: Korean date and time format (e.g., "4:30오후" and "10월11일")
           time_format: "%p%l:%M"
           date_format: "%b%d일"
