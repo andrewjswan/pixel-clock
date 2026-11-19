@@ -629,9 +629,7 @@ Component triggers and C++ lambdas allow local management without relying on Hom
           lambda: id(rgb8x32)->hold_screen(120);
     ```
 
-## Home Assistant Integration
-
-### UI Controls
+## UI Controls
 
 You can expose interactive controls (such as `brightness`, `display power`, `night mode`, and `icon expansion`) to your Home Assistant dashboard using template entities in your ESPHome YAML configuration (`number`, `switch`, and `select` platforms).
 
@@ -713,70 +711,6 @@ You can expose interactive controls (such as `brightness`, `display power`, `nig
                   id(rgb8x32)->expand_icon_to_9(3);
                 }
     ```
-
-
-### Automation Examples
-
-!!! example annotate "Automation to show the weather with local temperature"
-
-    ``` { .yaml .copy .annotate }
-    alias: Current weather
-    description: Weather with icon per condition
-    trigger:
-      - platform: state
-        entity_id: weather.current_weather
-    action:
-      - service: esphome.pixel_clock_del_screen
-        data:
-          icon_name: weather_*
-          mode: 5
-      - service: esphome.pixel_clock_icon_screen
-        data:
-          icon_name: weather_{{ trigger.to_state.state }}
-          text: >-
-            {{ states("sensor.external_temperature") }}°C
-          lifetime: 60
-          screen_time: 10
-    ```
-
-!!! example annotate "Automation for the trashcan type"
-
-    ``` { .yaml .copy .annotate }
-    alias: "Waste indicator"
-    description: Indicates which bin needs to be put out. Icon names shortened.
-    trigger:
-      - platform: time
-        at:
-          - "06:30"
-          - "08:30"
-          - "10:30"
-          - "15:00"
-          - "17:00"
-          - "19:00"
-    condition:
-      - condition: numeric_state
-        entity_id: sensor.mulltrigger
-        below: "3"
-    action:
-      - service: esphome.pixel_clock_del_screen
-        data:
-          icon_name: trash_*
-          mode: 5
-      - service: esphome.pixel_clock_icon_screen
-        data:
-          icon_name: >-
-            trash_{{ states("sensor.mulldetails") | replace("Organic", "brow")|
-                     replace("Papiertonne","blue")| replace("Residual", "grey")|
-                     replace("gelbe Tonne","yell|") | truncate(4,true,"") }}    
-          text: >-
-            {{ states("sensor.mulldetails") }}
-          lifetime: 120
-          ...
-    ```
-
-!!! tip
-
-    Use wildcard deletion (`*`) with `del_screen` in your Home Assistant automations to clean up and replace dynamic screens (like weather status) without duplicates in the queue.
 
 ## Display Configuration
 
