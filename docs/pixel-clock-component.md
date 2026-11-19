@@ -1,6 +1,6 @@
 ## Introduction
 
-[**Pixel-Clock**](https://andrewjswan.github.io/pixel-clock/pixel-clock/) ex **EspHoMaTriXv2** component is a flexible, highly customizable DIY LED Matrix display, built with a 8×32 RGB LED panel and implemented with [**ESPHome**](https://esphome.io)
+[**Pixel-Clock**](https://andrewjswan.github.io/pixel-clock/pixel-clock/) ex [**EspHoMaTriXv2**](https://github.com/lubeda/EspHoMaTriXv2) component is a flexible, highly customizable DIY LED Matrix display, built with a 8×32 RGB LED panel and implemented with [**ESPHome**](https://esphome.io)
 
 ![Ulanzi TC001](./img/ulanzi-tc001.png)
 
