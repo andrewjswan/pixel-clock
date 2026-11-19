@@ -50,7 +50,7 @@ const uint8_t ICON_STRIDE = TEXTSCROLLSTART + 1;  // icon width (8px) + 1px gap
 
 const uint16_t POLLINGINTERVAL = 250;
 
-static const char *const EHMTX_VERSION = "2026.11.1";
+static const char *const PIXEL_CLOCK_VERSION = "2026.11.1";
 static const char *const TAG = "pixel-clock";
 
 enum show_mode : uint8_t {
