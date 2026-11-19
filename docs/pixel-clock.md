@@ -463,7 +463,7 @@ Numerous features are accessible with services from home assistant and lambdas t
 !!! example annotate "Text Screen like Alert Text Screen"
 
     ``` { .yaml .copy .annotate }
-    - action: esphome.ulanzi_text_screen (1)
+    - action: esphome.pixel_clock_text_screen (1)
       continue_on_error: true
       data:
         default_font: true
@@ -474,7 +474,7 @@ Numerous features are accessible with services from home assistant and lambdas t
         g: 200
         b: 200
 
-    - action: esphome.ulanzi_force_screen
+    - action: esphome.pixel_clock_force_screen
       continue_on_error: true
       data:
         mode: 6 (4)
@@ -811,61 +811,63 @@ To always use the latest version and fixes directly from the repository, add the
         components: [pixel-clock]
     ```
 
-### Arduino
+### Framework
 
-!!! example annotate "Local configuration file | Arduino"
+=== Arduino
 
-    ``` { .yaml .copy .annotate }
-    substitutions:
-      device: esp_pixel_clock
-      name: pixel-clock
-      friendly_name: ESPHome Pixel Clock
-      project_name: "ajs.Pixel_Clock"
-      project_version: "1.1.5"
-      update_interval: 60s
-      comment: "Ulanzi | Pixel Clock"
-      weekdays: "ВСПНВТСРЧТПТСБ"
-      date_to: "ВС ПН ВТ СР ЧТ ПТ СБ Січ Лют Бер Кві Тра Чер Лип Сер Вер Жов Лис Гру"
+    !!! example annotate "Local configuration file | Arduino"
+    
+        ``` { .yaml .copy .annotate }
+        substitutions:
+          device: esp_pixel_clock
+          name: pixel-clock
+          friendly_name: ESPHome Pixel Clock
+          project_name: "ajs.Pixel_Clock"
+          project_version: "1.5.0"
+          update_interval: 60s
+          comment: "Ulanzi TC001 | Pixel Clock"
+          weekdays: "ВСПНВТСРЧТПТСБ"
+          date_to: "ВС ПН ВТ СР ЧТ ПТ СБ Січ Лют Бер Кві Тра Чер Лип Сер Вер Жов Лис Гру"
+    
+        packages:
+          common: !include packages/common.yaml (1)
+          framework: !include packages/framework-arduino.yaml (2)
+          pixel: !include packages/pixel_clock.yaml (3)
+        ```
+    1. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
+    2. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
+    3. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
 
-    packages:
-      common: !include packages/common.yaml (1)
-      framework: !include packages/framework-arduino.yaml (2)
-      pixel: !include packages/pixel_clock.yaml (3)
-    ```
-1. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
-2. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
-3. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
+    !!! tip
+        To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
 
-!!! tip
-    To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
+=== ESP-IDF
 
-### ESP-IDF
-
-!!! example annotate "Local configuration file | ESP-IDF"
-
-    ``` { .yaml .copy .annotate }
-    substitutions:
-      device: esp_pixel_clock
-      name: pixel-clock
-      friendly_name: ESPHome Pixel Clock
-      project_name: "ajs.Pixel_Clock"
-      project_version: "1.1.5"
-      update_interval: 60s
-      comment: "Ulanzi | Pixel Clock"
-      weekdays: "ВСПНВТСРЧТПТСБ"
-      date_to: "ВС ПН ВТ СР ЧТ ПТ СБ Січ Лют Бер Кві Тра Чер Лип Сер Вер Жов Лис Гру"
-
-    packages:
-      common: !include packages/common.yaml (1)
-      framework: !include packages/framework-esp-idf.yaml (2)
-      pixel: !include packages/pixel_clock.yaml (3)
-    ```
-1. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
-2. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
-3. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
-
-!!! tip
-    To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
+    !!! example annotate "Local configuration file | ESP-IDF"
+    
+        ``` { .yaml .copy .annotate }
+        substitutions:
+          device: esp_pixel_clock
+          name: pixel-clock
+          friendly_name: ESPHome Pixel Clock
+          project_name: "ajs.Pixel_Clock"
+          project_version: "1.5.0"
+          update_interval: 60s
+          comment: "Ulanzi TC001 | Pixel Clock"
+          weekdays: "ВСПНВТСРЧТПТСБ"
+          date_to: "ВС ПН ВТ СР ЧТ ПТ СБ Січ Лют Бер Кві Тра Чер Лип Сер Вер Жов Лис Гру"
+    
+        packages:
+          common: !include packages/common.yaml (1)
+          framework: !include packages/framework-esp-idf.yaml (2)
+          pixel: !include packages/pixel_clock.yaml (3)
+        ```
+    1. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
+    2. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
+    3. To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
+    
+    !!! tip
+        To successfully build this example, you need to download the [used packages](https://github.com/andrewjswan/pixel-clock/tree/main/packages) to the `packages` folder.
 
 *[ESP32]: A series of system-on-chip (SoC) microcontrollers from the Chinese manufacturer Espressif, featuring integrated Wi-Fi and Bluetooth controllers, low power consumption, and a low price point.
 *[ESP8266]: A microcontroller from the Chinese manufacturer Espressif with a Wi-Fi interface. Examples include NodeMCU or Wemos D1 Mini.
