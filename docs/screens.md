@@ -10,7 +10,7 @@
     service: esphome.pixel_clock_icon_screen
     data:
       default_font: true
-      icon_name: pumkin
+      icon_name: pumpkin
       text: Halloween
       lifetime: 2
       screen_time: 10
@@ -19,10 +19,11 @@
       b: 0
     ```
 
-!!! tip Pumkin icon
-    To use the Pumkin icon, you need to add it to the configuration.
+!!! tip "Pumpkin icon"
 
-    For example, icon **4033** from the website [Lametric](https://developer.lametric.com/icons)
+    To use the Pumpkin icon, you need to add it to the configuration.
+
+    For example, icon **1574** from the website [Lametric](https://developer.lametric.com/icons)
 
     [More info](pixel-clock.md#icons-and-animations)
 
@@ -175,7 +176,7 @@
 
     1. Must contain 24 RGB triplets (72 integer values in total) representing the 24-pixel bar at the bottom of the screen.
 
-!!! tip Home Assistant
+!!! tip "Home Assistant"
     Additional examples and screenshots are available at the [link](https://github.com/lubeda/EspHoMaTriXv2/issues/149)
 
 ### MODE_BITMAP_SCREEN
@@ -196,7 +197,7 @@ For **8x32** images as text. You can generate these images with, e.g., [Bitmap E
 !!! example annotate "Lambda"
 
     ``` { .c .copy .annotate }
-    void bitmap_screen(string text, int =D_LIFETIME, int screen_time=D_SCREEN_TIME);
+    void bitmap_screen(string text, int lifetime=D_LIFETIME, int screen_time=D_SCREEN_TIME);
     ```
 
 ### MODE_BLANK
