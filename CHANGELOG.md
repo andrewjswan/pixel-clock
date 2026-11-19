@@ -1,5 +1,43 @@
 # Changelog
 
+## [v1.5.0](https://github.com/andrewjswan/pixel-clock/releases/tag/v1.1.5.37/compare/v1.1.5.39...v1.5.0) - 2026-11-19
+
+### 🧩 Component Migration (`ehmtxv2` → `pixel_clock`)
+
+Starting from version **`2026.11.1`**, the core ESPHome custom component has been migrated from the archived `EspHoMaTriXv2` repository into this repository and renamed to **`pixel_clock`**.
+
+#### ⚠️ Breaking Changes & Migration Steps
+
+- **External Component:** Update `external_components` in your YAML to point to `andrewjswan/pixel-clock` with `components: [pixel_clock]`.
+- **YAML Configuration:** Rename the top-level `ehmtxv2:` key to `pixel_clock:`.
+- **Home Assistant Services:** Default service prefixes changed from `esphome.ulanzi_*` / `esphome.ehmtxv2_*` to `esphome.pixel_clock_*`.
+
+### What's Changed
+
+### ❗️ Breaking Changes
+
+- Migrate from `ehmtxv2` to `pixel-clock` component @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/102)
+
+### 🚀 Features
+
+- Migrate from `ehmtxv2` to `pixel-clock` component @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/102)
+
+### 🧰 Maintenance
+
+- Migrate from `ehmtxv2` to `pixel-clock` component @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/102)
+- Add `mkdocs-git-revision-date-localized-plugin` @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/101)
+- Add `MODE_ICON_SCREEN` @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/100)
+- Add `MODE_ICON_CLOCK` @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/99)
+- ESP: Bump actions/setup-python from 6 to 7 @[dependabot[bot]](https://github.com/apps/dependabot) (https://github.com/andrewjswan/pixel-clock/pull/98)
+
+### 🤝 Support
+
+If you like the project, you can support it with a star ⭐ on GitHub.
+
+### ✨ Changelog
+
+**Full Changelog**: https://github.com/andrewjswan/pixel-clock/compare/v1.1.5.39...v1.5.0
+
 ## [v1.1.5.39](https://github.com/andrewjswan/pixel-clock/releases/tag/v1.1.5.37/compare/v1.1.5.37...v1.1.5.39) - 2026-07-17
 
 ### What's Changed
