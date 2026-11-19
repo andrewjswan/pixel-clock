@@ -1,3 +1,8 @@
+---
+title: Pixel Clock Component
+description: Pixel-Clock component is a flexible, highly customizable DIY LED Matrix display, built with a 8×32 RGB LED panel and implemented with ESPHome
+---
+
 ## Introduction
 
 [**Pixel-Clock**](https://andrewjswan.github.io/pixel-clock/pixel-clock/) ex [**EspHoMaTriXv2**](https://github.com/lubeda/EspHoMaTriXv2) component is a flexible, highly customizable DIY LED Matrix display, built with a 8×32 RGB LED panel and implemented with [**ESPHome**](https://esphome.io)

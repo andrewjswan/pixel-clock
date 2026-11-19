@@ -1,3 +1,8 @@
+---
+title: Pixel Clock | Home Assistant
+description: Home Assistant integration guide for ESPHome Pixel Clock with YAML automation examples.
+---
+
 ## Integration in Home Assistant
 
 To control your display, it has to be integrated in Home Assistant. Then it provides several services, all prefixed with the configured `devicename` e.g. `pixel_clock`.

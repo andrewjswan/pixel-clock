@@ -1,3 +1,8 @@
+---
+title: Pixel Clock Component | Screens
+description: Documentation and Home Assistant YAML examples for ESPHome Pixel Clock display modes, custom bitmaps, and queue management.
+---
+
 ## Screens
 
 ### MODE_ICON_SCREEN
