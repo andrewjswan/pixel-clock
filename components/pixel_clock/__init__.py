@@ -430,7 +430,7 @@ async def to_code(config: dict[str, Any]) -> None:  # noqa: C901, PLR0912, PLR09
                     cache_path.parent.mkdir(parents=True, exist_ok=True)
                     with cache_path.open("wb") as f:
                         f.write(r.content)
-                    logging.info("   Icons: Save %s to cache.", conf[CONF_LAMEID])
+                    logging.info("  Icons: Save %s to cache.", conf[CONF_LAMEID])
 
         elif CONF_URL in conf:
             a = urlparse(conf[CONF_URL])
