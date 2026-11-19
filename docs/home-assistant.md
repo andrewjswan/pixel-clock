@@ -82,11 +82,11 @@ Sample automation for the trashcan type
         entity_id: sensor.trash_trigger
         below: "3"
     action:
-      - service: esphome.ulanzi_del_screen
+      - service: esphome.pixel_clock_del_screen
         data:
           icon_name: trash_* (1)
           mode: 5 (2)
-      - service: esphome.ulanzi_icon_screen
+      - service: esphome.pixel_clock_icon_screen
         data:
           icon_name: >-
             trash_{{ states("sensor.trash_details") | replace("Organic", "brown") | replace("Paper","blue") | replace("Residual waste", "grey") | replace("Yellow bin","yellow") }}
@@ -98,6 +98,10 @@ Sample automation for the trashcan type
 2. See the list of all possible [modes](pixel-clock.md#screens-and-modes) and their values
 
 #### Tips
+
+!!! tip "Delete screen"
+
+    Use wildcard deletion (`*`) with `del_screen` in your Home Assistant automations to clean up and replace dynamic screens (like weather status) without duplicates in the queue.
 
 !!! tip "Display sensor precision after Home Assistant 2023.3"
 
