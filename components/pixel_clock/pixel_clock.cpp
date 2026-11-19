@@ -3104,7 +3104,7 @@ uint32_t PixelClock::BitsToInt(uint32_t source, unsigned from, unsigned to) {
 }
 
 void PixelClock::dump_config() {
-  ESP_LOGCONFIG(TAG, "EspHoMatriXv2 version: %s", PixelClock_VERSION);
+  ESP_LOGCONFIG(TAG, "Pixel Clock version: %s", PIXEL_CLOCK_VERSION);
   ESP_LOGCONFIG(TAG, "Icons: %d of %d", this->icon_count, MAXICONS);
   ESP_LOGCONFIG(TAG, "Clock interval: %d s", PIXEL_CLOCK_CLOCK_INTERVAL);
   ESP_LOGCONFIG(TAG, "Date format: %s", PIXEL_CLOCK_DATE_FORMAT);
