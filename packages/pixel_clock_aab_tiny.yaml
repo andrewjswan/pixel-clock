@@ -1,9 +1,5 @@
 globals:
   # aab = auto-adjustable brightness
-  - id: aab_add
-    type: int
-    initial_value: '10'
-
   - id: aab_max
     type: int
     initial_value: '220'
@@ -26,13 +22,29 @@ sensor:
     on_value:
       then:
         - lambda: |-
-            if ( id(switch_autobrightness).state )
-            {
-              uint8_t max_val = (uint8_t)id(aab_max);
-              uint8_t min_val = (uint8_t)id(aab_min);
-              if (!id(rgb8x32)->night_mode) min_val -= 5;
-              uint8_t n = std::clamp((uint8_t)(x / 4 + id(aab_add)), min_val, max_val);
-              uint8_t c = std::max(min_val, (uint8_t)id(rgb8x32)->get_brightness());
-              uint8_t diffPercent = (n - c) * 100 / c;
-              if (abs(diffPercent) > 2) id(rgb8x32)->set_brightness(n);
+            if (id(switch_autobrightness).state) {
+              // Practical upper illumination threshold for maximum brightness
+              const float adc_max_lux = 600.0f;
+              // Sensitivity multiplier and non-linear response curve (awtrix-ng style)
+              const float factor = 1.0f;
+              const float curve_gamma = 1.8f;
+
+              int min_br = id(rgb8x32)->night_mode ? id(aab_min) : (id(aab_min) - 5);
+              if (min_br < 1) min_br = 1;
+              int max_br = id(aab_max);
+              if (max_br < min_br) max_br = min_br;
+
+              // Normalize sensor reading to [0.0, 1.0] and apply gamma curve
+              float level = std::clamp((x / adc_max_lux) * factor, 0.0f, 1.0f);
+              float curved = powf(level, curve_gamma);
+
+              // Map non-linearly into [min_br, max_br]
+              int raw_n = (int)lroundf(min_br + curved * (max_br - min_br));
+              int n = std::clamp(raw_n, min_br, max_br);
+
+              int c = id(rgb8x32)->get_brightness();
+              // Fixed hysteresis in brightness steps prevents low-light jitter
+              if (abs(n - c) >= 2) {
+                id(rgb8x32)->set_brightness(n);
+              }
             }
