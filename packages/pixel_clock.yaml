@@ -40,7 +40,17 @@ ota:
   - platform: esphome
     on_begin:
       then:
-        - lambda: id(rtttl_out).turn_off();
+        - lambda: |-
+            // Turn off buzzer before flash write
+            id(rtttl_out).turn_off();
+
+            // Clear display and draw OTA label centered
+            id(pixel_clock_display).fill(Color::BLACK);
+            id(pixel_clock_display).print(16, 8, id(special_font), Color(255, 0, 0), TextAlign::BASELINE_CENTER, "O T A");
+            id(pixel_clock_display).display();
+
+            // Trigger LightState loop directly to flush buffer to LEDs
+            id(pixel_clock_light)->loop();
 
 output:
   - platform: ledc
@@ -437,4 +447,6 @@ script:
         id(rgb8x32)->icon_date("blank|weekday", -5, 5, true);
 
         id(rgb8x32)->show_icon_indicator(240,240,240, 7, 7, 1);
+
+        id(rgb8x32)->set_weekday_color(12,12,12);
         id(rgb8x32)->set_weekday_accent_on();
