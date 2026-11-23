@@ -1555,10 +1555,8 @@ void PixelClock::tick() {
       if (this->ticks_ <= current_step) {
         float br = std::lerp(0, (float) b / 255, (float) this->ticks_ / current_step);
         // Apply per-channel color correction multipliers while scaling brightness
-        this->display->get_light()->set_correction(
-            br * PIXEL_CLOCK_COLOR_CORRECT_R,
-            br * PIXEL_CLOCK_COLOR_CORRECT_G,
-            br * PIXEL_CLOCK_COLOR_CORRECT_B);
+        this->display->get_light()->set_correction(br * PIXEL_CLOCK_COLOR_CORRECT_R, br * PIXEL_CLOCK_COLOR_CORRECT_G,
+                                                   br * PIXEL_CLOCK_COLOR_CORRECT_B);
       }
     } else
 #endif
@@ -1567,10 +1565,8 @@ void PixelClock::tick() {
         this->brightness_ = this->brightness_ + (this->target_brightness_ < this->brightness_ ? -1 : 1);
         float br = (float) this->brightness_ / (float) 255;
         // Apply per-channel color correction multipliers while scaling brightness
-        this->display->get_light()->set_correction(
-            br * PIXEL_CLOCK_COLOR_CORRECT_R,
-            br * PIXEL_CLOCK_COLOR_CORRECT_G,
-            br * PIXEL_CLOCK_COLOR_CORRECT_B);
+        this->display->get_light()->set_correction(br * PIXEL_CLOCK_COLOR_CORRECT_R, br * PIXEL_CLOCK_COLOR_CORRECT_G,
+                                                   br * PIXEL_CLOCK_COLOR_CORRECT_B);
       }
     }
     this->ticks_++;
