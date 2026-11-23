@@ -1554,7 +1554,9 @@ void PixelClock::tick() {
           ((b - 50) / 205) * (PIXEL_CLOCK_BLEND_STEPS - PIXEL_CLOCK_BLEND_STEPS / 2) + PIXEL_CLOCK_BLEND_STEPS / 2;
       if (this->ticks_ <= current_step) {
         float br = std::lerp(0, (float) b / 255, (float) this->ticks_ / current_step);
-        this->display->get_light()->set_correction(br, br, br);
+        // Apply per-channel color correction multipliers while scaling brightness
+        this->display->get_light()->set_correction(br * PIXEL_CLOCK_COLOR_CORRECT_R, br * PIXEL_CLOCK_COLOR_CORRECT_G,
+                                                   br * PIXEL_CLOCK_COLOR_CORRECT_B);
       }
     } else
 #endif
@@ -1562,7 +1564,9 @@ void PixelClock::tick() {
       if (this->brightness_ != this->target_brightness_) {
         this->brightness_ = this->brightness_ + (this->target_brightness_ < this->brightness_ ? -1 : 1);
         float br = (float) this->brightness_ / (float) 255;
-        this->display->get_light()->set_correction(br, br, br);
+        // Apply per-channel color correction multipliers while scaling brightness
+        this->display->get_light()->set_correction(br * PIXEL_CLOCK_COLOR_CORRECT_R, br * PIXEL_CLOCK_COLOR_CORRECT_G,
+                                                   br * PIXEL_CLOCK_COLOR_CORRECT_B);
       }
     }
     this->ticks_++;

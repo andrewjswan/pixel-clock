@@ -16,6 +16,7 @@ from esphome.components import display, font, graph, time
 from esphome.components.image import CONF_CHROMA_KEY, IMAGE_TYPE
 from esphome.const import (
     CONF_BRIGHTNESS,
+    CONF_COLOR_CORRECT,
     CONF_FILE,
     CONF_ID,
     CONF_RAW_DATA_ID,
@@ -218,6 +219,7 @@ PIXEL_CLOCK_SCHEMA = cv.Schema(
         cv.Optional(CONF_SCROLLCOUNT, default="2"): cv.templatable(cv.positive_int),
         cv.Optional(CONF_FRAMEINTERVAL, default="192"): cv.templatable(cv.positive_int),
         cv.Optional(CONF_BRIGHTNESS, default=80): cv.templatable(cv.int_range(min=0, max=255)),
+        cv.Optional(CONF_COLOR_CORRECT): cv.All([cv.percentage], cv.Length(min=3, max=3)),
         cv.Optional(CONF_RCINDICATOR, default=False): cv.boolean,
         cv.Optional(CONF_RBINDICATOR, default=True): cv.boolean,
         cv.Optional(CONF_LTINDICATOR, default=False): cv.boolean,
@@ -599,6 +601,21 @@ async def to_code(config: dict[str, Any]) -> None:  # noqa: C901, PLR0912, PLR09
     cg.add(var.set_special_font(f))
 
     cg.add(var.set_brightness(config[CONF_BRIGHTNESS]))
+    if (color_correct := config.get(CONF_COLOR_CORRECT)) is not None:
+        r, g, b = color_correct
+        cg.add_define("PIXEL_CLOCK_COLOR_CORRECT_R", round(r, 4))
+        cg.add_define("PIXEL_CLOCK_COLOR_CORRECT_G", round(g, 4))
+        cg.add_define("PIXEL_CLOCK_COLOR_CORRECT_B", round(b, 4))
+        logging.info(
+            "[X] Color Correct: R=%d%%, G=%d%%, B=%d%%",
+            round(r * 100),
+            round(g * 100),
+            round(b * 100),
+        )
+    else:
+        cg.add_define("PIXEL_CLOCK_COLOR_CORRECT_R", 1.0)
+        cg.add_define("PIXEL_CLOCK_COLOR_CORRECT_G", 1.0)
+        cg.add_define("PIXEL_CLOCK_COLOR_CORRECT_B", 1.0)
 
     if config[CONF_ALWAYS_SHOW_RLINDICATORS]:
         cg.add_define("PIXEL_CLOCK_ALWAYS_SHOW_RLINDICATORS")

@@ -157,6 +157,16 @@ This component is highly customizable.
 
 **brightness** (optional, int, default: 80): Initial display brightness on startup (range `0..255`).
 
+**color_correct** (optional, list of 3 percentages, default: `[100%, 100%, 100%]`): Persistent per-channel RGB color correction multipliers (`[R%, G%, B%]`) applied dynamically across all brightness levels. Use this option to balance color channels (for example, reducing red to prevent yellow or white from shifting toward pink at low brightness).
+
+!!! example annotate "Persistent Color Correction"
+
+    ``` { .yaml .copy .annotate }
+    pixel_clock:
+      id: rgb8x32
+      color_correct: [80%, 100%, 90%]
+    ```
+
 **clock_interval** (optional, int, default: 0): Interval in seconds to force displaying the clock screen (set to `0` to disable).
 
 **frame_interval** (optional, ms, default: 192): Default frame duration in milliseconds for animated GIF icons when not specified per icon.
@@ -811,6 +821,9 @@ The `light` component is used by the `addressable_light` display and referenced 
 
 !!! tip
     To hide the light entity from Home Assistant, add `internal: true` under the `light:` platform configuration.
+
+!!! note "Color Correction (`color_correct`)"
+    Setting `color_correct` (e.g., `[30%, 30%, 30%]`) inside the `light:` component only acts as an **initial** value at boot. Whenever `pixel_clock` adjusts the display brightness, it overwrites the light's correction dynamically, resetting the RGB channel balance. For persistent color correction across brightness changes, configure **`color_correct`** directly under [`pixel_clock:`](#parameters-reference) instead.
 
 ### Display Component and Pixel Mappers
 
