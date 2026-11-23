@@ -10,3 +10,5 @@ jobs:
     uses: "andrewjswan/actions/.github/workflows/validate.yml@main"
     permissions:
       contents: write
+      pull-requests: write
+      issues: write
