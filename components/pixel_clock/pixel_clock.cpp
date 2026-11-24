@@ -1312,7 +1312,7 @@ void PixelClock::remove_expired_queue_element() {
             for (auto *t : on_expired_screen_triggers_) {
               t->process(this->queue[i]->icon_name, infotext);
             }
-          }          
+          }
         }
         this->queue[i]->mode = MODE_EMPTY;
         if (this->queue[i]->sbitmap != NULL) {
@@ -1409,7 +1409,7 @@ void PixelClock::tick_next_screen(float ts) {
       ESP_LOGD(TAG, "On next screen trigger");
       t->process(infotext, this->queue[this->screen_pointer]->text);
     }
-  }    
+  }
 }
 
 void PixelClock::tick() {
