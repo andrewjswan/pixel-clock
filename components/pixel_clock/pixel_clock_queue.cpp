@@ -1131,7 +1131,7 @@ void PixelClock_Queue::calc_scroll_time(const std::string &text, uint16_t screen
   uint16_t max_steps = 0;
 
 #ifdef PIXEL_CLOCK_MULTICOLOR_TEXT
-  std::regex color_re("(#[A-Fa-f0-9]{6})");
+  static const std::regex color_re("(#[A-Fa-f0-9]{6})");
   std::string text_ = std::regex_replace(text, color_re, "");
   const char *text_ptr = text_.c_str();
 #else
