@@ -755,7 +755,7 @@ void PixelClock::bitmap_stack(std::string icons, int32_t lifetime, int32_t scree
 
   uint8_t real_count = 0;
   for (uint8_t i = 0; i < count; i++) {
-    uint8_t icon = this->find_icon(tokens[i].c_str());
+    uint8_t icon = this->find_icon(tokens[i]);
     if (icon == MAXICONS) {
       ESP_LOGW(TAG, "Icon %s not found => skip", tokens[i].c_str());
       for (auto *t : on_icon_error_triggers_) {
@@ -812,7 +812,7 @@ void PixelClock::bitmap_stack(std::string i, int32_t l, int32_t s) {
 }
 #endif
 
-uint8_t PixelClock::find_icon(std::string name) {
+uint8_t PixelClock::find_icon(const std::string &name) {
   if (name == "blank") {
     return BLANKICON;
   }
@@ -831,12 +831,24 @@ uint8_t PixelClock::find_icon(std::string name) {
       return i;
     }
   }
-  ESP_LOGW(TAG, "Icon: %s not found", name.c_str());
 
+  ESP_LOGD(TAG, "Icon: %s not found", name.c_str());
   return MAXICONS;
 }
 
-uint8_t PixelClock::find_icon_in_queue(std::string name) {
+uint8_t PixelClock::find_icon_checked_(const std::string &iconname) {
+  uint8_t icon = this->find_icon(iconname);
+  if (icon == MAXICONS) {
+    ESP_LOGW(TAG, "Icon %s not found => default: 0", iconname.c_str());
+    for (auto *t : this->on_icon_error_triggers_) {
+      t->process(iconname);
+    }
+    return 0;
+  }
+  return icon;
+}
+
+uint8_t PixelClock::find_icon_in_queue(const std::string &name) {
   for (uint8_t i = 0; i < MAXQUEUE; i++) {
     if (this->queue[i]->icon_name == name) {
       ESP_LOGD(TAG, "Find icon in queue: icon: %s at position %d", name.c_str(), i);
