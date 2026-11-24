@@ -418,11 +418,16 @@ pixel_clock:
       lameid: 12897
 
   on_next_screen:
-    - homeassistant.event:
-        event: esphome.new_screen
-        data_template:
-          iconname: !lambda "return icon.c_str();"
-          text: !lambda "return text.c_str();"
+    then:
+      - if:
+          condition:
+            api.connected:
+          then:
+            - homeassistant.event:
+                event: esphome.new_screen
+                data_template:
+                  iconname: !lambda "return icon.c_str();"
+                  text: !lambda "return text.c_str();"
 
   on_empty_queue:
     then:
