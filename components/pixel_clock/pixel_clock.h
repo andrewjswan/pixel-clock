@@ -124,7 +124,7 @@ class PixelClock final : public PollingComponent
 
   PixelClock_Queue *find_icon_queue_element(uint8_t icon);
   PixelClock_Queue *find_mode_queue_element(uint8_t mode);
-  PixelClock_Queue *find_mode_icon_queue_element(uint8_t mode, std::string name);
+  PixelClock_Queue *find_mode_icon_queue_element(uint8_t mode, const std::string &name);
   PixelClock_Queue *find_free_queue_element();
 
  public:
@@ -381,9 +381,10 @@ class PixelClock final : public PollingComponent
   void set_adv_clock_color(int32_t hr = C_BLACK, int32_t hg = C_BLACK, int32_t hb = C_BLACK, int32_t mr = C_BLACK,
                            int32_t mg = C_BLACK, int32_t mb = C_BLACK, int32_t sr = C_BLACK, int32_t sg = C_BLACK,
                            int32_t sb = C_BLACK);
-  bool draw_clock(std::string format, esphome::display::BaseFont *font, Color color, int32_t xpos = 0,
+  bool draw_clock(const std::string &format, esphome::display::BaseFont *font, Color color, int32_t xpos = 0,
                   int32_t ypos = 0);
-  bool draw_date(std::string format, esphome::display::BaseFont *font, Color color, int32_t xpos = 0, int32_t ypos = 0);
+  bool draw_date(const std::string &format, esphome::display::BaseFont *font, Color color, int32_t xpos = 0,
+                 int32_t ypos = 0);
 #endif
 #ifdef PIXEL_CLOCK_GAUGE
 #ifndef USE_ESP8266
@@ -481,9 +482,9 @@ class PixelClock final : public PollingComponent
 #endif
 
 #ifdef PIXEL_CLOCK_RAINBOW_SHIMMER
-  void draw_rainbow_text(std::string text, esphome::display::BaseFont *font, int32_t xpos, int32_t ypos);
+  void draw_rainbow_text(const std::string &text, esphome::display::BaseFont *font, int32_t xpos, int32_t ypos);
 #endif
-  void draw_text(std::string text, esphome::display::BaseFont *font, Color color, int32_t xpos, int32_t ypos);
+  void draw_text(const std::string &text, esphome::display::BaseFont *font, Color color, int32_t xpos, int32_t ypos);
 
   void set_replace_time_date_active(bool b = false);
   void set_weekday_char_count(uint8_t i);
@@ -491,9 +492,9 @@ class PixelClock final : public PollingComponent
   std::string replace_time_date(std::string time_date);
   uint8_t weekday_char_count;
   std::string GetWeekdayChar(int32_t position);
-  std::string GetTextChar(std::string text, int32_t position);
+  std::string GetTextChar(const std::string &text, int32_t position);
 #ifdef PIXEL_CLOCK_RAINBOW_SHIMMER
-  int32_t GetTextCharCount(std::string text);
+  int32_t GetTextCharCount(const std::string &text);
 #endif
 
   int32_t GetTextBounds(esphome::display::BaseFont *font, const char *buffer);
@@ -561,7 +562,7 @@ class PixelClock_Queue {
   void draw();
   void update_screen();
   void hold_slot(uint8_t _sec);
-  void calc_scroll_time(std::string text, uint16_t screen_time);
+  void calc_scroll_time(const std::string &text, uint16_t screen_time);
   void calc_scroll_time(uint8_t icon_count, uint16_t screen_time);
   int32_t xpos();
   int32_t xpos(uint8_t item);
@@ -572,7 +573,7 @@ class PixelClock_Queue {
 class PixelClockNextScreenTrigger : public Trigger<std::string, std::string> {
  public:
   explicit PixelClockNextScreenTrigger(PixelClock *parent) { parent->add_on_next_screen_trigger(this); }
-  void process(std::string, std::string);
+  void process(const std::string &, const std::string &);
 };
 
 class PixelClockEmptyQueueTrigger : public Trigger<> {
@@ -584,13 +585,13 @@ class PixelClockEmptyQueueTrigger : public Trigger<> {
 class PixelClockAddScreenTrigger : public Trigger<std::string, uint8_t> {
  public:
   explicit PixelClockAddScreenTrigger(PixelClock *parent) { parent->add_on_add_screen_trigger(this); }
-  void process(std::string, uint8_t);
+  void process(const std::string &, uint8_t);
 };
 
 class PixelClockIconErrorTrigger : public Trigger<std::string> {
  public:
   explicit PixelClockIconErrorTrigger(PixelClock *parent) { parent->add_on_icon_error_trigger(this); }
-  void process(std::string);
+  void process(const std::string &);
 };
 
 class PixelClockStartRunningTrigger : public Trigger<> {
@@ -602,7 +603,7 @@ class PixelClockStartRunningTrigger : public Trigger<> {
 class PixelClockExpiredScreenTrigger : public Trigger<std::string, std::string> {
  public:
   explicit PixelClockExpiredScreenTrigger(PixelClock *parent) { parent->add_on_expired_screen_trigger(this); }
-  void process(std::string, std::string);
+  void process(const std::string &, const std::string &);
 };
 
 class PixelClockNextClockTrigger : public Trigger<> {
@@ -655,7 +656,7 @@ class PixelClock_Icon {
    * @param transparency
    */
   PixelClock_Icon(const uint8_t *data_start, int32_t width, int32_t height, uint32_t animation_frame_count,
-                  esphome::image::ImageType type, std::string icon_name, bool revers, uint16_t frame_duration,
+                  esphome::image::ImageType type, const std::string &icon_name, bool revers, uint16_t frame_duration,
                   esphome::image::Transparency transparency);
 
   // Destructor to free memory

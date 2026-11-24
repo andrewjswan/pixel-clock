@@ -129,7 +129,7 @@ void PixelClock::show_rcindicator(int32_t r, int32_t g, int32_t b, int32_t size)
   if (size > 0) {
     this->rcindicator_color = Color((uint8_t) r, (uint8_t) g, (uint8_t) b);
     this->display_indicator = this->IntToBits(this->display_indicator, size % 5, 4, 3);
-     "Show indicator (center right) size: %d r: %d g: %d b: %d", (int) (size % 5), (int) r, (int) g,
+    ESP_LOGD(TAG, "Show indicator (center right) size: %d r: %d g: %d b: %d", (int) (size % 5), (int) r, (int) g,
              (int) b);
   } else {
     this->hide_rcindicator();
@@ -150,7 +150,7 @@ void PixelClock::show_rindicator(int32_t r, int32_t g, int32_t b, int32_t size) 
   if (size > 0) {
     this->rbindicator_color = Color((uint8_t) r, (uint8_t) g, (uint8_t) b);
     this->display_indicator = this->IntToBits(this->display_indicator, size % 4, 3, 7);
-     "Show indicator (bottom right) size: %d r: %d g: %d b: %d", (int) (size % 4), (int) r, (int) g,
+    ESP_LOGD(TAG, "Show indicator (bottom right) size: %d r: %d g: %d b: %d", (int) (size % 4), (int) r, (int) g,
              (int) b);
   } else {
     this->hide_rindicator();
@@ -171,7 +171,7 @@ void PixelClock::show_ltindicator(int32_t r, int32_t g, int32_t b, int32_t size)
   if (size > 0) {
     this->ltindicator_color = Color((uint8_t) r, (uint8_t) g, (uint8_t) b);
     this->display_indicator = this->IntToBits(this->display_indicator, size % 4, 3, 10);
-     "Show indicator (top left) size: %d r: %d g: %d b: %d", (int) (size % 4), (int) r, (int) g, (int) b);
+    ESP_LOGD(TAG, "Show indicator (top left) size: %d r: %d g: %d b: %d", (int) (size % 4), (int) r, (int) g, (int) b);
   } else {
     this->hide_ltindicator();
   }
@@ -191,7 +191,7 @@ void PixelClock::show_lcindicator(int32_t r, int32_t g, int32_t b, int32_t size)
   if (size > 0) {
     this->lcindicator_color = Color((uint8_t) r, (uint8_t) g, (uint8_t) b);
     this->display_indicator = this->IntToBits(this->display_indicator, size % 5, 4, 14);
-     "Show indicator (center left) size: %d r: %d g: %d b: %d", (int) (size % 5), (int) r, (int) g,
+    ESP_LOGD(TAG, "Show indicator (center left) size: %d r: %d g: %d b: %d", (int) (size % 5), (int) r, (int) g,
              (int) b);
   } else {
     this->hide_lcindicator();
@@ -212,7 +212,7 @@ void PixelClock::show_lindicator(int32_t r, int32_t g, int32_t b, int32_t size) 
   if (size > 0) {
     this->lbindicator_color = Color((uint8_t) r, (uint8_t) g, (uint8_t) b);
     this->display_indicator = this->IntToBits(this->display_indicator, size % 4, 3, 17);
-     "Show indicator (bottom left) size: %d r: %d g: %d b: %d", (int) (size % 4), (int) r, (int) g,
+    ESP_LOGD(TAG, "Show indicator (bottom left) size: %d r: %d g: %d b: %d", (int) (size % 4), (int) r, (int) g,
              (int) b);
   } else {
     this->hide_lindicator();
@@ -237,7 +237,7 @@ void PixelClock::show_icon_indicator(int32_t r, int32_t g, int32_t b, int32_t si
     this->display_indicator = this->IntToBits(this->display_indicator, size % 11, 8, 20);
     this->icon_indicator_height = height;
     this->icon_indicator_y_pos = pos;
-     "Show icon_indicator size: %d height: %d r: %d g: %d b: %d pos: %d", (int) (size % 11), (int) height,
+    ESP_LOGD(TAG, "Show icon_indicator size: %d height: %d r: %d g: %d b: %d pos: %d", (int) (size % 11), (int) height,
              (int) r, (int) g, (int) b, (int) pos);
   } else {
     this->hide_icon_indicator();
@@ -251,7 +251,7 @@ void PixelClock::show_icon_indicator(int32_t r, int32_t g, int32_t b, int32_t si
  */
 void PixelClock::hide_alarm() {
   this->display_indicator = this->IntToBits(this->display_indicator, 0, 3, 0);
-   "Hide alarm indicator");
+  ESP_LOGD(TAG, "Hide alarm indicator");
 }
 
 #ifdef PIXEL_CLOCK_RCINDICATOR
@@ -261,7 +261,7 @@ void PixelClock::hide_alarm() {
  */
 void PixelClock::hide_rcindicator() {
   this->display_indicator = this->IntToBits(this->display_indicator, 0, 4, 3);
-   "Hide indicator (center right)");
+  ESP_LOGD(TAG, "Hide indicator (center right)");
 }
 #endif
 
@@ -272,7 +272,7 @@ void PixelClock::hide_rcindicator() {
  */
 void PixelClock::hide_rindicator() {
   this->display_indicator = this->IntToBits(this->display_indicator, 0, 3, 7);
-   "Hide indicator (bottom right)");
+  ESP_LOGD(TAG, "Hide indicator (bottom right)");
 }
 #endif
 
@@ -283,7 +283,7 @@ void PixelClock::hide_rindicator() {
  */
 void PixelClock::hide_ltindicator() {
   this->display_indicator = this->IntToBits(this->display_indicator, 0, 3, 10);
-   "Hide indicator (top left)");
+  ESP_LOGD(TAG, "Hide indicator (top left)");
 }
 #endif
 
@@ -294,7 +294,7 @@ void PixelClock::hide_ltindicator() {
  */
 void PixelClock::hide_lcindicator() {
   this->display_indicator = this->IntToBits(this->display_indicator, 0, 4, 14);
-   "Hide indicator (center left)");
+  ESP_LOGD(TAG, "Hide indicator (center left)");
 }
 #endif
 
@@ -305,7 +305,7 @@ void PixelClock::hide_lcindicator() {
  */
 void PixelClock::hide_lindicator() {
   this->display_indicator = this->IntToBits(this->display_indicator, 0, 3, 17);
-   "Hide indicator (bottom left)");
+  ESP_LOGD(TAG, "Hide indicator (bottom left)");
 }
 #endif
 
@@ -315,7 +315,7 @@ void PixelClock::hide_lindicator() {
  */
 void PixelClock::hide_icon_indicator() {
   this->display_indicator = this->IntToBits(this->display_indicator, 0, 8, 20);
-   "Hide icon indicator");
+  ESP_LOGD(TAG, "Hide icon indicator");
 }
 #endif
 
@@ -348,6 +348,7 @@ void PixelClock::set_display_on() {
     t->process(this->show_display);
   }
 }
+
 /**
  * @brief end night mode
  *
@@ -360,6 +361,7 @@ void PixelClock::set_night_mode_off() {
     t->process(this->night_mode);
   }
 }
+
 /**
  * @brief  in night mode not all screens are shown
  *
@@ -444,7 +446,7 @@ bool PixelClock::string_has_ending(std::string const &fullString, std::string co
  * @param delim the delimiter
  * @return std::string the cleaned up iconname
  */
-std::string get_icon_name(std::string iconname, char delim = '|') {
+std::string get_icon_name(const std::string &iconname, char delim = '|') {
   std::stringstream stream(iconname);
   std::string icon;
   std::vector<std::string> tokens;
@@ -458,7 +460,7 @@ std::string get_icon_name(std::string iconname, char delim = '|') {
   return (tokens.size() > 0) ? tokens[0] : "";
 }
 
-std::string get_screen_id(std::string iconname, char delim = '|') {
+std::string get_screen_id(const std::string &iconname, char delim = '|') {
   std::stringstream stream(iconname);
   std::string screen_id;
   std::vector<std::string> tokens;
@@ -816,11 +818,9 @@ uint8_t PixelClock::find_icon(const std::string &name) {
   if (name == "blank") {
     return BLANKICON;
   }
-
   if (name == "solid") {
     return SOLIDICON;
   }
-
   if (name == "calendar") {
     return CALENDARICON;
   }
@@ -841,7 +841,7 @@ uint8_t PixelClock::find_icon_checked_(const std::string &name) {
   if (icon == MAXICONS) {
     ESP_LOGW(TAG, "Icon %s not found => default: 0", name.c_str());
     for (auto *t : this->on_icon_error_triggers_) {
-      t->process(iconname);
+      t->process(name);
     }
     return 0;
   }
@@ -2429,9 +2429,9 @@ PixelClock_Queue *PixelClock::find_mode_queue_element(uint8_t mode) {
   return this->find_free_queue_element();
 }
 
-PixelClock_Queue *PixelClock::find_mode_icon_queue_element(uint8_t mode, std::string name) {
+PixelClock_Queue *PixelClock::find_mode_icon_queue_element(uint8_t mode, const std::string &name) {
   for (size_t i = 0; i < MAXQUEUE; i++) {
-    if (this->queue[i]->mode == mode && strcmp(this->queue[i]->icon_name.c_str(), name.c_str()) == 0) {
+    if (this->queue[i]->mode == mode && this->queue[i]->icon_name == name) {
       ESP_LOGD(TAG, "Find screen: found by mode %d icon %s", i, name.c_str());
       return this->queue[i];
     }
@@ -2617,7 +2617,7 @@ void PixelClock::set_adv_clock_color(int32_t hr, int32_t hg, int32_t hb, int32_t
            (int) hr, (int) hg, (int) hb, (int) mr, (int) mg, (int) mb, (int) sr, (int) sg, (int) sb);
 }
 
-bool PixelClock::draw_clock(std::string format, esphome::display::BaseFont *font, Color color, int32_t xpos,
+bool PixelClock::draw_clock(const std::string &format, esphome::display::BaseFont *font, Color color, int32_t xpos,
                             int32_t ypos) {
   std::regex rgx{"^(%[HI])(.)(%M)(.)?(%S|%p)?$"};
   std::smatch match;
@@ -2781,7 +2781,7 @@ bool PixelClock::draw_clock(std::string format, esphome::display::BaseFont *font
   return true;
 }
 
-bool PixelClock::draw_date(std::string format, esphome::display::BaseFont *font, Color color, int32_t xpos,
+bool PixelClock::draw_date(const std::string &format, esphome::display::BaseFont *font, Color color, int32_t xpos,
                            int32_t ypos) {
   std::regex rgx{"^(%\\D)(.+)(%\\D)(.+)?(?:(%\\D)(.+)?)?$"};
   std::smatch match;
@@ -2834,7 +2834,7 @@ bool PixelClock::draw_date(std::string format, esphome::display::BaseFont *font,
 }
 #endif
 
-void PixelClock::draw_text(std::string text, esphome::display::BaseFont *font, Color color, int32_t xpos,
+void PixelClock::draw_text(const std::string &text, esphome::display::BaseFont *font, Color color, int32_t xpos,
                            int32_t ypos) {
 #ifdef PIXEL_CLOCK_MULTICOLOR_TEXT
   std::size_t pos = text.find("#");
@@ -2846,8 +2846,8 @@ void PixelClock::draw_text(std::string text, esphome::display::BaseFont *font, C
   if (this->text_for_draw.size() == 0) {
     std::regex regex("(#[A-Fa-f0-9]{6})|(.+?)");
 
-    std::regex_iterator<std::string::iterator> next(text.begin(), text.end(), regex);
-    std::regex_iterator<std::string::iterator> end;
+    std::regex_iterator<std::string::const_iterator> next(text.begin(), text.end(), regex);
+    std::regex_iterator<std::string::const_iterator> end;
 
     std::vector<std::string> res;
 
@@ -2900,7 +2900,8 @@ void PixelClock::draw_text(std::string text, esphome::display::BaseFont *font, C
 }
 
 #ifdef PIXEL_CLOCK_RAINBOW_SHIMMER
-void PixelClock::draw_rainbow_text(std::string text, esphome::display::BaseFont *font, int32_t xpos, int32_t ypos) {
+void PixelClock::draw_rainbow_text(const std::string &text, esphome::display::BaseFont *font, int32_t xpos,
+                                   int32_t ypos) {
   uint16_t str_len = GetTextCharCount(text);
   uint16_t x = 0;
 
@@ -2918,11 +2919,11 @@ void PixelClock::set_weekday_char_count(uint8_t i) { this->weekday_char_count = 
 
 std::string PixelClock::GetWeekdayChar(int32_t position) { return GetTextChar(PIXEL_CLOCK_WEEKDAYTEXT, position); }
 
-std::string PixelClock::GetTextChar(std::string text, int32_t position) {
+std::string PixelClock::GetTextChar(const std::string &text, int32_t position) {
   std::string text_char = "";
   int32_t pos = 0;
 
-  for (int32_t i = 0; i < strlen(text.c_str());) {
+  for (size_t i = 0; i < text.length();) {
     text_char = text_char + text[i];
     if (text[i] & 0x80) {
       text_char = text_char + text[i + 1];
@@ -2952,10 +2953,10 @@ std::string PixelClock::GetTextChar(std::string text, int32_t position) {
 }
 
 #ifdef PIXEL_CLOCK_RAINBOW_SHIMMER
-int32_t PixelClock::GetTextCharCount(std::string text) {
+int32_t PixelClock::GetTextCharCount(const std::string &text) {
   int32_t count = 0;
 
-  for (int32_t i = 0; i < strlen(text.c_str());) {
+  for (size_t i = 0; i < text.length();) {
     if (text[i] & 0x80) {
       if (text[i] & 0x20) {
         if (text[i] & 0x10) {
@@ -3250,11 +3251,16 @@ void HOT PixelClock::draw() {
 
 void PixelClockStartRunningTrigger::process() { this->trigger(); }
 void PixelClockEmptyQueueTrigger::process() { this->trigger(); }
-void PixelClockNextScreenTrigger::process(std::string iconname, std::string text) { this->trigger(iconname, text); }
-void PixelClockAddScreenTrigger::process(std::string iconname, uint8_t mode) { this->trigger(iconname, mode); }
-void PixelClockIconErrorTrigger::process(std::string iconname) { this->trigger(iconname); }
-void PixelClockExpiredScreenTrigger::process(std::string iconname, std::string text) { this->trigger(iconname, text); }
+void PixelClockNextScreenTrigger::process(const std::string &iconname, const std::string &text) {
+  this->trigger(iconname, text);
+}
+void PixelClockAddScreenTrigger::process(const std::string &iconname, uint8_t mode) { this->trigger(iconname, mode); }
+void PixelClockIconErrorTrigger::process(const std::string &iconname) { this->trigger(iconname); }
+void PixelClockExpiredScreenTrigger::process(const std::string &iconname, const std::string &text) {
+  this->trigger(iconname, text);
+}
 void PixelClockNextClockTrigger::process() { this->trigger(); }
 void PixelClockShowDisplayTrigger::process(bool state) { this->trigger(state); }
 void PixelClockNightModeTrigger::process(bool state) { this->trigger(state); }
+
 }  // namespace esphome::pixel_clock
