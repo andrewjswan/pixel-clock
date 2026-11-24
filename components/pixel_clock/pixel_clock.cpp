@@ -2519,8 +2519,8 @@ bool PixelClock::draw_clock(const std::string &format, esphome::display::BaseFon
 
   uint8_t full_length = 0;
 
-  for (int32_t i = 1; i < match.length(); i++) {
-    std::string output = match[i].str();
+  for (const auto &output_token : tokens) {
+    std::string output = output_token;
 
     if (output.length() > 0) {
       if (output.find("%") != std::string::npos) {
@@ -2675,8 +2675,8 @@ bool PixelClock::draw_date(const std::string &format, esphome::display::BaseFont
 
   uint8_t full_length = 0;
 
-  for (int32_t i = 1; i < match.length(); i++) {
-    std::string output = match[i].str();
+  for (const auto &output_token : tokens) {
+    std::string output = output_token;
 
     if (output.length() > 0) {
       if (output.find("%") != std::string::npos) {
