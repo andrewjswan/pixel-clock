@@ -2900,7 +2900,8 @@ void PixelClock::draw_text(const std::string &text, esphome::display::BaseFont *
 }
 
 #ifdef PIXEL_CLOCK_RAINBOW_SHIMMER
-void PixelClock::draw_rainbow_text(const std::string &text, esphome::display::BaseFont *font, int32_t xpos, int32_t ypos) {
+void PixelClock::draw_rainbow_text(const std::string &text, esphome::display::BaseFont *font, int32_t xpos,
+                                   int32_t ypos) {
   uint16_t str_len = GetTextCharCount(text);
   uint16_t x = 0;
 
