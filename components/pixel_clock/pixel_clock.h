@@ -280,7 +280,8 @@ class PixelClock final : public PollingComponent
   bool show_display = false;
   bool night_mode = false;
   bool weekday_accent = false;
-  uint8_t find_icon(std::string name);
+  uint8_t find_icon(const std::string &name);
+  uint8_t find_icon_checked_(const std::string &iconname);
   uint8_t find_last_clock();
   bool string_has_ending(std::string const &fullString, std::string const &ending);
   void draw_day_of_week(int32_t ypos = 0, bool small = false);
