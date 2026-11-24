@@ -17,7 +17,6 @@
 #include "esphome/components/api/custom_api_device.h"
 #endif
 
-#include <sstream>
 #include <vector>
 #include <algorithm>
 #include <string>
@@ -725,22 +724,7 @@ void PixelClock::bitmap_stack(std::string icons, int32_t lifetime, int32_t scree
     id = get_screen_id(icons);
   }
 
-  std::stringstream stream(ic);
-  std::string icon;
-  std::vector<std::string> tokens;
-  uint8_t count = 0;
-
-  while (std::getline(stream, icon, ',')) {
-    icon = trim(icon);
-    if (!icon.empty()) {
-      tokens.push_back(icon);
-      count++;
-    }
-    if (count >= 64) {
-      break;
-    }
-  }
-  if (count == 0) {
+  if (ic.find_first_not_of(',') == std::string::npos) {
     ESP_LOGW(TAG, "Bitmap stack: icons list [%s] empty", ic.c_str());
     return;
   }
@@ -750,19 +734,31 @@ void PixelClock::bitmap_stack(std::string icons, int32_t lifetime, int32_t scree
     screen->sbitmap = new Color[64];
   }
 
+  uint8_t count = 0;
   uint8_t real_count = 0;
-  for (uint8_t i = 0; i < count; i++) {
-    uint8_t icon = this->find_icon(tokens[i]);
+  size_t start = 0;
+  while (start < ic.length() && count < 64) {
+    size_t end = ic.find(',', start);
+    std::string token = trim(ic.substr(start, end - start));
+    start = (end == std::string::npos) ? ic.length() : end + 1;
+
+    if (token.empty()) {
+      continue;
+    }
+    count++;
+
+    uint8_t icon = this->find_icon(token);
     if (icon == MAXICONS) {
-      ESP_LOGW(TAG, "Icon %s not found => skip", tokens[i].c_str());
+      ESP_LOGW(TAG, "Icon %s not found => skip", token.c_str());
       for (auto *t : on_icon_error_triggers_) {
-        t->process(tokens[i]);
+        t->process(token);
       }
       continue;
     }
     screen->sbitmap[real_count] = Color(127, 255, icon, 5);  // int16_t 32767 = uint8_t(127,255)
     real_count++;
   }
+
   if (real_count == 0) {
     delete[] screen->sbitmap;
     screen->sbitmap = nullptr;
@@ -1238,21 +1234,14 @@ uint8_t PixelClock::find_oldest_queue_element() {
         continue;
       }
 
-      if (this->night_mode) {
-        bool skip = true;
-        for (auto id : PIXEL_CLOCK_CONF_NIGHT_MODE_SCREENS) {
-          if (this->queue[i]->mode == id) {
-            skip = false;
-          }
-        }
-        if (skip) {
-          continue;
-        }
+      if (this->night_mode && !this->queue[i]->is_allowed_in_night_mode()) {
+        continue;
       }
 
       hit = i;
       break;
     }
+
     ESP_LOGD(TAG, "Oldest queue element fallback: %d/%d", hit, queue_count);
   } else {
     // Queue is really empty
@@ -1296,7 +1285,6 @@ uint8_t PixelClock::find_last_clock() {
 
 void PixelClock::remove_expired_queue_element() {
   if (this->clock->now().is_valid()) {
-    std::string infotext;
     float ts =
         this->get_tick() + static_cast<float>(PIXEL_CLOCK_SCROLL_INTERVAL);  // Force remove expired queue element
 
@@ -1331,16 +1319,8 @@ uint8_t PixelClock::queue_count() {
       continue;
     }
 
-    if (this->night_mode) {
-      bool skip = true;
-      for (auto id : PIXEL_CLOCK_CONF_NIGHT_MODE_SCREENS) {
-        if (this->queue[i]->mode == id) {
-          skip = false;
-        }
-      }
-      if (skip) {
-        continue;
-      }
+    if (this->night_mode && !this->queue[i]->is_allowed_in_night_mode()) {
+      continue;
     }
 
     if (this->queue[i]->endtime > ts) {
@@ -1575,41 +1555,43 @@ void PixelClock::set_replace_time_date_active(bool b) {
   ESP_LOGI(TAG, "replace_time_date %s", b ? ESPHOME_F("on") : ESPHOME_F("off"));
 }
 
+static std::vector<std::string> split_whitespace(const std::string &str) {
+  std::vector<std::string> tokens;
+  size_t start = 0;
+  while (start < str.length()) {
+    start = str.find_first_not_of(" \t\r\n", start);
+    if (start == std::string::npos) {
+      break;
+    }
+    size_t end = str.find_first_of(" \t\r\n", start);
+    tokens.push_back(str.substr(start, end - start));
+    start = (end == std::string::npos) ? str.length() : end + 1;
+  }
+  return tokens;
+}
+
 std::string PixelClock::replace_time_date(std::string time_date)  // Replace Time Date Strings / Trip5
 {
-  std::string replace_from_string = PIXEL_CLOCK_REPLACE_TIME_DATE_FROM;
-  std::string replace_to_string = PIXEL_CLOCK_REPLACE_TIME_DATE_TO;
-  std::string replace_from_arr[50];  // AM + PM + 7 Days + 12 Months = 21 but 50 to be super-safe
-  std::string replace_to_arr[50];
-  std::string replace_from;
-  std::string replace_to;
-  uint16_t replace_arr_n;
-  if (replace_from_string != "" && replace_to_string != "") {
-    std::istringstream iss_from(replace_from_string);
-    std::vector<std::string> replace_from_arr;
-    for (std::string s_from; iss_from >> s_from;)
-      replace_from_arr.push_back(s_from);
-    replace_arr_n = replace_from_arr.size();
-    std::istringstream iss_to(replace_to_string);
-    std::vector<std::string> replace_to_arr;
-    for (std::string s_to; iss_to >> s_to;)
-      replace_to_arr.push_back(s_to);
-    if (replace_to_arr.size() < replace_arr_n) {
-      replace_arr_n = replace_to_arr.size();
-    }
-    uint16_t k = 0;
-    do {
-      std::vector<std::uint8_t> data(time_date.begin(), time_date.end());
-      std::vector<std::uint8_t> pattern(replace_from_arr[k].begin(), replace_from_arr[k].end());
-      std::vector<std::uint8_t> replaceData(replace_to_arr[k].begin(), replace_to_arr[k].end());
-      std::vector<std::uint8_t>::iterator itr;
-      while ((itr = std::search(data.begin(), data.end(), pattern.begin(), pattern.end())) != data.end()) {
-        data.erase(itr, itr + pattern.size());
-        data.insert(itr, replaceData.begin(), replaceData.end());
+  static const auto replacements = []() {
+    std::vector<std::pair<std::string, std::string>> pairs;
+    auto from_tokens = split_whitespace(PIXEL_CLOCK_REPLACE_TIME_DATE_FROM);
+    auto to_tokens = split_whitespace(PIXEL_CLOCK_REPLACE_TIME_DATE_TO);
+    size_t count = std::min(from_tokens.size(), to_tokens.size());
+    pairs.reserve(count);
+    for (size_t i = 0; i < count; i++) {
+      if (!from_tokens[i].empty()) {
+        pairs.emplace_back(std::move(from_tokens[i]), std::move(to_tokens[i]));
       }
-      time_date = std::string(data.begin(), data.end());
-      k++;
-    } while (k < replace_arr_n);
+    }
+    return pairs;
+  }();
+
+  for (const auto &[from, to] : replacements) {
+    size_t pos = 0;
+    while ((pos = time_date.find(from, pos)) != std::string::npos) {
+      time_date.replace(pos, from.length(), to);
+      pos += to.length();
+    }
   }
   return time_date;
 }

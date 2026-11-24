@@ -3,6 +3,7 @@
 #include "esphome/core/defines.h"
 
 namespace esphome::pixel_clock {
+
 #ifdef PIXEL_CLOCK_USE_FIRE_PLUGIN
 const size_t m_heatSize = 8 * 32; /**< Number of heat temperatures */
 uint8_t *m_heat = new (std::nothrow) uint8_t[m_heatSize];
@@ -26,11 +27,6 @@ static const uint8_t SPARKING = 120U;
  * This is NOT a chromatically correct 'black body radiation'
  * spectrum, but it's surprisingly close, and it's fast and small.
  */
-Color heatColor(uint8_t temperature);
-#endif
-
-#ifdef PIXEL_CLOCK_USE_FIRE_PLUGIN
-
 Color PixelClock_Queue::heatColor(uint8_t temperature) {
   Color heatColor;
 
@@ -59,7 +55,6 @@ Color PixelClock_Queue::heatColor(uint8_t temperature) {
 
   return heatColor;
 }
-
 #endif
 
 PixelClock_Queue::PixelClock_Queue(PixelClock *config) {
