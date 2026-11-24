@@ -150,8 +150,8 @@ class PixelClock final : public PollingComponent
   int8_t info_date_y_offset = 0;
 #endif
 
-  Color text_color, alarm_color, today_color, weekday_color, rainbow_color, clock_color, info_lcolor,
-      info_rcolor, solid_color, calendar_color;
+  Color text_color, alarm_color, today_color, weekday_color, rainbow_color, clock_color, info_lcolor, info_rcolor,
+      solid_color, calendar_color;
   PixelClock_Icon *icons[MAXICONS];
 #ifdef PIXEL_CLOCK_ADV_CLOCK
   Color hour_color, minutes_color, spacer_color, info_clock_lcolor, info_clock_rcolor, info_date_lcolor,
