@@ -1301,11 +1301,7 @@ void PixelClock::remove_expired_queue_element() {
             }
           }
         }
-        this->queue[i]->mode = MODE_EMPTY;
-        if (this->queue[i]->sbitmap != NULL) {
-          delete[] this->queue[i]->sbitmap;
-          this->queue[i]->sbitmap = nullptr;
-        }
+        this->queue[i]->reset();
       }
     }
   }
@@ -1626,19 +1622,7 @@ void PixelClock::del_screen(std::string icon_name, int32_t mode) {
 
       if (force) {
         ESP_LOGW(TAG, "Del screen: slot %d deleted", i);
-        this->queue[i]->mode = MODE_EMPTY;
-        this->queue[i]->endtime = 0.0;
-        this->queue[i]->last_time = 0.0;
-        if (this->queue[i]->sbitmap != NULL) {
-          delete[] this->queue[i]->sbitmap;
-          this->queue[i]->sbitmap = nullptr;
-        }
-#ifdef PIXEL_CLOCK_ADV_BITMAP
-        if (this->queue[i]->bitmap != NULL) {
-          delete[] this->queue[i]->bitmap;
-          this->queue[i]->bitmap = nullptr;
-        }
-#endif
+        this->queue[i]->reset();
         if (i == this->screen_pointer) {
           this->next_action_time = this->get_tick();
         }
