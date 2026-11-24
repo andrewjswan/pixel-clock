@@ -518,7 +518,7 @@ void PixelClock::bitmap_screen(std::string text, int32_t lifetime, int32_t scree
   std::string ic = get_icon_name(text);
   std::string id = "";
 
-  if (text.find("|") != std::string::npos) {
+  if (text.find('|') != std::string::npos) {
     id = get_screen_id(text);
   }
 
@@ -588,7 +588,7 @@ void PixelClock::bitmap_small(std::string icon, std::string text, int32_t lifeti
   std::string ic = get_icon_name(icon);
   std::string id = "";
 
-  if (icon.find("|") != std::string::npos) {
+  if (icon.find('|') != std::string::npos) {
     id = get_screen_id(icon);
   }
 
@@ -650,7 +650,7 @@ void PixelClock::rainbow_bitmap_small(std::string icon, std::string text, int32_
   std::string ic = get_icon_name(icon);
   std::string id = "";
 
-  if (icon.find("|") != std::string::npos) {
+  if (icon.find('|') != std::string::npos) {
     id = get_screen_id(icon);
   }
 
@@ -720,7 +720,7 @@ void PixelClock::bitmap_stack(std::string icons, int32_t lifetime, int32_t scree
   std::string ic = get_icon_name(icons);
   std::string id = "";
 
-  if (icons.find("|") != std::string::npos) {
+  if (icons.find('|') != std::string::npos) {
     id = get_screen_id(icons);
   }
 
@@ -1184,7 +1184,7 @@ void PixelClock::force_screen(std::string icon_name, int32_t mode) {
           (mode == MODE_BITMAP_SCREEN) ||
 #endif
           (mode == MODE_PROGNOSIS_SCREEN)) {
-        if (strcmp(this->queue[i]->icon_name.c_str(), icon_name.c_str()) != 0) {
+        if (this->queue[i]->icon_name != icon_name) {
           force = false;
         }
       }
@@ -1548,7 +1548,7 @@ void PixelClock::set_special_font(display::BaseFont *font) { this->special_font 
 
 void PixelClock::set_replace_time_date_active(bool b) {
   this->replace_time_date_active = b;
-  ESP_LOGI(TAG, "replace_time_date %s", b ? ESPHOME_F("on") : ESPHOME_F("off"));
+  ESP_LOGI(TAG, "replace_time_date %s", ONOFF(b));
 }
 
 static std::vector<std::string> split_whitespace(const std::string &str) {
@@ -1597,7 +1597,7 @@ void PixelClock::del_screen(std::string icon_name, int32_t mode) {
     if (this->queue[i]->mode == mode) {
       bool force = true;
       std::string ic = get_icon_name(icon_name);
-      std::string id = icon_name.find("|") != std::string::npos ? get_screen_id(icon_name) : ic;
+      std::string id = icon_name.find('|') != std::string::npos ? get_screen_id(icon_name) : ic;
       ESP_LOGD(TAG, "Del screen: %s -> icon: %s id: %s in position: %s mode: %d", icon_name.c_str(), ic.c_str(),
                id.c_str(), this->queue[i]->icon_name.c_str(), (int) mode);
 
@@ -1615,7 +1615,7 @@ void PixelClock::del_screen(std::string icon_name, int32_t mode) {
           if (this->queue[i]->icon_name.rfind(comparename, 0) != 0) {
             force = false;
           }
-        } else if (strcmp(this->queue[i]->icon_name.c_str(), id.c_str()) != 0) {
+        } else if (this->queue[i]->icon_name != id) {
           force = false;
         }
       }
@@ -2168,7 +2168,7 @@ void PixelClock::icon_prognosis_screen_rgb(std::string iconname, std::string tex
   }
 
   if (screen->sbitmap == NULL) {
-    screen->sbitmap = new Color[64];
+    screen->sbitmap = new Color[24]();
   }
 
   JsonDocument doc;
@@ -2257,12 +2257,12 @@ PixelClock_Queue *PixelClock::find_mode_icon_queue_element(uint8_t mode, const s
 
 void PixelClock::set_show_seconds(bool b) {
   this->show_seconds = b;
-  ESP_LOGI(TAG, "%sshow seconds", b ? ESPHOME_F("") : ESPHOME_F("don't "));
+  ESP_LOGI(TAG, "Show seconds: %s", ONOFF(b));
 }
 
 void PixelClock::set_show_day_of_week(bool b) {
   this->show_day_of_week = b;
-  ESP_LOGI(TAG, "%sshow day of week", b ? ESPHOME_F("") : ESPHOME_F("don't "));
+  ESP_LOGI(TAG, "Show day of week: %s", ONOFF(b));
 }
 
 void PixelClock::set_brightness(int32_t value) {
@@ -2489,7 +2489,7 @@ bool PixelClock::draw_clock(const std::string &format, esphome::display::BaseFon
     std::string output = output_token;
 
     if (output.length() > 0) {
-      if (output.find("%") != std::string::npos) {
+      if (output.find('%') != std::string::npos) {
         if (this->replace_time_date_active && output == "%p")  // check for replace active
         {
           output = this->clock->now().strftime(output);
@@ -2645,7 +2645,7 @@ bool PixelClock::draw_date(const std::string &format, esphome::display::BaseFont
     std::string output = output_token;
 
     if (output.length() > 0) {
-      if (output.find("%") != std::string::npos) {
+      if (output.find('%') != std::string::npos) {
         if (this->replace_time_date_active &&
             (output == "%a" || output == "%A" || output == "%b" || output == "%B"))  // check for replace active
         {
@@ -2684,7 +2684,7 @@ bool PixelClock::draw_date(const std::string &format, esphome::display::BaseFont
 void PixelClock::draw_text(const std::string &text, esphome::display::BaseFont *font, Color color, int32_t xpos,
                            int32_t ypos) {
 #ifdef PIXEL_CLOCK_MULTICOLOR_TEXT
-  std::size_t pos = text.find("#");
+  std::size_t pos = text.find('#');
   if (pos == std::string::npos) {
     this->display->print(xpos, ypos, font, color, esphome::display::TextAlign::BASELINE_LEFT, text.c_str());
     return;
@@ -2733,9 +2733,9 @@ void PixelClock::draw_rainbow_text(const std::string &text, esphome::display::Ba
   for (uint16_t i = 0; i < str_len; i++) {
     uint8_t hue = this->hue_ + remap((int) i, 0, (int) str_len - 1, 0, 255);
     Color color = esphome::light::ESPHSVColor(hue, 255, 240).to_rgb();
-    this->display->printf(x + xpos, ypos, font, color, display::TextAlign::BASELINE_LEFT, "%s",
-                          GetTextChar(text, i).c_str());
-    x += this->GetTextWidth(font, "%s", GetTextChar(text, i).c_str());
+    std::string ch = GetTextChar(text, i);
+    this->display->print(x + xpos, ypos, font, color, display::TextAlign::BASELINE_LEFT, ch.c_str());
+    x += this->GetTextBounds(font, ch.c_str());
   }
 }
 #endif
@@ -2881,9 +2881,9 @@ void PixelClock::dump_config() {
                 "  Night mode: %s\n"
                 "  Weekday accent: %s\n"
                 "  Replace Time and Date: %s",
-                PIXEL_CLOCK_WEEK_START ? "Monday" : "Sunday", PIXEL_CLOCK_WEEKDAYTEXT, this->weekday_char_count,
-                ONOFF(this->show_display), ONOFF(this->night_mode), ONOFF(this->weekday_accent),
-                ONOFF(this->replace_time_date_active));
+                PIXEL_CLOCK_WEEK_START ? LOG_STR_LITERAL("Monday") : LOG_STR_LITERAL("Sunday"), PIXEL_CLOCK_WEEKDAYTEXT,
+                this->weekday_char_count, ONOFF(this->show_display), ONOFF(this->night_mode),
+                ONOFF(this->weekday_accent), ONOFF(this->replace_time_date_active));
   if (this->replace_time_date_active) {
     ESP_LOGCONFIG(TAG,
                   "  Replace from: %s\n"
