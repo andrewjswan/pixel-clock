@@ -150,50 +150,8 @@ class PixelClock final : public PollingComponent
   int8_t info_date_y_offset = 0;
 #endif
 
-#ifdef USE_ESP32
-  PROGMEM Color text_color, alarm_color, today_color, weekday_color, rainbow_color, clock_color, info_lcolor,
+  Color text_color, alarm_color, today_color, weekday_color, rainbow_color, clock_color, info_lcolor,
       info_rcolor, solid_color, calendar_color;
-#ifdef PIXEL_CLOCK_RCINDICATOR
-  PROGMEM Color rcindicator_color;
-#endif
-#ifdef PIXEL_CLOCK_RBINDICATOR
-  PROGMEM Color rbindicator_color;
-#endif
-#ifdef PIXEL_CLOCK_LTINDICATOR
-  PROGMEM Color ltindicator_color;
-#endif
-#ifdef PIXEL_CLOCK_LCINDICATOR
-  PROGMEM Color lcindicator_color;
-#endif
-#ifdef PIXEL_CLOCK_LBINDICATOR
-  PROGMEM Color lbindicator_color;
-#endif
-#ifndef PIXEL_CLOCK_ADV_BITMAP
-  PROGMEM Color bitmap[256];
-#endif
-#ifdef PIXEL_CLOCK_GAUGE
-  PROGMEM Color cgauge[8];
-#endif
-#ifdef PIXEL_CLOCK_ICINDICATOR
-  PROGMEM Color icon_indicator_color;
-#endif
-  PROGMEM PixelClock_Icon *icons[MAXICONS];
-#ifdef PIXEL_CLOCK_ADV_CLOCK
-  PROGMEM Color hour_color, minutes_color, spacer_color, info_clock_lcolor, info_clock_rcolor, info_date_lcolor,
-      info_date_rcolor;
-#endif
-#ifdef PIXEL_CLOCK_ADV_BOOT
-#if defined PIXEL_CLOCK_ADV_BOOT_MODE_0 || defined PIXEL_CLOCK_ADV_BOOT_MODE_1
-  Color *boot_logo;
-#else
-  uint8_t *boot_logo;
-#endif
-#endif
-#endif
-
-#ifdef USE_ESP8266
-  Color text_color, alarm_color, today_color, weekday_color, rainbow_color, clock_color, info_lcolor, info_rcolor,
-      solid_color, calendar_color;
   PixelClock_Icon *icons[MAXICONS];
 #ifdef PIXEL_CLOCK_ADV_CLOCK
   Color hour_color, minutes_color, spacer_color, info_clock_lcolor, info_clock_rcolor, info_date_lcolor,
@@ -217,12 +175,25 @@ class PixelClock final : public PollingComponent
 #ifndef PIXEL_CLOCK_ADV_BITMAP
   Color bitmap[256];
 #endif
+#ifdef PIXEL_CLOCK_ICINDICATOR
+  Color icon_indicator_color;
+#endif
+
+#ifdef USE_ESP32
+#ifdef PIXEL_CLOCK_GAUGE
+  Color cgauge[8];
+#endif
+#ifdef PIXEL_CLOCK_ADV_BOOT
+#if defined PIXEL_CLOCK_ADV_BOOT_MODE_0 || defined PIXEL_CLOCK_ADV_BOOT_MODE_1
+  Color *boot_logo;
+#else
+  uint8_t *boot_logo;
+#endif
+#endif
+#else  // ESP8266
 #ifdef PIXEL_CLOCK_GAUGE
   uint8_t gauge_value;
   Color gauge_color, gauge_bgcolor;
-#endif
-#ifdef PIXEL_CLOCK_ICINDICATOR
-  Color icon_indicator_color;
 #endif
 #endif
 
