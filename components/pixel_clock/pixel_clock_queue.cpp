@@ -2,10 +2,6 @@
 
 #include "esphome/core/defines.h"
 
-#ifdef PIXEL_CLOCK_MULTICOLOR_TEXT
-#include <regex>
-#endif
-
 namespace esphome::pixel_clock {
 #ifdef PIXEL_CLOCK_USE_FIRE_PLUGIN
 const size_t m_heatSize = 8 * 32; /**< Number of heat temperatures */
@@ -1131,8 +1127,7 @@ void PixelClock_Queue::calc_scroll_time(const std::string &text, uint16_t screen
   uint16_t max_steps = 0;
 
 #ifdef PIXEL_CLOCK_MULTICOLOR_TEXT
-  static const std::regex color_re("(#[A-Fa-f0-9]{6})");
-  std::string text_ = std::regex_replace(text, color_re, "");
+  std::string text_ = strip_hex_colors(text);
   const char *text_ptr = text_.c_str();
 #else
   const char *text_ptr = text.c_str();
