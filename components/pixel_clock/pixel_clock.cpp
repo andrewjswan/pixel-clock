@@ -447,33 +447,29 @@ bool PixelClock::string_has_ending(std::string const &fullString, std::string co
  * @return std::string the cleaned up iconname
  */
 std::string get_icon_name(const std::string &iconname, char delim = '|') {
-  std::stringstream stream(iconname);
-  std::string icon;
-  std::vector<std::string> tokens;
-
-  while (std::getline(stream, icon, delim)) {
-    if (!icon.empty()) {
-      tokens.push_back(icon);
-    }
+  size_t start = iconname.find_first_not_of(delim);
+  if (start == std::string::npos) {
+    return "";
   }
-
-  return (tokens.size() > 0) ? tokens[0] : "";
+  size_t end = iconname.find(delim, start);
+  return iconname.substr(start, end - start);
 }
 
 std::string get_screen_id(const std::string &iconname, char delim = '|') {
-  std::stringstream stream(iconname);
-  std::string screen_id;
-  std::vector<std::string> tokens;
-
-  while (std::getline(stream, screen_id, delim)) {
-    if (!screen_id.empty()) {
-      tokens.push_back(screen_id);
+  size_t first_start = iconname.find_first_not_of(delim);
+  if (first_start == std::string::npos) {
+    return "";
+  }
+  size_t first_end = iconname.find(delim, first_start);
+  if (first_end != std::string::npos) {
+    size_t second_start = iconname.find_first_not_of(delim, first_end);
+    if (second_start != std::string::npos) {
+      size_t second_end = iconname.find(delim, second_start);
+      return iconname.substr(second_start, second_end - second_start);
     }
   }
-
-  return (tokens.size() > 1)   ? tokens[1]
-         : (tokens.size() > 0) ? (iconname.find("*") != std::string::npos) ? get_icon_name(tokens[0], '_') : tokens[0]
-                               : "";
+  std::string first = iconname.substr(first_start, first_end - first_start);
+  return (iconname.find('*') != std::string::npos) ? get_icon_name(first, '_') : first;
 }
 
 #ifdef USE_ESP32
@@ -1219,16 +1215,8 @@ uint8_t PixelClock::find_oldest_queue_element() {
       continue;
     }
 
-    if (this->night_mode) {
-      bool skip = true;
-      for (auto id : PIXEL_CLOCK_CONF_NIGHT_MODE_SCREENS) {
-        if (this->queue[i]->mode == id) {
-          skip = false;
-        }
-      }
-      if (skip) {
-        continue;
-      }
+    if (this->night_mode && !this->queue[i]->is_allowed_in_night_mode()) {
+      continue;
     }
 
     if ((this->queue[i]->endtime > this->get_tick()) && (this->queue[i]->last_time < last_time)) {
@@ -1288,16 +1276,8 @@ uint8_t PixelClock::find_last_clock() {
   if (PIXEL_CLOCK_CLOCK_INTERVAL > 0) {
     float ts = this->get_tick();
     for (size_t i = 0; i < MAXQUEUE; i++) {
-      if (this->night_mode) {
-        bool skip = true;
-        for (auto id : PIXEL_CLOCK_CONF_NIGHT_MODE_SCREENS) {
-          if (this->queue[i]->mode == id) {
-            skip = false;
-          }
-        }
-        if (skip) {
-          continue;
-        }
+      if (this->night_mode && !this->queue[i]->is_allowed_in_night_mode()) {
+        continue;
       }
 
       if ((this->queue[i]->mode == MODE_CLOCK) || (this->queue[i]->mode == MODE_RAINBOW_CLOCK) ||
@@ -1327,70 +1307,11 @@ void PixelClock::remove_expired_queue_element() {
         if (this->queue[i]->mode != MODE_EMPTY) {
           ESP_LOGD(TAG, "Remove expired queue element: slot %d: mode: %d icon_name: %s text: %s", i,
                    this->queue[i]->mode, this->queue[i]->icon_name.c_str(), this->queue[i]->text.c_str());
-          for (auto *t : on_expired_screen_triggers_) {
-            infotext = "";
-            switch (this->queue[i]->mode) {
-              case MODE_EMPTY:
-                break;
-              case MODE_BLANK:
-                infotext = "blank";
-                break;
-              case MODE_COLOR:
-                infotext = "color";
-                break;
-              case MODE_CLOCK:
-              case MODE_RAINBOW_CLOCK:
-                infotext = "clock";
-                break;
-              case MODE_DATE:
-              case MODE_RAINBOW_DATE:
-                infotext = "date";
-                break;
-              case MODE_FULL_SCREEN:
-                infotext = "full screen: " + this->queue[i]->icon_name;
-                break;
-              case MODE_ICON_SCREEN:
-              case MODE_RAINBOW_ICON:
-              case MODE_ICON_CLOCK:
-              case MODE_ICON_DATE:
-              case MODE_ICON_PROGRESS:
-              case MODE_ICON_TEXT_SCREEN:
-              case MODE_RAINBOW_ICON_TEXT_SCREEN:
-              case MODE_TEXT_PROGRESS:
-              case MODE_PROGNOSIS_SCREEN:
-                infotext = this->queue[i]->icon_name.c_str();
-                break;
-              case MODE_ALERT_SCREEN:
-              case MODE_RAINBOW_ALERT_SCREEN:
-                infotext = ("alert: " + this->queue[i]->icon_name).c_str();
-                break;
-              case MODE_GRAPH_SCREEN:
-                infotext = ("graph: " + this->queue[i]->icon_name).c_str();
-                break;
-              case MODE_RAINBOW_TEXT:
-              case MODE_TEXT_SCREEN:
-                infotext = "text";
-                break;
-              case MODE_ALERT_TEXT_SCREEN:
-                infotext = "alert";
-                break;
-              case MODE_BITMAP_SMALL:
-              case MODE_RAINBOW_BITMAP_SMALL:
-                infotext = ("bitmap small: " + this->queue[i]->icon_name).c_str();
-                break;
-              case MODE_BITMAP_SCREEN:
-                infotext = ("bitmap: " + this->queue[i]->icon_name).c_str();
-                break;
-              case MODE_BITMAP_STACK_SCREEN:
-                infotext = ("bitmap stack: " + this->queue[i]->text).c_str();
-                break;
-              case MODE_FIRE:
-                infotext = "fire";
-                break;
-              default:
-                break;
+          if (!on_expired_screen_triggers_.empty()) {
+            std::string infotext = this->queue[i]->get_infotext();
+            for (auto *t : on_expired_screen_triggers_) {
+              t->process(this->queue[i]->icon_name, infotext);
             }
-            t->process(this->queue[i]->icon_name, infotext);
           }
         }
         this->queue[i]->mode = MODE_EMPTY;
@@ -1482,72 +1403,10 @@ void PixelClock::tick_next_screen(float ts) {
     for (auto *t : on_next_clock_triggers_) {
       t->process();
     }
-  } else {
+  } else if (!on_next_screen_triggers_.empty()) {
+    std::string infotext = this->queue[this->screen_pointer]->get_infotext();
     for (auto *t : on_next_screen_triggers_) {
       ESP_LOGD(TAG, "On next screen trigger");
-      std::string infotext = "";
-      switch (this->queue[this->screen_pointer]->mode) {
-        case MODE_EMPTY:
-          infotext = "empty";
-          break;
-        case MODE_BLANK:
-          infotext = "blank";
-          break;
-        case MODE_COLOR:
-          infotext = "color";
-          break;
-        case MODE_CLOCK:
-        case MODE_RAINBOW_CLOCK:
-          infotext = "clock";
-          break;
-        case MODE_DATE:
-        case MODE_RAINBOW_DATE:
-          infotext = "date";
-          break;
-        case MODE_FULL_SCREEN:
-          infotext = "full screen " + this->queue[this->screen_pointer]->icon_name;
-          break;
-        case MODE_ICON_SCREEN:
-        case MODE_RAINBOW_ICON:
-        case MODE_ICON_CLOCK:
-        case MODE_ICON_DATE:
-        case MODE_ICON_PROGRESS:
-        case MODE_ICON_TEXT_SCREEN:
-        case MODE_RAINBOW_ICON_TEXT_SCREEN:
-        case MODE_TEXT_PROGRESS:
-        case MODE_PROGNOSIS_SCREEN:
-          infotext = this->queue[this->screen_pointer]->icon_name.c_str();
-          break;
-        case MODE_ALERT_SCREEN:
-        case MODE_RAINBOW_ALERT_SCREEN:
-          infotext = ("alert: " + this->queue[this->screen_pointer]->icon_name).c_str();
-          break;
-        case MODE_GRAPH_SCREEN:
-          infotext = ("graph: " + this->queue[this->screen_pointer]->icon_name).c_str();
-          break;
-        case MODE_RAINBOW_TEXT:
-        case MODE_TEXT_SCREEN:
-          infotext = "text";
-          break;
-        case MODE_ALERT_TEXT_SCREEN:
-          infotext = "alert";
-          break;
-        case MODE_BITMAP_SMALL:
-        case MODE_RAINBOW_BITMAP_SMALL:
-          infotext = ("bitmap small: " + this->queue[this->screen_pointer]->icon_name).c_str();
-          break;
-        case MODE_BITMAP_SCREEN:
-          infotext = ("bitmap: " + this->queue[this->screen_pointer]->icon_name).c_str();
-          break;
-        case MODE_BITMAP_STACK_SCREEN:
-          infotext = ("bitmap stack: " + this->queue[this->screen_pointer]->text).c_str();
-          break;
-        case MODE_FIRE:
-          infotext = "fire";
-          break;
-        default:
-          break;
-      }
       t->process(infotext, this->queue[this->screen_pointer]->text);
     }
   }
@@ -2192,15 +2051,7 @@ void PixelClock::fire_screen(int32_t lifetime, int32_t screen_time) {
 #endif
 
 void PixelClock::full_screen(std::string iconname, int32_t lifetime, int32_t screen_time) {
-  uint8_t icon = this->find_icon(iconname.c_str());
-
-  if (icon == MAXICONS) {
-    ESP_LOGW(TAG, "Full screen: icon %d not found => default: 0", icon);
-    for (auto *t : on_icon_error_triggers_) {
-      t->process(iconname);
-    }
-    icon = 0;
-  }
+  uint8_t icon = this->find_icon_checked_(iconname);
   PixelClock_Queue *screen = this->find_icon_queue_element(icon);
 
   screen->mode = MODE_FULL_SCREEN;
@@ -2619,7 +2470,7 @@ void PixelClock::set_adv_clock_color(int32_t hr, int32_t hg, int32_t hb, int32_t
 
 bool PixelClock::draw_clock(const std::string &format, esphome::display::BaseFont *font, Color color, int32_t xpos,
                             int32_t ypos) {
-  std::regex rgx{"^(%[HI])(.)(%M)(.)?(%S|%p)?$"};
+  static const std::regex rgx{"^(%[HI])(.)(%M)(.)?(%S|%p)?$"};
   std::smatch match;
   if (!std::regex_search(format, match, rgx))
     return false;
@@ -2783,7 +2634,7 @@ bool PixelClock::draw_clock(const std::string &format, esphome::display::BaseFon
 
 bool PixelClock::draw_date(const std::string &format, esphome::display::BaseFont *font, Color color, int32_t xpos,
                            int32_t ypos) {
-  std::regex rgx{"^(%\\D)(.+)(%\\D)(.+)?(?:(%\\D)(.+)?)?$"};
+  static const std::regex rgx{"^(%\\D)(.+)(%\\D)(.+)?(?:(%\\D)(.+)?)?$"};
   std::smatch match;
   if (!std::regex_search(format, match, rgx))
     return false;
@@ -2844,7 +2695,7 @@ void PixelClock::draw_text(const std::string &text, esphome::display::BaseFont *
   }
 
   if (this->text_for_draw.size() == 0) {
-    std::regex regex("(#[A-Fa-f0-9]{6})|(.+?)");
+    static const std::regex regex("(#[A-Fa-f0-9]{6})|(.+?)");
 
     std::regex_iterator<std::string::const_iterator> next(text.begin(), text.end(), regex);
     std::regex_iterator<std::string::const_iterator> end;
@@ -2870,7 +2721,7 @@ void PixelClock::draw_text(const std::string &text, esphome::display::BaseFont *
     }
 
     Color c = color;
-    std::regex is_color("^#[A-Fa-f0-9]{6}$");
+    static const std::regex is_color("^#[A-Fa-f0-9]{6}$");
     for (int32_t i = 0; i < res.size(); i++) {
       if (res.at(i).length() > 0) {
         unsigned int r, g, b;
