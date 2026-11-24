@@ -17,7 +17,6 @@
 #include "esphome/components/api/custom_api_device.h"
 #endif
 
-#include <sstream>
 #include <vector>
 #include <algorithm>
 #include <string>
@@ -1556,41 +1555,43 @@ void PixelClock::set_replace_time_date_active(bool b) {
   ESP_LOGI(TAG, "replace_time_date %s", b ? ESPHOME_F("on") : ESPHOME_F("off"));
 }
 
+static std::vector<std::string> split_whitespace(const std::string &str) {
+  std::vector<std::string> tokens;
+  size_t start = 0;
+  while (start < str.length()) {
+    start = str.find_first_not_of(" \t\r\n", start);
+    if (start == std::string::npos) {
+      break;
+    }
+    size_t end = str.find_first_of(" \t\r\n", start);
+    tokens.push_back(str.substr(start, end - start));
+    start = (end == std::string::npos) ? str.length() : end + 1;
+  }
+  return tokens;
+}
+
 std::string PixelClock::replace_time_date(std::string time_date)  // Replace Time Date Strings / Trip5
 {
-  std::string replace_from_string = PIXEL_CLOCK_REPLACE_TIME_DATE_FROM;
-  std::string replace_to_string = PIXEL_CLOCK_REPLACE_TIME_DATE_TO;
-  std::string replace_from_arr[50];  // AM + PM + 7 Days + 12 Months = 21 but 50 to be super-safe
-  std::string replace_to_arr[50];
-  std::string replace_from;
-  std::string replace_to;
-  uint16_t replace_arr_n;
-  if (replace_from_string != "" && replace_to_string != "") {
-    std::istringstream iss_from(replace_from_string);
-    std::vector<std::string> replace_from_arr;
-    for (std::string s_from; iss_from >> s_from;)
-      replace_from_arr.push_back(s_from);
-    replace_arr_n = replace_from_arr.size();
-    std::istringstream iss_to(replace_to_string);
-    std::vector<std::string> replace_to_arr;
-    for (std::string s_to; iss_to >> s_to;)
-      replace_to_arr.push_back(s_to);
-    if (replace_to_arr.size() < replace_arr_n) {
-      replace_arr_n = replace_to_arr.size();
-    }
-    uint16_t k = 0;
-    do {
-      std::vector<std::uint8_t> data(time_date.begin(), time_date.end());
-      std::vector<std::uint8_t> pattern(replace_from_arr[k].begin(), replace_from_arr[k].end());
-      std::vector<std::uint8_t> replaceData(replace_to_arr[k].begin(), replace_to_arr[k].end());
-      std::vector<std::uint8_t>::iterator itr;
-      while ((itr = std::search(data.begin(), data.end(), pattern.begin(), pattern.end())) != data.end()) {
-        data.erase(itr, itr + pattern.size());
-        data.insert(itr, replaceData.begin(), replaceData.end());
+  static const auto replacements = []() {
+    std::vector<std::pair<std::string, std::string>> pairs;
+    auto from_tokens = split_whitespace(PIXEL_CLOCK_REPLACE_TIME_DATE_FROM);
+    auto to_tokens = split_whitespace(PIXEL_CLOCK_REPLACE_TIME_DATE_TO);
+    size_t count = std::min(from_tokens.size(), to_tokens.size());
+    pairs.reserve(count);
+    for (size_t i = 0; i < count; i++) {
+      if (!from_tokens[i].empty()) {
+        pairs.emplace_back(std::move(from_tokens[i]), std::move(to_tokens[i]));
       }
-      time_date = std::string(data.begin(), data.end());
-      k++;
-    } while (k < replace_arr_n);
+    }
+    return pairs;
+  }();
+
+  for (const auto &[from, to] : replacements) {
+    size_t pos = 0;
+    while ((pos = time_date.find(from, pos)) != std::string::npos) {
+      time_date.replace(pos, from.length(), to);
+      pos += to.length();
+    }
   }
   return time_date;
 }
