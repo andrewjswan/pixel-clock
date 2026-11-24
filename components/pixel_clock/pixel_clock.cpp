@@ -2740,7 +2740,6 @@ void PixelClock::draw_rainbow_text(const std::string &text, esphome::display::Ba
 }
 #endif
 
-
 void PixelClock::set_weekday_char_count(uint8_t i) { this->weekday_char_count = i; }
 
 std::string PixelClock::GetWeekdayChar(int32_t position) { return GetTextChar(PIXEL_CLOCK_WEEKDAYTEXT, position); }
