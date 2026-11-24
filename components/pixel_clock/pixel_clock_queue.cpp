@@ -1066,7 +1066,7 @@ void PixelClock_Queue::hold_slot(uint8_t _sec) {
 // TODO void PixelClock_Queue::set_mode_icon()
 
 // Screen Text, Screen time in seconds
-void PixelClock_Queue::calc_scroll_time(std::string text, uint16_t screen_time) {
+void PixelClock_Queue::calc_scroll_time(const std::string &text, uint16_t screen_time) {
   int x, y, w, h;
   float display_duration;
   float requested_time = 1000.0 * screen_time;
@@ -1075,18 +1075,20 @@ void PixelClock_Queue::calc_scroll_time(std::string text, uint16_t screen_time) 
   uint8_t startx = 0;
   uint16_t max_steps = 0;
 
-  std::string text_ = text;
 #ifdef PIXEL_CLOCK_MULTICOLOR_TEXT
   std::regex color_re("(#[A-Fa-f0-9]{6})");
-  text_ = std::regex_replace(text, color_re, "");
+  std::string text_ = std::regex_replace(text, color_re, "");
+  const char *text_ptr = text_.c_str();
+#else
+  const char *text_ptr = text.c_str();
 #endif
 
   if (this->default_font) {
-    this->config_->display->get_text_bounds(0, 0, text_.c_str(), this->config_->default_font, display::TextAlign::LEFT,
-                                            &x, &y, &w, &h);
+    this->config_->display->get_text_bounds(0, 0, text_ptr, this->config_->default_font, display::TextAlign::LEFT, &x,
+                                            &y, &w, &h);
   } else {
-    this->config_->display->get_text_bounds(0, 0, text_.c_str(), this->config_->special_font, display::TextAlign::LEFT,
-                                            &x, &y, &w, &h);
+    this->config_->display->get_text_bounds(0, 0, text_ptr, this->config_->special_font, display::TextAlign::LEFT, &x,
+                                            &y, &w, &h);
   }
 
   this->pixels_ = w;
