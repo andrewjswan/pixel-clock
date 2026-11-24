@@ -14,6 +14,12 @@ categories:
     labels:
       - feature
       - enhancement
+  - title: 🚋 Pixel Clock aka Tram
+    label:
+      - pixel clock
+  - title: 🧩 Pixel Clock Component
+    label:
+      - component
   - title: 🐛 Bug Fixes
     labels:
       - fix
