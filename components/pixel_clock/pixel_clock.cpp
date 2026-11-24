@@ -2621,46 +2621,33 @@ void PixelClock::set_clock(time::RealTimeClock *clock) {
   ESP_LOGD(TAG, "set_clock");
 }
 
-#define max3(x, y, z) ((x) > (y) ? ((x) > (z) ? (x) : (z)) : ((y) > (z) ? (y) : (z)))
-
 void PixelClock::draw_day_of_week(int32_t ypos, bool small) {
-  if (this->show_day_of_week) {
-    auto dow = this->clock->now().day_of_week - 1;  // SUN = 0
+  if (!this->show_day_of_week)
+    return;
 
-    Color accent_color = esphome::display::COLOR_OFF;
-    if (this->weekday_accent && this->brightness_ < 50) {
-      uint8_t max_diff = max3(this->today_color.r, this->today_color.g, this->today_color.b) -
-                         max3(this->weekday_color.r, this->weekday_color.g, this->weekday_color.b);
-      accent_color = this->weekday_color + max_diff;
-    }
+  // Normalize day of week index to [0..6] based on configured week start
+  uint8_t dow = this->clock->now().day_of_week - 1;  // SUN = 0
+  if constexpr (PIXEL_CLOCK_WEEK_START) {
+    dow = (dow + 6) % 7;  // MON = 0 .. SUN = 6
+  }
 
-    if (!small) {
-      for (uint8_t i = 0; i <= 6; i++) {
-        if (((!PIXEL_CLOCK_WEEK_START) && (dow == i)) ||
-            ((PIXEL_CLOCK_WEEK_START) && ((dow == (i + 1)) || ((dow == 0 && i == 6))))) {
-          this->display->line(2 + i * 4, ypos + 7, i * 4 + 4, ypos + 7, this->today_color);
-        } else {
-          this->display->line(2 + i * 4, ypos + 7, i * 4 + 4, ypos + 7, this->weekday_color);
-          if (accent_color != esphome::display::COLOR_OFF) {
-            this->display->line(i * 4 + 3, ypos + 7, i * 4 + 3, ypos + 7, accent_color);
-          }
-        }
-      }
+  bool compact_weekdays = this->weekday_accent && this->brightness_ < 50;
+  int32_t y = ypos + 7;
+  uint8_t start_x = small ? ((this->icon_to_9 == 3) ? 11 : 10) : 2;
+  uint8_t offset = small ? 1 : 2;  // Horizontal span from x1 to x2
+  uint8_t step = small ? 3 : 4;    // Pitch between day indicators
+
+  for (uint8_t i = 0; i <= 6; i++) {
+    int32_t x1 = start_x + i * step;
+    int32_t x2 = x1 + offset;
+
+    if (i == dow) {
+      this->display->line(x1, y, x2, y, this->today_color);
+    } else if (compact_weekdays) {
+      int32_t dot_x = small ? (i < dow ? x2 : x1) : (x1 + 1);
+      this->display->draw_pixel_at(dot_x, y, this->weekday_color);
     } else {
-      uint8_t off_l = (this->icon_to_9 == 3) ? 11 : 10;
-      uint8_t off_r = (this->icon_to_9 == 3) ? 12 : 11;
-      for (uint8_t i = 0; i <= 6; i++) {
-        if (((!PIXEL_CLOCK_WEEK_START) && (dow == i)) ||
-            ((PIXEL_CLOCK_WEEK_START) && ((dow == (i + 1)) || ((dow == 0 && i == 6))))) {
-          this->display->line(off_l + i * 3, ypos + 7, off_r + i * 3, ypos + 7, this->today_color);
-        } else {
-          this->display->line(off_l + i * 3, ypos + 7, off_r + i * 3, ypos + 7, this->weekday_color);
-          if (accent_color != esphome::display::COLOR_OFF) {
-            this->display->line((i < dow ? off_r : off_l) + i * 3, ypos + 7, (i < dow ? off_r : off_l) + i * 3,
-                                ypos + 7, accent_color);
-          }
-        }
-      }
+      this->display->line(x1, y, x2, y, this->weekday_color);
     }
   }
 }
