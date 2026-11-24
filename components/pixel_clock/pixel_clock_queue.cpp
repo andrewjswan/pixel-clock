@@ -88,98 +88,98 @@ PixelClock_Queue::PixelClock_Queue(PixelClock *config) {
 void PixelClock_Queue::status() {
   switch (this->mode) {
     case MODE_EMPTY:
-      ESP_LOGD(TAG, "empty slot");
+      ESP_LOGD(TAG, "Empty slot");
       break;
     case MODE_BLANK:
-      ESP_LOGD(TAG, "queue: blank screen for %.1f sec", this->screen_time_ / 1000.0);
+      ESP_LOGD(TAG, "Queue: Blank screen for %.1f sec", this->screen_time_ / 1000.0);
       break;
     case MODE_COLOR:
-      ESP_LOGD(TAG, "queue: color screen for %.1f sec", this->screen_time_ / 1000.0);
+      ESP_LOGD(TAG, "Queue: Color screen for %.1f sec", this->screen_time_ / 1000.0);
       break;
     case MODE_CLOCK:
-      ESP_LOGD(TAG, "queue: clock for: %.1f sec", this->screen_time_ / 1000.0);
+      ESP_LOGD(TAG, "Queue: Clock for: %.1f sec", this->screen_time_ / 1000.0);
       break;
     case MODE_DATE:
-      ESP_LOGD(TAG, "queue: date for: %.1f sec", this->screen_time_ / 1000.0);
+      ESP_LOGD(TAG, "Queue: Date for: %.1f sec", this->screen_time_ / 1000.0);
       break;
     case MODE_GRAPH_SCREEN:
-      ESP_LOGD(TAG, "queue: graph for: %.1f sec", this->screen_time_ / 1000.0);
+      ESP_LOGD(TAG, "Queue: Graph for: %.1f sec", this->screen_time_ / 1000.0);
       break;
     case MODE_FULL_SCREEN:
-      ESP_LOGD(TAG, "queue: full screen: \"%s\" for: %.1f sec", this->icon_name.c_str(), this->screen_time_ / 1000.0);
+      ESP_LOGD(TAG, "Queue: Full screen: \"%s\" for: %.1f sec", this->icon_name.c_str(), this->screen_time_ / 1000.0);
       break;
     case MODE_ICON_SCREEN:
-      ESP_LOGD(TAG, "queue: icon screen: \"%s\" text: %s for: %.1f sec", this->icon_name.c_str(), this->text.c_str(),
+      ESP_LOGD(TAG, "Queue: Icon screen: \"%s\" text: %s for: %.1f sec", this->icon_name.c_str(), this->text.c_str(),
                this->screen_time_ / 1000.0);
       break;
     case MODE_ICON_PROGRESS:
-      ESP_LOGD(TAG, "queue: icon progress: \"%s\" text: %s for: %.1f sec", this->icon_name.c_str(), this->text.c_str(),
+      ESP_LOGD(TAG, "Queue: Icon progress: \"%s\" text: %s for: %.1f sec", this->icon_name.c_str(), this->text.c_str(),
                this->screen_time_ / 1000.0);
       break;
     case MODE_PROGNOSIS_SCREEN:
-      ESP_LOGD(TAG, "queue: icon prognosis screen: \"%s\" text: %s for: %.1f sec", this->icon_name.c_str(),
+      ESP_LOGD(TAG, "Queue: Icon prognosis screen: \"%s\" text: %s for: %.1f sec", this->icon_name.c_str(),
                this->text.c_str(), this->screen_time_ / 1000.0);
       break;
     case MODE_TEXT_PROGRESS:
-      ESP_LOGD(TAG, "queue: text progress: \"%s\" text: %s for: %.1f sec", this->icon_name.c_str(), this->text.c_str(),
+      ESP_LOGD(TAG, "Queue: Text progress: \"%s\" text: %s for: %.1f sec", this->icon_name.c_str(), this->text.c_str(),
                this->screen_time_ / 1000.0);
       break;
     case MODE_ICON_CLOCK:
-      ESP_LOGD(TAG, "queue: icon clock: \"%s\" for: %.1f sec", this->icon_name.c_str(), this->screen_time_ / 1000.0);
+      ESP_LOGD(TAG, "Queue: Icon clock: \"%s\" for: %.1f sec", this->icon_name.c_str(), this->screen_time_ / 1000.0);
       break;
     case MODE_ICON_DATE:
-      ESP_LOGD(TAG, "queue: icon date: \"%s\" for: %.1f sec", this->icon_name.c_str(), this->screen_time_ / 1000.0);
+      ESP_LOGD(TAG, "Queue: Icon date: \"%s\" for: %.1f sec", this->icon_name.c_str(), this->screen_time_ / 1000.0);
       break;
     case MODE_ALERT_SCREEN:
-      ESP_LOGD(TAG, "queue: alert icon: \"%s\" for: %.1f sec", this->icon_name.c_str(), this->screen_time_ / 1000.0);
+      ESP_LOGD(TAG, "Queue: Alert icon: \"%s\" for: %.1f sec", this->icon_name.c_str(), this->screen_time_ / 1000.0);
       break;
     case MODE_RAINBOW_ALERT_SCREEN:
-      ESP_LOGD(TAG, "queue: rainbow alert icon: \"%s\" for: %.1f sec", this->icon_name.c_str(),
+      ESP_LOGD(TAG, "Queue: Rainbow alert icon: \"%s\" for: %.1f sec", this->icon_name.c_str(),
                this->screen_time_ / 1000.0);
       break;
     case MODE_TEXT_SCREEN:
-      ESP_LOGD(TAG, "queue: text text: \"%s\" for: %.1f sec", this->text.c_str(), this->screen_time_ / 1000.0);
+      ESP_LOGD(TAG, "Queue: Text text: \"%s\" for: %.1f sec", this->text.c_str(), this->screen_time_ / 1000.0);
       break;
     case MODE_RAINBOW_ICON:
-      ESP_LOGD(TAG, "queue: rainbow icon: \"%s\" text: %s for: %.1f sec", this->icon_name.c_str(), this->text.c_str(),
+      ESP_LOGD(TAG, "Queue: Rainbow icon: \"%s\" text: %s for: %.1f sec", this->icon_name.c_str(), this->text.c_str(),
                this->screen_time_ / 1000.0);
       break;
     case MODE_RAINBOW_TEXT:
-      ESP_LOGD(TAG, "queue: rainbow text: \"%s\" for: %.1f sec", this->text.c_str(), this->screen_time_ / 1000.0);
+      ESP_LOGD(TAG, "Queue: Rainbow text: \"%s\" for: %.1f sec", this->text.c_str(), this->screen_time_ / 1000.0);
       break;
     case MODE_RAINBOW_CLOCK:
-      ESP_LOGD(TAG, "queue: rainbow clock for: %.1f sec", this->screen_time_ / 1000.0);
+      ESP_LOGD(TAG, "Queue: Rainbow clock for: %.1f sec", this->screen_time_ / 1000.0);
       break;
     case MODE_RAINBOW_DATE:
-      ESP_LOGD(TAG, "queue: rainbow date for: %.1f sec", this->screen_time_ / 1000.0);
+      ESP_LOGD(TAG, "Queue: Rainbow date for: %.1f sec", this->screen_time_ / 1000.0);
       break;
     case MODE_ICON_TEXT_SCREEN:
-      ESP_LOGD(TAG, "queue: icon text screen: \"%s\" text: %s for: %.1f sec", this->icon_name.c_str(),
+      ESP_LOGD(TAG, "Queue: Icon text screen: \"%s\" text: %s for: %.1f sec", this->icon_name.c_str(),
                this->text.c_str(), this->screen_time_ / 1000.0);
       break;
     case MODE_RAINBOW_ICON_TEXT_SCREEN:
-      ESP_LOGD(TAG, "queue: rainbow icon text screen: \"%s\" text: %s for: %.1f sec", this->icon_name.c_str(),
+      ESP_LOGD(TAG, "Queue: Rainbow icon text screen: \"%s\" text: %s for: %.1f sec", this->icon_name.c_str(),
                this->text.c_str(), this->screen_time_ / 1000.0);
       break;
     case MODE_ALERT_TEXT_SCREEN:
-      ESP_LOGD(TAG, "queue: alert text text: \"%s\" for: %.1f sec", this->text.c_str(), this->screen_time_ / 1000.0);
+      ESP_LOGD(TAG, "Queue: Alert text text: \"%s\" for: %.1f sec", this->text.c_str(), this->screen_time_ / 1000.0);
       break;
     case MODE_FIRE:
-      ESP_LOGD(TAG, "queue: fire for: %.1f sec", this->screen_time_ / 1000.0);
+      ESP_LOGD(TAG, "Queue: Fire for: %.1f sec", this->screen_time_ / 1000.0);
       break;
 
 #ifndef USE_ESP8266
     case MODE_BITMAP_SCREEN:
-      ESP_LOGD(TAG, "queue: bitmap for: %.1f sec", this->screen_time_ / 1000.0);
+      ESP_LOGD(TAG, "Queue: Bitmap for: %.1f sec", this->screen_time_ / 1000.0);
       break;
     case MODE_BITMAP_SMALL:
-      ESP_LOGD(TAG, "queue: small bitmap for: %.1f sec", this->screen_time_ / 1000.0);
+      ESP_LOGD(TAG, "Queue: Small bitmap for: %.1f sec", this->screen_time_ / 1000.0);
       break;
     case MODE_RAINBOW_BITMAP_SMALL:
-      ESP_LOGD(TAG, "queue: rainbow small bitmap for: %.1f sec", this->screen_time_ / 1000.0);
+      ESP_LOGD(TAG, "Queue: Rainbow small bitmap for: %.1f sec", this->screen_time_ / 1000.0);
       break;
     case MODE_BITMAP_STACK_SCREEN:
-      ESP_LOGD(TAG, "queue: bitmap stack for: %.1f sec", this->screen_time_ / 1000.0);
+      ESP_LOGD(TAG, "Queue: Bitmap stack for: %.1f sec", this->screen_time_ / 1000.0);
       break;
 #endif
 
@@ -187,6 +187,15 @@ void PixelClock_Queue::status() {
       // Queue not initialized
       break;
   }
+}
+
+bool PixelClock_Queue::is_allowed_in_night_mode() const {
+  for (auto id : PIXEL_CLOCK_CONF_NIGHT_MODE_SCREENS) {
+    if (this->mode == id) {
+      return true;
+    }
+  }
+  return false;
 }
 
 int32_t PixelClock_Queue::xpos() {
