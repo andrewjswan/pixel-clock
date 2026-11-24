@@ -3,8 +3,9 @@
 namespace esphome::pixel_clock {
 
 PixelClock_Icon::PixelClock_Icon(const uint8_t *data_start, int32_t width, int32_t height,
-                                 uint32_t animation_frame_count, esphome::image::ImageType type, std::string icon_name,
-                                 bool revers, uint16_t frame_duration, esphome::image::Transparency transparency) {
+                                 uint32_t animation_frame_count, esphome::image::ImageType type,
+                                 const std::string &icon_name, bool revers, uint16_t frame_duration,
+                                 esphome::image::Transparency transparency) {
   // Allocate the original animation object on the heap
   this->animation_ =
       new esphome::animation::Animation(data_start, width, height, animation_frame_count, type, transparency);
