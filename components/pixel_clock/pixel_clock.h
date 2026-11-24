@@ -1,7 +1,10 @@
 #pragma once
 
+#include <cctype>
+
 #include "esphome/core/defines.h"
 #include "esphome/core/color.h"
+#include "esphome/core/helpers.h"
 #include "esphome/components/addressable_light/addressable_light_display.h"
 #ifdef USE_API
 #include "esphome/components/api/custom_api_device.h"
@@ -644,4 +647,36 @@ class PixelClock_Icon {
    */
   esphome::animation::Animation *get_animation() { return this->animation_; }
 };
+
+#ifdef PIXEL_CLOCK_MULTICOLOR_TEXT
+inline bool try_parse_hex_color(const std::string &s, size_t pos, Color fallback, Color &out) {
+  if (s[pos] != '#' || pos + 6 >= s.length()) {
+    return false;
+  }
+  if (pos + 7 < s.length() && std::isxdigit(static_cast<unsigned char>(s[pos + 7]))) {
+    return false;
+  }
+  uint8_t rgb[3];
+  if (!esphome::parse_hex(s.c_str() + pos + 1, 6, rgb, 3)) {
+    return false;
+  }
+  out = (rgb[0] + rgb[1] + rgb[2] > 0) ? Color(rgb[0], rgb[1], rgb[2]) : fallback;
+  return true;
+}
+
+inline std::string strip_hex_colors(const std::string &text) {
+  std::string out;
+  out.reserve(text.length());
+  Color dummy;
+  for (size_t i = 0; i < text.length();) {
+    if (try_parse_hex_color(text, i, esphome::display::COLOR_OFF, dummy)) {
+      i += 7;
+    } else {
+      out += text[i++];
+    }
+  }
+  return out;
+}
+#endif
+
 }  // namespace esphome::pixel_clock

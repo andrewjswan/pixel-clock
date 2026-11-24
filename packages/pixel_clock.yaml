@@ -1,6 +1,6 @@
 substitutions:
   project_name: "Ulanzi.Pixel_Clock"
-  project_version: "2026.11.1"
+  project_version: "2026.11.3"
   # Pin definition from https://github.com/aptonline/PixelIt_Ulanzi
   battery_pin: GPIO34
   buzzer_pin: GPIO15
@@ -448,5 +448,5 @@ script:
 
         id(rgb8x32)->show_icon_indicator(240,240,240, 7, 7, 1);
 
-        id(rgb8x32)->set_weekday_color(12,12,12);
+        id(rgb8x32)->set_weekday_color(50,50,50);
         id(rgb8x32)->set_weekday_accent_on();

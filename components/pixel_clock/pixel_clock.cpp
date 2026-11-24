@@ -21,7 +21,6 @@
 #include <vector>
 #include <algorithm>
 #include <string>
-#include <regex>
 
 // #define USE_ESP32
 // #define PIXEL_CLOCK_ADV_BOOT
@@ -2468,12 +2467,40 @@ void PixelClock::set_adv_clock_color(int32_t hr, int32_t hg, int32_t hb, int32_t
            (int) hr, (int) hg, (int) hb, (int) mr, (int) mg, (int) mb, (int) sr, (int) sg, (int) sb);
 }
 
+static std::vector<std::string> tokenize_strftime_format(const std::string &format) {
+  std::vector<std::string> parts;
+  std::string sep;
+  for (size_t i = 0; i < format.length();) {
+    if (format[i] == '%' && i + 1 < format.length() && !std::isdigit(static_cast<unsigned char>(format[i + 1]))) {
+      if (!sep.empty()) {
+        parts.push_back(sep);
+        sep.clear();
+      }
+      parts.push_back(format.substr(i, 2));
+      i += 2;
+    } else {
+      sep += format[i++];
+    }
+  }
+  if (!sep.empty()) {
+    parts.push_back(sep);
+  }
+  return parts;
+}
+
 bool PixelClock::draw_clock(const std::string &format, esphome::display::BaseFont *font, Color color, int32_t xpos,
                             int32_t ypos) {
-  static const std::regex rgx{"^(%[HI])(.)(%M)(.)?(%S|%p)?$"};
-  std::smatch match;
-  if (!std::regex_search(format, match, rgx))
+  auto tokens = tokenize_strftime_format(format);
+  if (tokens.size() < 3 || tokens.size() > 5 || (tokens[0] != "%H" && tokens[0] != "%I") || tokens[2] != "%M" ||
+      tokens[1].length() != 1) {
     return false;
+  }
+  if (tokens.size() >= 4 && tokens[3].length() != 1) {
+    return false;
+  }
+  if (tokens.size() == 5 && tokens[4] != "%S" && tokens[4] != "%p") {
+    return false;
+  }
 
 #ifdef PIXEL_CLOCK_FLIP_FLOP
   static uint8_t hours;
@@ -2492,8 +2519,8 @@ bool PixelClock::draw_clock(const std::string &format, esphome::display::BaseFon
 
   uint8_t full_length = 0;
 
-  for (int32_t i = 1; i < match.length(); i++) {
-    std::string output = match[i].str();
+  for (const auto &output_token : tokens) {
+    std::string output = output_token;
 
     if (output.length() > 0) {
       if (output.find("%") != std::string::npos) {
@@ -2634,10 +2661,13 @@ bool PixelClock::draw_clock(const std::string &format, esphome::display::BaseFon
 
 bool PixelClock::draw_date(const std::string &format, esphome::display::BaseFont *font, Color color, int32_t xpos,
                            int32_t ypos) {
-  static const std::regex rgx{"^(%\\D)(.+)(%\\D)(.+)?(?:(%\\D)(.+)?)?$"};
-  std::smatch match;
-  if (!std::regex_search(format, match, rgx))
+  auto tokens = tokenize_strftime_format(format);
+  if (tokens.size() < 3 || tokens.size() > 6 || tokens[0].rfind('%', 0) != 0 || tokens[2].rfind('%', 0) != 0) {
     return false;
+  }
+  if (tokens.size() >= 5 && tokens[4].rfind('%', 0) != 0) {
+    return false;
+  }
 
   std::vector<std::string> parts;
   std::vector<uint8_t> len;
@@ -2645,8 +2675,8 @@ bool PixelClock::draw_date(const std::string &format, esphome::display::BaseFont
 
   uint8_t full_length = 0;
 
-  for (int32_t i = 1; i < match.length(); i++) {
-    std::string output = match[i].str();
+  for (const auto &output_token : tokens) {
+    std::string output = output_token;
 
     if (output.length() > 0) {
       if (output.find("%") != std::string::npos) {
@@ -2694,48 +2724,26 @@ void PixelClock::draw_text(const std::string &text, esphome::display::BaseFont *
     return;
   }
 
-  if (this->text_for_draw.size() == 0) {
-    static const std::regex regex("(#[A-Fa-f0-9]{6})|(.+?)");
-
-    std::regex_iterator<std::string::const_iterator> next(text.begin(), text.end(), regex);
-    std::regex_iterator<std::string::const_iterator> end;
-
-    std::vector<std::string> res;
-
-    std::string iter = "";
-    while (next != end) {
-      std::string part = next->str();
-      if (part.length() == 7) {
-        if (iter.length() > 0) {
-          res.push_back(iter);
-          iter = "";
-        }
-        res.push_back(part);
-      } else {
-        iter += part;
-      }
-      next++;
-    }
-    if (iter.length() > 0) {
-      res.push_back(iter);
-    }
-
+  if (this->text_for_draw.empty()) {
     Color c = color;
-    static const std::regex is_color("^#[A-Fa-f0-9]{6}$");
-    for (int32_t i = 0; i < res.size(); i++) {
-      if (res.at(i).length() > 0) {
-        unsigned int r, g, b;
-        if (res.at(i).length() == 7 && std::regex_match(res.at(i), is_color) &&
-            sscanf(&res.at(i).c_str()[1], "%02x%02x%02x", &r, &g, &b) == 3) {
-          if (r + g + b > 0) {
-            c = Color((uint8_t) r, (uint8_t) g, (uint8_t) b);
-          } else {
-            c = color;
-          }
-        } else {
-          this->text_for_draw.push_back({c, res.at(i), this->GetTextWidth(font, "%s", res.at(i).c_str())});
+    Color next_color;
+    std::string segment;
+
+    for (size_t i = 0; i < text.length();) {
+      if (try_parse_hex_color(text, i, color, next_color)) {
+        if (!segment.empty()) {
+          this->text_for_draw.push_back({c, segment, this->GetTextWidth(font, "%s", segment.c_str())});
+          segment.clear();
         }
+        c = next_color;
+        i += 7;
+      } else {
+        segment += text[i++];
       }
+    }
+
+    if (!segment.empty()) {
+      this->text_for_draw.push_back({c, segment, this->GetTextWidth(font, "%s", segment.c_str())});
     }
   }
 
