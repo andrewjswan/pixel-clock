@@ -15,10 +15,10 @@ categories:
       - feature
       - enhancement
   - title: 🚋 Pixel Clock aka Tram
-    label:
+    labels:
       - pixel clock
   - title: 🧩 Pixel Clock Component
-    label:
+    labels:
       - component
   - title: 🐛 Bug Fixes
     labels:
