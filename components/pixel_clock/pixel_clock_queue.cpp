@@ -573,9 +573,8 @@ void PixelClock_Queue::draw() {
           if (!this->config_->draw_clock(PIXEL_CLOCK_TIME_FORMAT_BIG, font, color_, xoffset + 15,
                                          this->ypos() + yoffset)) {
 #endif
-            if (this->config_->replace_time_date_active)  // check for replace active
-            {
-              std::string time_new = this->config_->clock->now().strftime(PIXEL_CLOCK_TIME_FORMAT).c_str();
+            if (this->config_->replace_time_date_active) {  // check for replace active
+              std::string time_new = this->config_->clock->now().strftime(PIXEL_CLOCK_TIME_FORMAT);
               time_new = this->config_->replace_time_date(time_new);
               this->config_->display->printf(xoffset + 15, this->ypos() + yoffset, font, color_,
                                              display::TextAlign::BASELINE_CENTER, "%s", time_new.c_str());
@@ -608,9 +607,8 @@ void PixelClock_Queue::draw() {
           if (!this->config_->draw_date(PIXEL_CLOCK_DATE_FORMAT_BIG, font, color_, xoffset + 15,
                                         this->ypos() + yoffset)) {
 #endif
-            if (this->config_->replace_time_date_active)  // check for replace active
-            {
-              std::string time_new = this->config_->clock->now().strftime(PIXEL_CLOCK_DATE_FORMAT).c_str();
+            if (this->config_->replace_time_date_active) {  // check for replace active
+              std::string time_new = this->config_->clock->now().strftime(PIXEL_CLOCK_DATE_FORMAT);
               time_new = this->config_->replace_time_date(time_new);
               this->config_->display->printf(xoffset + 15, this->ypos() + yoffset, font, color_,
                                              display::TextAlign::BASELINE_CENTER, "%s", time_new.c_str());
@@ -651,9 +649,8 @@ void PixelClock_Queue::draw() {
             if (!this->config_->draw_clock(PIXEL_CLOCK_TIME_FORMAT, font, color_, xoffset + offset,
                                            this->ypos() + yoffset)) {
 #endif
-              if (this->config_->replace_time_date_active)  // check for replace active
-              {
-                std::string time_new = this->config_->clock->now().strftime(PIXEL_CLOCK_TIME_FORMAT).c_str();
+              if (this->config_->replace_time_date_active) {  // check for replace active
+                std::string time_new = this->config_->clock->now().strftime(PIXEL_CLOCK_TIME_FORMAT);
                 time_new = this->config_->replace_time_date(time_new);
                 this->config_->display->printf(xoffset + offset, this->ypos() + yoffset, font, color_,
                                                display::TextAlign::BASELINE_CENTER, "%s", time_new.c_str());
@@ -670,9 +667,8 @@ void PixelClock_Queue::draw() {
             if (!this->config_->draw_date(PIXEL_CLOCK_DATE_FORMAT, font, color_, xoffset + offset,
                                           this->ypos() + yoffset)) {
 #endif
-              if (this->config_->replace_time_date_active)  // check for replace active
-              {
-                std::string time_new = this->config_->clock->now().strftime(PIXEL_CLOCK_DATE_FORMAT).c_str();
+              if (this->config_->replace_time_date_active) {  // check for replace active
+                std::string time_new = this->config_->clock->now().strftime(PIXEL_CLOCK_DATE_FORMAT);
                 time_new = this->config_->replace_time_date(time_new);
                 this->config_->display->printf(xoffset + offset, this->ypos() + yoffset, font, color_,
                                                display::TextAlign::BASELINE_CENTER, "%s", time_new.c_str());
