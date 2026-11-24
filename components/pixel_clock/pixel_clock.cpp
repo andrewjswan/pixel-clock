@@ -129,7 +129,7 @@ void PixelClock::show_rcindicator(int32_t r, int32_t g, int32_t b, int32_t size)
   if (size > 0) {
     this->rcindicator_color = Color((uint8_t) r, (uint8_t) g, (uint8_t) b);
     this->display_indicator = this->IntToBits(this->display_indicator, size % 5, 4, 3);
-     "Show indicator (center right) size: %d r: %d g: %d b: %d", (int) (size % 5), (int) r, (int) g,
+    ESP_LOGD(TAG, "Show indicator (center right) size: %d r: %d g: %d b: %d", (int) (size % 5), (int) r, (int) g,
              (int) b);
   } else {
     this->hide_rcindicator();
@@ -150,7 +150,7 @@ void PixelClock::show_rindicator(int32_t r, int32_t g, int32_t b, int32_t size) 
   if (size > 0) {
     this->rbindicator_color = Color((uint8_t) r, (uint8_t) g, (uint8_t) b);
     this->display_indicator = this->IntToBits(this->display_indicator, size % 4, 3, 7);
-     "Show indicator (bottom right) size: %d r: %d g: %d b: %d", (int) (size % 4), (int) r, (int) g,
+    ESP_LOGD(TAG, "Show indicator (bottom right) size: %d r: %d g: %d b: %d", (int) (size % 4), (int) r, (int) g,
              (int) b);
   } else {
     this->hide_rindicator();
@@ -171,7 +171,7 @@ void PixelClock::show_ltindicator(int32_t r, int32_t g, int32_t b, int32_t size)
   if (size > 0) {
     this->ltindicator_color = Color((uint8_t) r, (uint8_t) g, (uint8_t) b);
     this->display_indicator = this->IntToBits(this->display_indicator, size % 4, 3, 10);
-     "Show indicator (top left) size: %d r: %d g: %d b: %d", (int) (size % 4), (int) r, (int) g, (int) b);
+    ESP_LOGD(TAG, "Show indicator (top left) size: %d r: %d g: %d b: %d", (int) (size % 4), (int) r, (int) g, (int) b);
   } else {
     this->hide_ltindicator();
   }
@@ -191,7 +191,7 @@ void PixelClock::show_lcindicator(int32_t r, int32_t g, int32_t b, int32_t size)
   if (size > 0) {
     this->lcindicator_color = Color((uint8_t) r, (uint8_t) g, (uint8_t) b);
     this->display_indicator = this->IntToBits(this->display_indicator, size % 5, 4, 14);
-     "Show indicator (center left) size: %d r: %d g: %d b: %d", (int) (size % 5), (int) r, (int) g,
+    ESP_LOGD(TAG, "Show indicator (center left) size: %d r: %d g: %d b: %d", (int) (size % 5), (int) r, (int) g,
              (int) b);
   } else {
     this->hide_lcindicator();
@@ -212,7 +212,7 @@ void PixelClock::show_lindicator(int32_t r, int32_t g, int32_t b, int32_t size) 
   if (size > 0) {
     this->lbindicator_color = Color((uint8_t) r, (uint8_t) g, (uint8_t) b);
     this->display_indicator = this->IntToBits(this->display_indicator, size % 4, 3, 17);
-     "Show indicator (bottom left) size: %d r: %d g: %d b: %d", (int) (size % 4), (int) r, (int) g,
+    ESP_LOGD(TAG, "Show indicator (bottom left) size: %d r: %d g: %d b: %d", (int) (size % 4), (int) r, (int) g,
              (int) b);
   } else {
     this->hide_lindicator();
@@ -237,7 +237,7 @@ void PixelClock::show_icon_indicator(int32_t r, int32_t g, int32_t b, int32_t si
     this->display_indicator = this->IntToBits(this->display_indicator, size % 11, 8, 20);
     this->icon_indicator_height = height;
     this->icon_indicator_y_pos = pos;
-     "Show icon_indicator size: %d height: %d r: %d g: %d b: %d pos: %d", (int) (size % 11), (int) height,
+    ESP_LOGD(TAG, "Show icon_indicator size: %d height: %d r: %d g: %d b: %d pos: %d", (int) (size % 11), (int) height,
              (int) r, (int) g, (int) b, (int) pos);
   } else {
     this->hide_icon_indicator();
@@ -251,7 +251,7 @@ void PixelClock::show_icon_indicator(int32_t r, int32_t g, int32_t b, int32_t si
  */
 void PixelClock::hide_alarm() {
   this->display_indicator = this->IntToBits(this->display_indicator, 0, 3, 0);
-   "Hide alarm indicator");
+  ESP_LOGD(TAG, "Hide alarm indicator");
 }
 
 #ifdef PIXEL_CLOCK_RCINDICATOR
@@ -261,7 +261,7 @@ void PixelClock::hide_alarm() {
  */
 void PixelClock::hide_rcindicator() {
   this->display_indicator = this->IntToBits(this->display_indicator, 0, 4, 3);
-   "Hide indicator (center right)");
+  ESP_LOGD(TAG, "Hide indicator (center right)");
 }
 #endif
 
@@ -272,7 +272,7 @@ void PixelClock::hide_rcindicator() {
  */
 void PixelClock::hide_rindicator() {
   this->display_indicator = this->IntToBits(this->display_indicator, 0, 3, 7);
-   "Hide indicator (bottom right)");
+  ESP_LOGD(TAG, "Hide indicator (bottom right)");
 }
 #endif
 
@@ -283,7 +283,7 @@ void PixelClock::hide_rindicator() {
  */
 void PixelClock::hide_ltindicator() {
   this->display_indicator = this->IntToBits(this->display_indicator, 0, 3, 10);
-   "Hide indicator (top left)");
+  ESP_LOGD(TAG, "Hide indicator (top left)");
 }
 #endif
 
@@ -294,7 +294,7 @@ void PixelClock::hide_ltindicator() {
  */
 void PixelClock::hide_lcindicator() {
   this->display_indicator = this->IntToBits(this->display_indicator, 0, 4, 14);
-   "Hide indicator (center left)");
+  ESP_LOGD(TAG, "Hide indicator (center left)");
 }
 #endif
 
@@ -305,7 +305,7 @@ void PixelClock::hide_lcindicator() {
  */
 void PixelClock::hide_lindicator() {
   this->display_indicator = this->IntToBits(this->display_indicator, 0, 3, 17);
-   "Hide indicator (bottom left)");
+  ESP_LOGD(TAG, "Hide indicator (bottom left)");
 }
 #endif
 
@@ -315,7 +315,7 @@ void PixelClock::hide_lindicator() {
  */
 void PixelClock::hide_icon_indicator() {
   this->display_indicator = this->IntToBits(this->display_indicator, 0, 8, 20);
-   "Hide icon indicator");
+  ESP_LOGD(TAG, "Hide icon indicator");
 }
 #endif
 
@@ -348,6 +348,7 @@ void PixelClock::set_display_on() {
     t->process(this->show_display);
   }
 }
+
 /**
  * @brief end night mode
  *
@@ -360,6 +361,7 @@ void PixelClock::set_night_mode_off() {
     t->process(this->night_mode);
   }
 }
+
 /**
  * @brief  in night mode not all screens are shown
  *
@@ -816,11 +818,9 @@ uint8_t PixelClock::find_icon(const std::string &name) {
   if (name == "blank") {
     return BLANKICON;
   }
-
   if (name == "solid") {
     return SOLIDICON;
   }
-
   if (name == "calendar") {
     return CALENDARICON;
   }
