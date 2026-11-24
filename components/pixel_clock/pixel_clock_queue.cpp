@@ -999,20 +999,7 @@ void PixelClock_Queue::draw() {
         if (this->sbitmap != NULL) {
           for (uint8_t i = 0; i < this->icon; i++) {
             uint8_t icon = this->sbitmap[i].b;
-            if (icon != BLANKICON) {
-              if (icon == SOLIDICON) {
-                this->config_->display->filled_rectangle(this->xpos(i), this->ypos(i), 8, 8,
-                                                         this->config_->solid_color);
-              } else if (icon == CALENDARICON) {
-                this->config_->display->filled_rectangle(this->xpos(i), this->ypos(i), 8, 8,
-                                                         Color(C_RED, C_GREEN, C_BLUE));
-                this->config_->display->filled_rectangle(this->xpos(i), this->ypos(i), 8, 2,
-                                                         this->config_->calendar_color);
-              } else if (!is_pseudo_icon(icon)) {
-                this->config_->display->image(this->xpos(i), this->ypos(i),
-                                              this->config_->icons[icon]->get_animation());
-              }
-            }
+            this->draw_icon_at(this->xpos(i), this->ypos(i), icon);
           }
         }
 #endif
