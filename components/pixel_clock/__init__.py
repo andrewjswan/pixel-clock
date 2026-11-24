@@ -646,7 +646,7 @@ async def to_code(config: dict[str, Any]) -> None:  # noqa: C901, PLR0912, PLR09
             cg.add(var.set_replace_time_date_active(False))
         elif len(from_parts) > 50:
             _LOGGER.warning(
-                "replace_time_date_from: and replace_time_date_to: exceeds 30! "
+                "replace_time_date_from: and replace_time_date_to: exceeds 50! "
                 "(not using replacements)",
             )
             cg.add(var.set_replace_time_date_active(False))
