@@ -725,22 +725,7 @@ void PixelClock::bitmap_stack(std::string icons, int32_t lifetime, int32_t scree
     id = get_screen_id(icons);
   }
 
-  std::stringstream stream(ic);
-  std::string icon;
-  std::vector<std::string> tokens;
-  uint8_t count = 0;
-
-  while (std::getline(stream, icon, ',')) {
-    icon = trim(icon);
-    if (!icon.empty()) {
-      tokens.push_back(icon);
-      count++;
-    }
-    if (count >= 64) {
-      break;
-    }
-  }
-  if (count == 0) {
+  if (ic.find_first_not_of(',') == std::string::npos) {
     ESP_LOGW(TAG, "Bitmap stack: icons list [%s] empty", ic.c_str());
     return;
   }
@@ -750,19 +735,31 @@ void PixelClock::bitmap_stack(std::string icons, int32_t lifetime, int32_t scree
     screen->sbitmap = new Color[64];
   }
 
+  uint8_t count = 0;
   uint8_t real_count = 0;
-  for (uint8_t i = 0; i < count; i++) {
-    uint8_t icon = this->find_icon(tokens[i]);
+  size_t start = 0;
+  while (start < ic.length() && count < 64) {
+    size_t end = ic.find(',', start);
+    std::string token = trim(ic.substr(start, end - start));
+    start = (end == std::string::npos) ? ic.length() : end + 1;
+
+    if (token.empty()) {
+      continue;
+    }
+    count++;
+
+    uint8_t icon = this->find_icon(token);
     if (icon == MAXICONS) {
-      ESP_LOGW(TAG, "Icon %s not found => skip", tokens[i].c_str());
+      ESP_LOGW(TAG, "Icon %s not found => skip", token.c_str());
       for (auto *t : on_icon_error_triggers_) {
-        t->process(tokens[i]);
+        t->process(token);
       }
       continue;
     }
     screen->sbitmap[real_count] = Color(127, 255, icon, 5);  // int16_t 32767 = uint8_t(127,255)
     real_count++;
   }
+
   if (real_count == 0) {
     delete[] screen->sbitmap;
     screen->sbitmap = nullptr;
@@ -1238,21 +1235,14 @@ uint8_t PixelClock::find_oldest_queue_element() {
         continue;
       }
 
-      if (this->night_mode) {
-        bool skip = true;
-        for (auto id : PIXEL_CLOCK_CONF_NIGHT_MODE_SCREENS) {
-          if (this->queue[i]->mode == id) {
-            skip = false;
-          }
-        }
-        if (skip) {
-          continue;
-        }
+      if (this->night_mode && !this->queue[i]->is_allowed_in_night_mode()) {
+        continue;
       }
 
       hit = i;
       break;
     }
+
     ESP_LOGD(TAG, "Oldest queue element fallback: %d/%d", hit, queue_count);
   } else {
     // Queue is really empty
@@ -1296,7 +1286,6 @@ uint8_t PixelClock::find_last_clock() {
 
 void PixelClock::remove_expired_queue_element() {
   if (this->clock->now().is_valid()) {
-    std::string infotext;
     float ts =
         this->get_tick() + static_cast<float>(PIXEL_CLOCK_SCROLL_INTERVAL);  // Force remove expired queue element
 
@@ -1331,16 +1320,8 @@ uint8_t PixelClock::queue_count() {
       continue;
     }
 
-    if (this->night_mode) {
-      bool skip = true;
-      for (auto id : PIXEL_CLOCK_CONF_NIGHT_MODE_SCREENS) {
-        if (this->queue[i]->mode == id) {
-          skip = false;
-        }
-      }
-      if (skip) {
-        continue;
-      }
+    if (this->night_mode && !this->queue[i]->is_allowed_in_night_mode()) {
+      continue;
     }
 
     if (this->queue[i]->endtime > ts) {
