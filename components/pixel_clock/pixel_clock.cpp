@@ -1219,16 +1219,8 @@ uint8_t PixelClock::find_oldest_queue_element() {
       continue;
     }
 
-    if (this->night_mode) {
-      bool skip = true;
-      for (auto id : PIXEL_CLOCK_CONF_NIGHT_MODE_SCREENS) {
-        if (this->queue[i]->mode == id) {
-          skip = false;
-        }
-      }
-      if (skip) {
-        continue;
-      }
+    if (this->night_mode && !this->queue[i]->is_allowed_in_night_mode()) {
+      continue;
     }
 
     if ((this->queue[i]->endtime > this->get_tick()) && (this->queue[i]->last_time < last_time)) {
@@ -1288,16 +1280,8 @@ uint8_t PixelClock::find_last_clock() {
   if (PIXEL_CLOCK_CLOCK_INTERVAL > 0) {
     float ts = this->get_tick();
     for (size_t i = 0; i < MAXQUEUE; i++) {
-      if (this->night_mode) {
-        bool skip = true;
-        for (auto id : PIXEL_CLOCK_CONF_NIGHT_MODE_SCREENS) {
-          if (this->queue[i]->mode == id) {
-            skip = false;
-          }
-        }
-        if (skip) {
-          continue;
-        }
+      if (this->night_mode && !this->queue[i]->is_allowed_in_night_mode()) {
+        continue;
       }
 
       if ((this->queue[i]->mode == MODE_CLOCK) || (this->queue[i]->mode == MODE_RAINBOW_CLOCK) ||
@@ -2192,15 +2176,7 @@ void PixelClock::fire_screen(int32_t lifetime, int32_t screen_time) {
 #endif
 
 void PixelClock::full_screen(std::string iconname, int32_t lifetime, int32_t screen_time) {
-  uint8_t icon = this->find_icon(iconname.c_str());
-
-  if (icon == MAXICONS) {
-    ESP_LOGW(TAG, "Full screen: icon %d not found => default: 0", icon);
-    for (auto *t : on_icon_error_triggers_) {
-      t->process(iconname);
-    }
-    icon = 0;
-  }
+  uint8_t icon = this->find_icon_checked_(iconname);
   PixelClock_Queue *screen = this->find_icon_queue_element(icon);
 
   screen->mode = MODE_FULL_SCREEN;
