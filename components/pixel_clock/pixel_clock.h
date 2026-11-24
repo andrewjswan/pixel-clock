@@ -679,5 +679,4 @@ inline std::string strip_hex_colors(const std::string &text) {
 }
 #endif
 
-
 }  // namespace esphome::pixel_clock
