@@ -567,6 +567,7 @@ class PixelClock_Queue {
   void calc_scroll_time(uint8_t icon_count, uint16_t screen_time);
 
   bool is_allowed_in_night_mode() const;
+  std::string get_infotext() const;
 
   int32_t xpos();
   int32_t xpos(uint8_t item);
