@@ -444,7 +444,7 @@ bool PixelClock::string_has_ending(std::string const &fullString, std::string co
  * @param delim the delimiter
  * @return std::string the cleaned up iconname
  */
-std::string get_icon_name(std::string iconname, char delim = '|') {
+std::string get_icon_name(const std::string &iconname, char delim = '|') {
   std::stringstream stream(iconname);
   std::string icon;
   std::vector<std::string> tokens;
@@ -458,7 +458,7 @@ std::string get_icon_name(std::string iconname, char delim = '|') {
   return (tokens.size() > 0) ? tokens[0] : "";
 }
 
-std::string get_screen_id(std::string iconname, char delim = '|') {
+std::string get_screen_id(const std::string &iconname, char delim = '|') {
   std::stringstream stream(iconname);
   std::string screen_id;
   std::vector<std::string> tokens;
@@ -841,7 +841,7 @@ uint8_t PixelClock::find_icon_checked_(const std::string &name) {
   if (icon == MAXICONS) {
     ESP_LOGW(TAG, "Icon %s not found => default: 0", name.c_str());
     for (auto *t : this->on_icon_error_triggers_) {
-      t->process(iconname);
+      t->process(name);
     }
     return 0;
   }
@@ -2429,9 +2429,9 @@ PixelClock_Queue *PixelClock::find_mode_queue_element(uint8_t mode) {
   return this->find_free_queue_element();
 }
 
-PixelClock_Queue *PixelClock::find_mode_icon_queue_element(uint8_t mode, std::string name) {
+PixelClock_Queue *PixelClock::find_mode_icon_queue_element(uint8_t mode, const std::string &name) {
   for (size_t i = 0; i < MAXQUEUE; i++) {
-    if (this->queue[i]->mode == mode && strcmp(this->queue[i]->icon_name.c_str(), name.c_str()) == 0) {
+    if (this->queue[i]->mode == mode && this->queue[i]->icon_name == name) {
       ESP_LOGD(TAG, "Find screen: found by mode %d icon %s", i, name.c_str());
       return this->queue[i];
     }
@@ -2617,7 +2617,7 @@ void PixelClock::set_adv_clock_color(int32_t hr, int32_t hg, int32_t hb, int32_t
            (int) hr, (int) hg, (int) hb, (int) mr, (int) mg, (int) mb, (int) sr, (int) sg, (int) sb);
 }
 
-bool PixelClock::draw_clock(std::string format, esphome::display::BaseFont *font, Color color, int32_t xpos,
+bool PixelClock::draw_clock(const std::string &format, esphome::display::BaseFont *font, Color color, int32_t xpos,
                             int32_t ypos) {
   std::regex rgx{"^(%[HI])(.)(%M)(.)?(%S|%p)?$"};
   std::smatch match;
@@ -2781,7 +2781,7 @@ bool PixelClock::draw_clock(std::string format, esphome::display::BaseFont *font
   return true;
 }
 
-bool PixelClock::draw_date(std::string format, esphome::display::BaseFont *font, Color color, int32_t xpos,
+bool PixelClock::draw_date(const std::string &format, esphome::display::BaseFont *font, Color color, int32_t xpos,
                            int32_t ypos) {
   std::regex rgx{"^(%\\D)(.+)(%\\D)(.+)?(?:(%\\D)(.+)?)?$"};
   std::smatch match;
@@ -2834,7 +2834,7 @@ bool PixelClock::draw_date(std::string format, esphome::display::BaseFont *font,
 }
 #endif
 
-void PixelClock::draw_text(std::string text, esphome::display::BaseFont *font, Color color, int32_t xpos,
+void PixelClock::draw_text(const std::string &text, esphome::display::BaseFont *font, Color color, int32_t xpos,
                            int32_t ypos) {
 #ifdef PIXEL_CLOCK_MULTICOLOR_TEXT
   std::size_t pos = text.find("#");
@@ -2846,8 +2846,8 @@ void PixelClock::draw_text(std::string text, esphome::display::BaseFont *font, C
   if (this->text_for_draw.size() == 0) {
     std::regex regex("(#[A-Fa-f0-9]{6})|(.+?)");
 
-    std::regex_iterator<std::string::iterator> next(text.begin(), text.end(), regex);
-    std::regex_iterator<std::string::iterator> end;
+    std::regex_iterator<std::string::const_iterator> next(text.begin(), text.end(), regex);
+    std::regex_iterator<std::string::const_iterator> end;
 
     std::vector<std::string> res;
 
@@ -2900,7 +2900,7 @@ void PixelClock::draw_text(std::string text, esphome::display::BaseFont *font, C
 }
 
 #ifdef PIXEL_CLOCK_RAINBOW_SHIMMER
-void PixelClock::draw_rainbow_text(std::string text, esphome::display::BaseFont *font, int32_t xpos, int32_t ypos) {
+void PixelClock::draw_rainbow_text(const std::string &text, esphome::display::BaseFont *font, int32_t xpos, int32_t ypos) {
   uint16_t str_len = GetTextCharCount(text);
   uint16_t x = 0;
 
@@ -2918,11 +2918,11 @@ void PixelClock::set_weekday_char_count(uint8_t i) { this->weekday_char_count = 
 
 std::string PixelClock::GetWeekdayChar(int32_t position) { return GetTextChar(PIXEL_CLOCK_WEEKDAYTEXT, position); }
 
-std::string PixelClock::GetTextChar(std::string text, int32_t position) {
+std::string PixelClock::GetTextChar(const std::string &text, int32_t position) {
   std::string text_char = "";
   int32_t pos = 0;
 
-  for (int32_t i = 0; i < strlen(text.c_str());) {
+  for (size_t i = 0; i < text.length();) {
     text_char = text_char + text[i];
     if (text[i] & 0x80) {
       text_char = text_char + text[i + 1];
@@ -2952,10 +2952,10 @@ std::string PixelClock::GetTextChar(std::string text, int32_t position) {
 }
 
 #ifdef PIXEL_CLOCK_RAINBOW_SHIMMER
-int32_t PixelClock::GetTextCharCount(std::string text) {
+int32_t PixelClock::GetTextCharCount(const std::string &text) {
   int32_t count = 0;
 
-  for (int32_t i = 0; i < strlen(text.c_str());) {
+  for (size_t i = 0; i < text.length();) {
     if (text[i] & 0x80) {
       if (text[i] & 0x20) {
         if (text[i] & 0x10) {
@@ -3250,11 +3250,16 @@ void HOT PixelClock::draw() {
 
 void PixelClockStartRunningTrigger::process() { this->trigger(); }
 void PixelClockEmptyQueueTrigger::process() { this->trigger(); }
-void PixelClockNextScreenTrigger::process(std::string iconname, std::string text) { this->trigger(iconname, text); }
-void PixelClockAddScreenTrigger::process(std::string iconname, uint8_t mode) { this->trigger(iconname, mode); }
-void PixelClockIconErrorTrigger::process(std::string iconname) { this->trigger(iconname); }
-void PixelClockExpiredScreenTrigger::process(std::string iconname, std::string text) { this->trigger(iconname, text); }
+void PixelClockNextScreenTrigger::process(const std::string &iconname, const std::string &text) {
+  this->trigger(iconname, text);
+}
+void PixelClockAddScreenTrigger::process(const std::string &iconname, uint8_t mode) { this->trigger(iconname, mode); }
+void PixelClockIconErrorTrigger::process(const std::string &iconname) { this->trigger(iconname); }
+void PixelClockExpiredScreenTrigger::process(const std::string &iconname, const std::string &text) {
+  this->trigger(iconname, text);
+}
 void PixelClockNextClockTrigger::process() { this->trigger(); }
 void PixelClockShowDisplayTrigger::process(bool state) { this->trigger(state); }
 void PixelClockNightModeTrigger::process(bool state) { this->trigger(state); }
+
 }  // namespace esphome::pixel_clock
