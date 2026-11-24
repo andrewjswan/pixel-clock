@@ -12,7 +12,6 @@ substitutions:
 dashboard_import:
   package_import_url: github://andrewjswan/pixel-clock/test/arduino-pixel-clock.yaml@main
 
-external_components: !remove
 external_components:
   - source:
       type: local
