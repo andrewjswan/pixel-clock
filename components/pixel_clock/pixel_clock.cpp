@@ -2882,9 +2882,8 @@ void PixelClock::dump_config() {
                 "  Weekday accent: %s\n"
                 "  Replace Time and Date: %s",
                 PIXEL_CLOCK_WEEK_START ? LOG_STR_LITERAL("Monday") : LOG_STR_LITERAL("Sunday"), PIXEL_CLOCK_WEEKDAYTEXT,
-                this->weekday_char_count,
-                ONOFF(this->show_display), ONOFF(this->night_mode), ONOFF(this->weekday_accent),
-                ONOFF(this->replace_time_date_active));
+                this->weekday_char_count, ONOFF(this->show_display), ONOFF(this->night_mode),
+                ONOFF(this->weekday_accent), ONOFF(this->replace_time_date_active));
   if (this->replace_time_date_active) {
     ESP_LOGCONFIG(TAG,
                   "  Replace from: %s\n"
