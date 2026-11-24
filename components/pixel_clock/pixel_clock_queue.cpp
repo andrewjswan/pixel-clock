@@ -198,6 +198,56 @@ bool PixelClock_Queue::is_allowed_in_night_mode() const {
   return false;
 }
 
+std::string PixelClock_Queue::get_infotext() const {
+  switch (this->mode) {
+    case MODE_EMPTY:
+      return "empty";
+    case MODE_BLANK:
+      return "blank";
+    case MODE_COLOR:
+      return "color";
+    case MODE_CLOCK:
+    case MODE_RAINBOW_CLOCK:
+      return "clock";
+    case MODE_DATE:
+    case MODE_RAINBOW_DATE:
+      return "date";
+    case MODE_FULL_SCREEN:
+      return "full screen: " + this->icon_name;
+    case MODE_ICON_SCREEN:
+    case MODE_RAINBOW_ICON:
+    case MODE_ICON_CLOCK:
+    case MODE_ICON_DATE:
+    case MODE_ICON_PROGRESS:
+    case MODE_ICON_TEXT_SCREEN:
+    case MODE_RAINBOW_ICON_TEXT_SCREEN:
+    case MODE_TEXT_PROGRESS:
+    case MODE_PROGNOSIS_SCREEN:
+      return this->icon_name;
+    case MODE_ALERT_SCREEN:
+    case MODE_RAINBOW_ALERT_SCREEN:
+      return "alert: " + this->icon_name;
+    case MODE_GRAPH_SCREEN:
+      return "graph: " + this->icon_name;
+    case MODE_RAINBOW_TEXT:
+    case MODE_TEXT_SCREEN:
+      return "text";
+    case MODE_ALERT_TEXT_SCREEN:
+      return "alert";
+    case MODE_BITMAP_SMALL:
+    case MODE_RAINBOW_BITMAP_SMALL:
+      return "bitmap small: " + this->icon_name;
+    case MODE_BITMAP_SCREEN:
+      return "bitmap: " + this->icon_name;
+    case MODE_BITMAP_STACK_SCREEN:
+      return "bitmap stack: " + this->text;
+    case MODE_FIRE:
+      return "fire";
+    default:
+      return "";
+  }
+}
+
 int32_t PixelClock_Queue::xpos() {
   uint8_t width = 32;
   uint8_t startx = 0;
