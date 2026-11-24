@@ -836,10 +836,10 @@ uint8_t PixelClock::find_icon(const std::string &name) {
   return MAXICONS;
 }
 
-uint8_t PixelClock::find_icon_checked_(const std::string &iconname) {
-  uint8_t icon = this->find_icon(iconname);
+uint8_t PixelClock::find_icon_checked_(const std::string &name) {
+  uint8_t icon = this->find_icon(name);
   if (icon == MAXICONS) {
-    ESP_LOGW(TAG, "Icon %s not found => default: 0", iconname.c_str());
+    ESP_LOGW(TAG, "Icon %s not found => default: 0", name.c_str());
     for (auto *t : this->on_icon_error_triggers_) {
       t->process(iconname);
     }
