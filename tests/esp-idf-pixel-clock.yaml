@@ -9,8 +9,11 @@ substitutions:
   weekdays: "ВСПНВТСРЧТПТСБ"
   date_to: "ВС ПН ВТ СР ЧТ ПТ СБ Січ Лют Бер Кві Тра Чер Лип Сер Вер Жов Лис Гру"
 
-dashboard_import:
-  package_import_url: github://andrewjswan/pixel-clock/test/arduino-pixel-clock.yaml@main
+external_components:
+  - source:
+      type: local
+      path: ../components
+    components: [pixel_clock]
 
 packages:
   common: !include ../packages/common.yaml
