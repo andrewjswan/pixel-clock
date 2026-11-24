@@ -205,15 +205,8 @@ This component is highly customizable.
     ```
 Shows text in different colors, `Default Color Text` in the default color `#FFFFFF` (r: 255, g:255, b: 255), followed by `Green Color Text` in green `#00FF00`, then `Red Color Text` in red `#FF0000`, then `Blue Color Text` in blue `#0000FF` and finally `Default Color Text` in default color, due `#000000`.
 
-!!! warning
-    In this mode, with a large number of color changes, or with long lines, a short-term decrease in performance is possible.
-
-    !!! quote "Log"
-
-        ```
-        [13:26:02][W][component:237]: Component display took a long time for an operation (55 ms).
-        [13:26:02][W][component:238]: Components should block for at most 30 ms.
-        ```
+!!! note
+    Each color tag (`#RRGGBB`) splits the text into a separate rendering segment. Using a very high number of color transitions within a single long string may slightly increase display rendering time.
 
 **boot_logo** (optional, string , only on ESP32): Allows you to show a custom boot logo instead of the default animation when booting.
 
