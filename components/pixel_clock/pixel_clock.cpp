@@ -2470,7 +2470,7 @@ void PixelClock::set_adv_clock_color(int32_t hr, int32_t hg, int32_t hb, int32_t
 
 bool PixelClock::draw_clock(const std::string &format, esphome::display::BaseFont *font, Color color, int32_t xpos,
                             int32_t ypos) {
-  std::regex rgx{"^(%[HI])(.)(%M)(.)?(%S|%p)?$"};
+  static const std::regex rgx{"^(%[HI])(.)(%M)(.)?(%S|%p)?$"};
   std::smatch match;
   if (!std::regex_search(format, match, rgx))
     return false;
@@ -2634,7 +2634,7 @@ bool PixelClock::draw_clock(const std::string &format, esphome::display::BaseFon
 
 bool PixelClock::draw_date(const std::string &format, esphome::display::BaseFont *font, Color color, int32_t xpos,
                            int32_t ypos) {
-  std::regex rgx{"^(%\\D)(.+)(%\\D)(.+)?(?:(%\\D)(.+)?)?$"};
+  static const std::regex rgx{"^(%\\D)(.+)(%\\D)(.+)?(?:(%\\D)(.+)?)?$"};
   std::smatch match;
   if (!std::regex_search(format, match, rgx))
     return false;
@@ -2695,7 +2695,7 @@ void PixelClock::draw_text(const std::string &text, esphome::display::BaseFont *
   }
 
   if (this->text_for_draw.size() == 0) {
-    std::regex regex("(#[A-Fa-f0-9]{6})|(.+?)");
+    static const std::regex regex("(#[A-Fa-f0-9]{6})|(.+?)");
 
     std::regex_iterator<std::string::const_iterator> next(text.begin(), text.end(), regex);
     std::regex_iterator<std::string::const_iterator> end;
@@ -2721,7 +2721,7 @@ void PixelClock::draw_text(const std::string &text, esphome::display::BaseFont *
     }
 
     Color c = color;
-    std::regex is_color("^#[A-Fa-f0-9]{6}$");
+    static const std::regex is_color("^#[A-Fa-f0-9]{6}$");
     for (int32_t i = 0; i < res.size(); i++) {
       if (res.at(i).length() > 0) {
         unsigned int r, g, b;
