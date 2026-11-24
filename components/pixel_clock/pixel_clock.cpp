@@ -1075,7 +1075,7 @@ void PixelClock::setup() {
 
 void PixelClock::get_status() {
   auto now = this->clock->now();
-  
+
   char screen_buf[24];
   if (this->screen_pointer != MAXQUEUE) {
     snprintf(screen_buf, sizeof(screen_buf), "%d (mode: %d)",
@@ -1083,7 +1083,7 @@ void PixelClock::get_status() {
   } else {
     snprintf(screen_buf, sizeof(screen_buf), "MAX");
   }
-  
+
   ESP_LOGI(TAG,
            "Pixel Clock Status:\n"
            "  Time: %02d.%02d.%d %02d:%02d\n"
