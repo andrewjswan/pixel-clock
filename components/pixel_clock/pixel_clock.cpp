@@ -129,7 +129,7 @@ void PixelClock::show_rcindicator(int32_t r, int32_t g, int32_t b, int32_t size)
   if (size > 0) {
     this->rcindicator_color = Color((uint8_t) r, (uint8_t) g, (uint8_t) b);
     this->display_indicator = this->IntToBits(this->display_indicator, size % 5, 4, 3);
-    ESP_LOGD(TAG, "Show indicator (center right) size: %d r: %d g: %d b: %d", (int) (size % 5), (int) r, (int) g,
+     "Show indicator (center right) size: %d r: %d g: %d b: %d", (int) (size % 5), (int) r, (int) g,
              (int) b);
   } else {
     this->hide_rcindicator();
@@ -150,7 +150,7 @@ void PixelClock::show_rindicator(int32_t r, int32_t g, int32_t b, int32_t size) 
   if (size > 0) {
     this->rbindicator_color = Color((uint8_t) r, (uint8_t) g, (uint8_t) b);
     this->display_indicator = this->IntToBits(this->display_indicator, size % 4, 3, 7);
-    ESP_LOGD(TAG, "Show indicator (bottom right) size: %d r: %d g: %d b: %d", (int) (size % 4), (int) r, (int) g,
+     "Show indicator (bottom right) size: %d r: %d g: %d b: %d", (int) (size % 4), (int) r, (int) g,
              (int) b);
   } else {
     this->hide_rindicator();
@@ -171,7 +171,7 @@ void PixelClock::show_ltindicator(int32_t r, int32_t g, int32_t b, int32_t size)
   if (size > 0) {
     this->ltindicator_color = Color((uint8_t) r, (uint8_t) g, (uint8_t) b);
     this->display_indicator = this->IntToBits(this->display_indicator, size % 4, 3, 10);
-    ESP_LOGD(TAG, "Show indicator (top left) size: %d r: %d g: %d b: %d", (int) (size % 4), (int) r, (int) g, (int) b);
+     "Show indicator (top left) size: %d r: %d g: %d b: %d", (int) (size % 4), (int) r, (int) g, (int) b);
   } else {
     this->hide_ltindicator();
   }
@@ -191,7 +191,7 @@ void PixelClock::show_lcindicator(int32_t r, int32_t g, int32_t b, int32_t size)
   if (size > 0) {
     this->lcindicator_color = Color((uint8_t) r, (uint8_t) g, (uint8_t) b);
     this->display_indicator = this->IntToBits(this->display_indicator, size % 5, 4, 14);
-    ESP_LOGD(TAG, "Show indicator (center left) size: %d r: %d g: %d b: %d", (int) (size % 5), (int) r, (int) g,
+     "Show indicator (center left) size: %d r: %d g: %d b: %d", (int) (size % 5), (int) r, (int) g,
              (int) b);
   } else {
     this->hide_lcindicator();
@@ -212,7 +212,7 @@ void PixelClock::show_lindicator(int32_t r, int32_t g, int32_t b, int32_t size) 
   if (size > 0) {
     this->lbindicator_color = Color((uint8_t) r, (uint8_t) g, (uint8_t) b);
     this->display_indicator = this->IntToBits(this->display_indicator, size % 4, 3, 17);
-    ESP_LOGD(TAG, "Show indicator (bottom left) size: %d r: %d g: %d b: %d", (int) (size % 4), (int) r, (int) g,
+     "Show indicator (bottom left) size: %d r: %d g: %d b: %d", (int) (size % 4), (int) r, (int) g,
              (int) b);
   } else {
     this->hide_lindicator();
@@ -237,7 +237,7 @@ void PixelClock::show_icon_indicator(int32_t r, int32_t g, int32_t b, int32_t si
     this->display_indicator = this->IntToBits(this->display_indicator, size % 11, 8, 20);
     this->icon_indicator_height = height;
     this->icon_indicator_y_pos = pos;
-    ESP_LOGD(TAG, "Show icon_indicator size: %d height: %d r: %d g: %d b: %d pos: %d", (int) (size % 11), (int) height,
+     "Show icon_indicator size: %d height: %d r: %d g: %d b: %d pos: %d", (int) (size % 11), (int) height,
              (int) r, (int) g, (int) b, (int) pos);
   } else {
     this->hide_icon_indicator();
@@ -251,7 +251,7 @@ void PixelClock::show_icon_indicator(int32_t r, int32_t g, int32_t b, int32_t si
  */
 void PixelClock::hide_alarm() {
   this->display_indicator = this->IntToBits(this->display_indicator, 0, 3, 0);
-  ESP_LOGD(TAG, "Hide alarm indicator");
+   "Hide alarm indicator");
 }
 
 #ifdef PIXEL_CLOCK_RCINDICATOR
@@ -261,7 +261,7 @@ void PixelClock::hide_alarm() {
  */
 void PixelClock::hide_rcindicator() {
   this->display_indicator = this->IntToBits(this->display_indicator, 0, 4, 3);
-  ESP_LOGD(TAG, "Hide indicator (center right)");
+   "Hide indicator (center right)");
 }
 #endif
 
@@ -272,7 +272,7 @@ void PixelClock::hide_rcindicator() {
  */
 void PixelClock::hide_rindicator() {
   this->display_indicator = this->IntToBits(this->display_indicator, 0, 3, 7);
-  ESP_LOGD(TAG, "Hide indicator (bottom right)");
+   "Hide indicator (bottom right)");
 }
 #endif
 
@@ -283,7 +283,7 @@ void PixelClock::hide_rindicator() {
  */
 void PixelClock::hide_ltindicator() {
   this->display_indicator = this->IntToBits(this->display_indicator, 0, 3, 10);
-  ESP_LOGD(TAG, "Hide indicator (top left)");
+   "Hide indicator (top left)");
 }
 #endif
 
@@ -294,7 +294,7 @@ void PixelClock::hide_ltindicator() {
  */
 void PixelClock::hide_lcindicator() {
   this->display_indicator = this->IntToBits(this->display_indicator, 0, 4, 14);
-  ESP_LOGD(TAG, "Hide indicator (center left)");
+   "Hide indicator (center left)");
 }
 #endif
 
@@ -305,7 +305,7 @@ void PixelClock::hide_lcindicator() {
  */
 void PixelClock::hide_lindicator() {
   this->display_indicator = this->IntToBits(this->display_indicator, 0, 3, 17);
-  ESP_LOGD(TAG, "Hide indicator (bottom left)");
+   "Hide indicator (bottom left)");
 }
 #endif
 
@@ -315,7 +315,7 @@ void PixelClock::hide_lindicator() {
  */
 void PixelClock::hide_icon_indicator() {
   this->display_indicator = this->IntToBits(this->display_indicator, 0, 8, 20);
-  ESP_LOGD(TAG, "Hide icon indicator");
+   "Hide icon indicator");
 }
 #endif
 
@@ -325,7 +325,7 @@ void PixelClock::hide_icon_indicator() {
  */
 void PixelClock::set_display_off() {
   this->show_display = false;
-  ESP_LOGD(TAG, "display off");
+  ESP_LOGD(TAG, "Display off");
 
   if (this->is_running) {
     this->display->clear();
@@ -342,7 +342,7 @@ void PixelClock::set_display_off() {
  */
 void PixelClock::set_display_on() {
   this->show_display = true;
-  ESP_LOGD(TAG, "display on");
+  ESP_LOGD(TAG, "Display on");
 
   for (auto *t : on_show_display_triggers_) {
     t->process(this->show_display);
@@ -354,7 +354,7 @@ void PixelClock::set_display_on() {
  */
 void PixelClock::set_night_mode_off() {
   this->night_mode = false;
-  ESP_LOGD(TAG, "night mode off");
+  ESP_LOGD(TAG, "Night mode off");
 
   for (auto *t : on_night_mode_triggers_) {
     t->process(this->night_mode);
@@ -366,7 +366,7 @@ void PixelClock::set_night_mode_off() {
  */
 void PixelClock::set_night_mode_on() {
   this->night_mode = true;
-  ESP_LOGD(TAG, "night mode on");
+  ESP_LOGD(TAG, "Night mode on");
 
   for (auto *t : on_night_mode_triggers_) {
     t->process(this->night_mode);
@@ -375,7 +375,7 @@ void PixelClock::set_night_mode_on() {
 
 void PixelClock::set_weekday_accent_off() {
   this->weekday_accent = false;
-  ESP_LOGD(TAG, "weekday accent off");
+  ESP_LOGD(TAG, "Weekday accent off");
 }
 
 /**
@@ -384,7 +384,7 @@ void PixelClock::set_weekday_accent_off() {
  */
 void PixelClock::set_weekday_accent_on() {
   this->weekday_accent = true;
-  ESP_LOGD(TAG, "weekday accent on");
+  ESP_LOGD(TAG, "Weekday accent on");
 }
 
 /**
@@ -396,7 +396,7 @@ void PixelClock::set_weekday_accent_on() {
  */
 void PixelClock::set_today_color(int32_t r, int32_t g, int32_t b) {
   this->today_color = Color((uint8_t) r, (uint8_t) g, (uint8_t) b);
-  ESP_LOGD(TAG, "default today color r: %d g: %d b: %d", (int) r, (int) g, (int) b);
+  ESP_LOGD(TAG, "Set default today color r: %d g: %d b: %d", (int) r, (int) g, (int) b);
 }
 
 /**
@@ -408,7 +408,7 @@ void PixelClock::set_today_color(int32_t r, int32_t g, int32_t b) {
  */
 void PixelClock::set_weekday_color(int32_t r, int32_t g, int32_t b) {
   this->weekday_color = Color((uint8_t) r, (uint8_t) g, (uint8_t) b);
-  ESP_LOGD(TAG, "default weekday color: %d g: %d b: %d", (int) r, (int) g, (int) b);
+  ESP_LOGD(TAG, "Set default weekday color: %d g: %d b: %d", (int) r, (int) g, (int) b);
 }
 
 /**
@@ -418,7 +418,7 @@ void PixelClock::set_weekday_color(int32_t r, int32_t g, int32_t b) {
  */
 void PixelClock::expand_icon_to_9(int32_t mode) {
   this->icon_to_9 = mode;
-  ESP_LOGD(TAG, "icon expanded to 9 mode: %d", (int) mode);
+  ESP_LOGD(TAG, "Icon expanded to 9 mode: %d", (int) mode);
 }
 
 /**
@@ -583,7 +583,7 @@ void PixelClock::bitmap_screen(std::string text, int32_t lifetime, int32_t scree
       t->process("bitmap: " + id, (uint8_t) screen->mode);
     }
   }
-  ESP_LOGD(TAG, "bitmap screen: lifetime: %d screen_time: %d", (int) lifetime, (int) screen_time);
+  ESP_LOGD(TAG, "Bitmap screen: lifetime: %d screen_time: %d", (int) lifetime, (int) screen_time);
   screen->status();
 }
 
@@ -637,13 +637,13 @@ void PixelClock::bitmap_small(std::string icon, std::string text, int32_t lifeti
     for (auto *t : on_add_screen_triggers_) {
       t->process("bitmap small", (uint8_t) screen->mode);
     }
-    ESP_LOGD(TAG, "small bitmap screen: text: %s lifetime: %d screen_time: %d", text.c_str(), (int) lifetime,
+    ESP_LOGD(TAG, "Small bitmap screen: text: %s lifetime: %d screen_time: %d", text.c_str(), (int) lifetime,
              (int) screen_time);
   } else {
     for (auto *t : on_add_screen_triggers_) {
       t->process("bitmap small: " + id, (uint8_t) screen->mode);
     }
-    ESP_LOGD(TAG, "small bitmap screen: id: %s text: %s lifetime: %d screen_time: %d", id.c_str(), text.c_str(),
+    ESP_LOGD(TAG, "Small bitmap screen: id: %s text: %s lifetime: %d screen_time: %d", id.c_str(), text.c_str(),
              (int) lifetime, (int) screen_time);
   }
   screen->status();
@@ -698,13 +698,13 @@ void PixelClock::rainbow_bitmap_small(std::string icon, std::string text, int32_
     for (auto *t : on_add_screen_triggers_) {
       t->process("bitmap small", (uint8_t) screen->mode);
     }
-    ESP_LOGD(TAG, "small bitmap rainbow screen: text: %s lifetime: %d screen_time: %d", text.c_str(), (int) lifetime,
+    ESP_LOGD(TAG, "Small bitmap rainbow screen: text: %s lifetime: %d screen_time: %d", text.c_str(), (int) lifetime,
              (int) screen_time);
   } else {
     for (auto *t : on_add_screen_triggers_) {
       t->process("bitmap small: " + id, (uint8_t) screen->mode);
     }
-    ESP_LOGD(TAG, "small bitmap rainbow screen: id: %s text: %s lifetime: %d screen_time: %d", id.c_str(), text.c_str(),
+    ESP_LOGD(TAG, "Small bitmap rainbow screen: id: %s text: %s lifetime: %d screen_time: %d", id.c_str(), text.c_str(),
              (int) lifetime, (int) screen_time);
   }
   screen->status();
@@ -744,7 +744,7 @@ void PixelClock::bitmap_stack(std::string icons, int32_t lifetime, int32_t scree
     }
   }
   if (count == 0) {
-    ESP_LOGW(TAG, "bitmap stack: icons list [%s] empty", ic.c_str());
+    ESP_LOGW(TAG, "Bitmap stack: icons list [%s] empty", ic.c_str());
     return;
   }
 
@@ -755,23 +755,22 @@ void PixelClock::bitmap_stack(std::string icons, int32_t lifetime, int32_t scree
 
   uint8_t real_count = 0;
   for (uint8_t i = 0; i < count; i++) {
-    uint8_t icon = this->find_icon(tokens[i].c_str());
-
+    uint8_t icon = this->find_icon(tokens[i]);
     if (icon == MAXICONS) {
-      ESP_LOGW(TAG, "icon %d/%s not found => skip", icon, tokens[i].c_str());
+      ESP_LOGW(TAG, "Icon %s not found => skip", tokens[i].c_str());
       for (auto *t : on_icon_error_triggers_) {
         t->process(tokens[i]);
       }
-    } else {
-      screen->sbitmap[real_count] = Color(127, 255, icon, 5);  // int16_t 32767 = uint8_t(127,255)
-      real_count++;
+      continue;
     }
+    screen->sbitmap[real_count] = Color(127, 255, icon, 5);  // int16_t 32767 = uint8_t(127,255)
+    real_count++;
   }
   if (real_count == 0) {
     delete[] screen->sbitmap;
     screen->sbitmap = nullptr;
 
-    ESP_LOGW(TAG, "bitmap stack: icons list [%s] does not contain any known icons.", ic.c_str());
+    ESP_LOGW(TAG, "Bitmap stack: icons list [%s] does not contain any known icons.", ic.c_str());
     return;
   }
 
@@ -791,7 +790,7 @@ void PixelClock::bitmap_stack(std::string icons, int32_t lifetime, int32_t scree
   for (auto *t : on_add_screen_triggers_) {
     t->process(screen->text, (uint8_t) screen->mode);
   }
-  ESP_LOGD(TAG, "bitmap stack: has %d icons from: [%s] screen_time: %d", screen->icon, icons.c_str(),
+  ESP_LOGD(TAG, "Bitmap stack: has %d icons from: [%s] screen_time: %d", screen->icon, icons.c_str(),
            (int) screen_time);
   screen->status();
 }
@@ -799,21 +798,21 @@ void PixelClock::bitmap_stack(std::string icons, int32_t lifetime, int32_t scree
 
 #ifdef USE_ESP8266
 void PixelClock::bitmap_screen(std::string text, int32_t lifetime, int32_t screen_time) {
-  ESP_LOGW(TAG, "bitmap_screen is not available on ESP8266");
+  ESP_LOGW(TAG, "Bitmap screen is not available on ESP8266");
 }
 void PixelClock::bitmap_small(std::string i, std::string t, int32_t l, int32_t s, bool f, int32_t r, int32_t g,
                               int32_t b) {
-  ESP_LOGW(TAG, "bitmap_small is not available on ESP8266");
+  ESP_LOGW(TAG, "Bitmap small is not available on ESP8266");
 }
 void PixelClock::rainbow_bitmap_small(std::string i, std::string t, int32_t l, int32_t s, bool f) {
-  ESP_LOGW(TAG, "bitmap_small_rainbow is not available on ESP8266");
+  ESP_LOGW(TAG, "Bitmap small_rainbow is not available on ESP8266");
 }
 void PixelClock::bitmap_stack(std::string i, int32_t l, int32_t s) {
-  ESP_LOGW(TAG, "bitmap_stack is not available on ESP8266");
+  ESP_LOGW(TAG, "Bitmap stack is not available on ESP8266");
 }
 #endif
 
-uint8_t PixelClock::find_icon(std::string name) {
+uint8_t PixelClock::find_icon(const std::string &name) {
   if (name == "blank") {
     return BLANKICON;
   }
@@ -828,23 +827,35 @@ uint8_t PixelClock::find_icon(std::string name) {
 
   for (uint8_t i = 0; i < this->icon_count; i++) {
     if (this->icons[i]->name == name) {
-      ESP_LOGD(TAG, "icon: %s found id: %d", name.c_str(), i);
+      ESP_LOGD(TAG, "Icon: %s found id: %d", name.c_str(), i);
       return i;
     }
   }
-  ESP_LOGW(TAG, "icon: %s not found", name.c_str());
 
+  ESP_LOGD(TAG, "Icon: %s not found", name.c_str());
   return MAXICONS;
 }
 
-uint8_t PixelClock::find_icon_in_queue(std::string name) {
+uint8_t PixelClock::find_icon_checked_(const std::string &name) {
+  uint8_t icon = this->find_icon(name);
+  if (icon == MAXICONS) {
+    ESP_LOGW(TAG, "Icon %s not found => default: 0", name.c_str());
+    for (auto *t : this->on_icon_error_triggers_) {
+      t->process(iconname);
+    }
+    return 0;
+  }
+  return icon;
+}
+
+uint8_t PixelClock::find_icon_in_queue(const std::string &name) {
   for (uint8_t i = 0; i < MAXQUEUE; i++) {
     if (this->queue[i]->icon_name == name) {
-      ESP_LOGD(TAG, "find icon in queue: icon: %s at position %d", name.c_str(), i);
+      ESP_LOGD(TAG, "Find icon in queue: icon: %s at position %d", name.c_str(), i);
       return i;
     }
   }
-  ESP_LOGW(TAG, "find icon in queue: icon: %s not found", name.c_str());
+  ESP_LOGW(TAG, "Find icon in queue: icon: %s not found", name.c_str());
   return MAXICONS;
 }
 
@@ -852,7 +863,7 @@ uint8_t PixelClock::find_icon_in_queue(std::string name) {
 
 #ifndef USE_ESP8266
 void PixelClock::color_gauge(std::string text) {
-  ESP_LOGD(TAG, "color_gauge: %s", text.c_str());
+  ESP_LOGD(TAG, "Color gauge: %s", text.c_str());
   JsonDocument doc;
   deserializeJson(doc, text);
   JsonArray array = doc.as<JsonArray>();
@@ -885,7 +896,7 @@ void PixelClock::show_gauge(int32_t percent, int32_t r, int32_t g, int32_t b, in
       }
     }
     this->display_gauge = true;
-    ESP_LOGD(TAG, "show_gauge 2 color %d", int(round(percent)));
+    ESP_LOGD(TAG, "Show gauge 2 color %d", int(round(percent)));
   }
 }
 #else
@@ -898,7 +909,7 @@ void PixelClock::show_gauge(int32_t percent, int32_t r, int32_t g, int32_t b, in
     this->display_gauge = true;
     this->gauge_value = (uint8_t) (100 - percent) * 7 / 100;
   }
-  ESP_LOGD(TAG, "show_gauge 2 color %d", int(round(percent)));
+  ESP_LOGD(TAG, "Show gauge 2 color %d", int(round(percent)));
 }
 #endif
 
@@ -923,7 +934,7 @@ void PixelClock::draw_gauge() {
 
 void PixelClock::hide_gauge() {
   this->display_gauge = false;
-  ESP_LOGD(TAG, "hide gauge");
+  ESP_LOGD(TAG, "Hide gauge");
 }
 
 #endif  // PIXEL_CLOCK_GAUGE
@@ -1083,7 +1094,7 @@ void PixelClock::get_status() {
     snprintf(screen_buf, sizeof(screen_buf), "MAX");
   }
   ESP_LOGI(TAG,
-           "Pixel Clock Status:\n"
+           "Status:\n"
            "  Time: %02d.%02d.%d %02d:%02d\n"
            "  Formats: %s, %s\n"
            "  Week start: %s\n"
@@ -1123,12 +1134,12 @@ void PixelClock::set_clock_color(int32_t r, int32_t g, int32_t b) {
       this->queue[i]->text_color = this->clock_color;
     }
   }
-  ESP_LOGD(TAG, "default clock color r: %d g: %d b: %d", (int) r, (int) g, (int) b);
+  ESP_LOGD(TAG, "Set default clock color r: %d g: %d b: %d", (int) r, (int) g, (int) b);
 }
 
 void PixelClock::set_text_color(int32_t r, int32_t g, int32_t b) {
   this->text_color = Color((uint8_t) r, (uint8_t) g, (uint8_t) b);
-  ESP_LOGD(TAG, "default text color r: %d g: %d b: %d", (int) r, (int) g, (int) b);
+  ESP_LOGD(TAG, "Set default text color r: %d g: %d b: %d", (int) r, (int) g, (int) b);
 }
 
 void PixelClock::set_infotext_color(int32_t lr, int32_t lg, int32_t lb, int32_t rr, int32_t rg, int32_t rb, bool df,
@@ -1137,7 +1148,7 @@ void PixelClock::set_infotext_color(int32_t lr, int32_t lg, int32_t lb, int32_t 
   this->info_rcolor = Color((uint8_t) rr, (uint8_t) rg, (uint8_t) rb);
   this->info_font = df;
   this->info_y_offset = y_offset;
-  ESP_LOGD(TAG, "info text color left: r: %d g: %d b: %d right: r: %d g: %d b: %d y_offset %d", (int) lr, (int) lg,
+  ESP_LOGD(TAG, "Set info text color left: r: %d g: %d b: %d right: r: %d g: %d b: %d y_offset %d", (int) lr, (int) lg,
            (int) lb, (int) rr, (int) rg, (int) rb, (int) y_offset);
 #ifdef PIXEL_CLOCK_ADV_CLOCK
   this->set_clock_infotext_color(lr, lg, lb, rr, rg, rb, df, y_offset);
@@ -1147,19 +1158,19 @@ void PixelClock::set_infotext_color(int32_t lr, int32_t lg, int32_t lb, int32_t 
 
 void PixelClock::set_solid_color(int32_t r, int32_t g, int32_t b) {
   this->solid_color = Color((uint8_t) r, (uint8_t) g, (uint8_t) b);
-  ESP_LOGD(TAG, "solid icon color r: %d g: %d b: %d", (int) r, (int) g, (int) b);
+  ESP_LOGD(TAG, "Set solid icon color r: %d g: %d b: %d", (int) r, (int) g, (int) b);
 }
 
 void PixelClock::set_calendar_color(int32_t r, int32_t g, int32_t b) {
   this->calendar_color = Color((uint8_t) r, (uint8_t) g, (uint8_t) b);
-  ESP_LOGD(TAG, "calendar icon color r: %d g: %d b: %d", (int) r, (int) g, (int) b);
+  ESP_LOGD(TAG, "Set calendar icon color r: %d g: %d b: %d", (int) r, (int) g, (int) b);
 }
 
 void PixelClock::update()  // called from polling component
 {
   if (!this->is_running) {
     if (this->clock->now().is_valid()) {
-      ESP_LOGD(TAG, "time sync => start running");
+      ESP_LOGD(TAG, "Time sync => start running");
 
       this->is_running = true;
 
@@ -1168,7 +1179,6 @@ void PixelClock::update()  // called from polling component
         t->process();
       }
     }
-  } else {
   }
 }
 
@@ -1189,13 +1199,13 @@ void PixelClock::force_screen(std::string icon_name, int32_t mode) {
       }
       // Will allow force any screen [andrewjswan].
       if (force) {
-        ESP_LOGD(TAG, "force_screen: found position: %d", i);
+        ESP_LOGD(TAG, "Force screen: found position: %d", i);
         this->next_action_time = this->get_tick();
         this->queue[i]->last_time = 0.0;
         if (this->queue[i]->endtime < this->next_action_time + this->queue[i]->screen_time_) {
           this->queue[i]->endtime = this->next_action_time + this->queue[i]->screen_time_;
         }
-        ESP_LOGW(TAG, "force_screen: icon %s in mode %d", icon_name.c_str(), (int) mode);
+        ESP_LOGW(TAG, "Force screen: icon %s in mode %d", icon_name.c_str(), (int) mode);
       }
     }
   }
@@ -1229,7 +1239,7 @@ uint8_t PixelClock::find_oldest_queue_element() {
 
   uint8_t queue_count = this->queue_count();
   if (hit != MAXQUEUE) {
-    ESP_LOGD(TAG, "oldest queue element is: %d/%d", hit, queue_count);
+    ESP_LOGD(TAG, "Oldest queue element is: %d/%d", hit, queue_count);
   } else if (queue_count > 0) {
     // Fallback: no slot passed the endtime/last_time check above (e.g. all
     // eligible screens just expired in this tick). Previously this forced
@@ -1256,7 +1266,7 @@ uint8_t PixelClock::find_oldest_queue_element() {
       hit = i;
       break;
     }
-    ESP_LOGD(TAG, "oldest queue element fallback: %d/%d", hit, queue_count);
+    ESP_LOGD(TAG, "Oldest queue element fallback: %d/%d", hit, queue_count);
   } else {
     // Queue is really empty
   }
@@ -1299,7 +1309,7 @@ uint8_t PixelClock::find_last_clock() {
       }
     }
     if (hit != MAXQUEUE) {
-      ESP_LOGD(TAG, "forced clock_interval");
+      ESP_LOGD(TAG, "Forced clock interval");
     }
   }
   return hit;
@@ -1315,7 +1325,7 @@ void PixelClock::remove_expired_queue_element() {
       if ((this->queue[i]->endtime > 0.0) && (this->queue[i]->endtime < ts)) {
         this->queue[i]->endtime = 0.0;
         if (this->queue[i]->mode != MODE_EMPTY) {
-          ESP_LOGD(TAG, "remove expired queue element: slot %d: mode: %d icon_name: %s text: %s", i,
+          ESP_LOGD(TAG, "Remove expired queue element: slot %d: mode: %d icon_name: %s text: %s", i,
                    this->queue[i]->mode, this->queue[i]->icon_name.c_str(), this->queue[i]->text.c_str());
           for (auto *t : on_expired_screen_triggers_) {
             infotext = "";
@@ -1474,7 +1484,7 @@ void PixelClock::tick_next_screen(float ts) {
     }
   } else {
     for (auto *t : on_next_screen_triggers_) {
-      ESP_LOGD(TAG, "on_next_screen trigger");
+      ESP_LOGD(TAG, "On next screen trigger");
       std::string infotext = "";
       switch (this->queue[this->screen_pointer]->mode) {
         case MODE_EMPTY:
@@ -1579,7 +1589,7 @@ void PixelClock::tick() {
       } else {
         this->next_action_time = ts + 15000;  // come back in 15 Seconds
         for (auto *t : on_empty_queue_triggers_) {
-          ESP_LOGD(TAG, "on_empty_queue trigger");
+          ESP_LOGD(TAG, "On empty queue trigger");
           t->process();
         }
         // check if automation has enqueued a new element
@@ -1752,7 +1762,7 @@ void PixelClock::del_screen(std::string icon_name, int32_t mode) {
       bool force = true;
       std::string ic = get_icon_name(icon_name);
       std::string id = icon_name.find("|") != std::string::npos ? get_screen_id(icon_name) : ic;
-      ESP_LOGD(TAG, "del_screen: %s -> icon: %s id: %s in position: %s mode: %d", icon_name.c_str(), ic.c_str(),
+      ESP_LOGD(TAG, "Del screen: %s -> icon: %s id: %s in position: %s mode: %d", icon_name.c_str(), ic.c_str(),
                id.c_str(), this->queue[i]->icon_name.c_str(), (int) mode);
 
       if ((mode == MODE_ICON_SCREEN) || (mode == MODE_ICON_CLOCK) || (mode == MODE_ICON_DATE) ||
@@ -1775,7 +1785,7 @@ void PixelClock::del_screen(std::string icon_name, int32_t mode) {
       }
 
       if (force) {
-        ESP_LOGW(TAG, "del_screen: slot %d deleted", i);
+        ESP_LOGW(TAG, "Del screen: slot %d deleted", i);
         this->queue[i]->mode = MODE_EMPTY;
         this->queue[i]->endtime = 0.0;
         this->queue[i]->last_time = 0.0;
@@ -1799,19 +1809,10 @@ void PixelClock::del_screen(std::string icon_name, int32_t mode) {
 
 void PixelClock::alert_screen(std::string iconname, std::string text, int32_t screen_time, bool default_font, int32_t r,
                               int32_t g, int32_t b) {
-  uint8_t icon = this->find_icon(iconname.c_str());
-
-  if (icon == MAXICONS) {
-    ESP_LOGW(TAG, "icon %d/%s not found => default: 0", icon, iconname.c_str());
-    icon = 0;
-    for (auto *t : on_icon_error_triggers_) {
-      t->process(iconname);
-    }
-  }
+  uint8_t icon = this->find_icon_checked_(iconname);
   PixelClock_Queue *screen = this->find_mode_queue_element(MODE_ALERT_SCREEN);
 
   screen->text = text;
-
   screen->text_color = Color(r, g, b);
   screen->default_font = default_font;
   screen->mode = MODE_ALERT_SCREEN;
@@ -1823,7 +1824,7 @@ void PixelClock::alert_screen(std::string iconname, std::string text, int32_t sc
   for (auto *t : on_add_screen_triggers_) {
     t->process(screen->icon_name, (uint8_t) screen->mode);
   }
-  ESP_LOGD(TAG, "alert screen icon: %d iconname: %s text: %s screen_time: %d", icon, iconname.c_str(), text.c_str(),
+  ESP_LOGD(TAG, "Alert screen icon: %d iconname: %s text: %s screen_time: %d", icon, iconname.c_str(), text.c_str(),
            (int) screen_time);
   screen->status();
 
@@ -1831,19 +1832,10 @@ void PixelClock::alert_screen(std::string iconname, std::string text, int32_t sc
 }
 
 void PixelClock::rainbow_alert_screen(std::string iconname, std::string text, int32_t screen_time, bool default_font) {
-  uint8_t icon = this->find_icon(iconname.c_str());
-
-  if (icon == MAXICONS) {
-    ESP_LOGW(TAG, "icon %d/%s not found => default: 0", icon, iconname.c_str());
-    icon = 0;
-    for (auto *t : on_icon_error_triggers_) {
-      t->process(iconname);
-    }
-  }
+  uint8_t icon = this->find_icon_checked_(iconname);
   PixelClock_Queue *screen = this->find_mode_queue_element(MODE_RAINBOW_ALERT_SCREEN);
 
   screen->text = text;
-
   screen->default_font = default_font;
   screen->mode = MODE_RAINBOW_ALERT_SCREEN;
   screen->icon_name = iconname;
@@ -1854,7 +1846,7 @@ void PixelClock::rainbow_alert_screen(std::string iconname, std::string text, in
   for (auto *t : on_add_screen_triggers_) {
     t->process(screen->icon_name, (uint8_t) screen->mode);
   }
-  ESP_LOGD(TAG, "alert screen rainbow icon: %d iconname: %s text: %s screen_time: %d", icon, iconname.c_str(),
+  ESP_LOGD(TAG, "Alert screen rainbow icon: %d iconname: %s text: %s screen_time: %d", icon, iconname.c_str(),
            text.c_str(), (int) screen_time);
   screen->status();
 
@@ -1866,15 +1858,7 @@ void PixelClock::icon_screen(std::string iconname, std::string text, int32_t lif
   std::string ic = get_icon_name(iconname);
   std::string id = get_screen_id(iconname);
 
-  uint8_t icon = this->find_icon(ic.c_str());
-
-  if (icon == MAXICONS) {
-    ESP_LOGW(TAG, "icon %d/%s not found => default: 0", icon, ic.c_str());
-    icon = 0;
-    for (auto *t : on_icon_error_triggers_) {
-      t->process(ic);
-    }
-  }
+  uint8_t icon = this->find_icon_checked_(ic);
   PixelClock_Queue *screen = this->find_mode_icon_queue_element(MODE_ICON_SCREEN, id);
 
   screen->text = text;
@@ -1893,7 +1877,7 @@ void PixelClock::icon_screen(std::string iconname, std::string text, int32_t lif
   for (auto *t : on_add_screen_triggers_) {
     t->process(screen->icon_name, (uint8_t) screen->mode);
   }
-  ESP_LOGD(TAG, "icon screen icon: %d iconname: %s text: %s lifetime: %d screen_time: %d", icon, iconname.c_str(),
+  ESP_LOGD(TAG, "Icon screen icon: %d iconname: %s text: %s lifetime: %d screen_time: %d", icon, iconname.c_str(),
            text.c_str(), (int) lifetime, (int) screen_time);
   screen->status();
 }
@@ -1923,7 +1907,7 @@ void PixelClock::text_screen_progress(std::string text, std::string value, int32
   for (auto *t : on_add_screen_triggers_) {
     t->process(screen->icon_name, (uint8_t) screen->mode);
   }
-  ESP_LOGD(TAG, "text progress screen text: %s value: %s progress %d lifetime: %d screen_time: %d", text.c_str(),
+  ESP_LOGD(TAG, "Text progress screen text: %s value: %s progress %d lifetime: %d screen_time: %d", text.c_str(),
            value.c_str(), (int) progress, (int) lifetime, (int) screen_time);
   screen->status();
 }
@@ -1933,15 +1917,7 @@ void PixelClock::icon_screen_progress(std::string iconname, std::string text, in
   std::string ic = get_icon_name(iconname);
   std::string id = get_screen_id(iconname);
 
-  uint8_t icon = this->find_icon(ic.c_str());
-
-  if (icon == MAXICONS) {
-    ESP_LOGW(TAG, "icon %d/%s not found => default: 0", icon, ic.c_str());
-    icon = 0;
-    for (auto *t : on_icon_error_triggers_) {
-      t->process(ic);
-    }
-  }
+  uint8_t icon = this->find_icon_checked_(ic);
   PixelClock_Queue *screen = this->find_mode_icon_queue_element(MODE_ICON_PROGRESS, id);
 
   screen->text = text;
@@ -1960,7 +1936,7 @@ void PixelClock::icon_screen_progress(std::string iconname, std::string text, in
   for (auto *t : on_add_screen_triggers_) {
     t->process(screen->icon_name, (uint8_t) screen->mode);
   }
-  ESP_LOGD(TAG, "icon progress screen icon: %d iconname: %s text: %s progress %d lifetime: %d screen_time: %d", icon,
+  ESP_LOGD(TAG, "Icon progress screen icon: %d iconname: %s text: %s progress %d lifetime: %d screen_time: %d", icon,
            iconname.c_str(), text.c_str(), (int) progress, (int) lifetime, (int) screen_time);
   screen->status();
 }
@@ -1976,7 +1952,7 @@ void PixelClock::set_progressbar_color(std::string iconname, int32_t mode, int32
                                        : Color((uint8_t) bg_r, (uint8_t) bg_g, (uint8_t) bg_b);
 
   ESP_LOGD(TAG,
-           "progress screen mode: %d iconname: %s color progressbar: r: %d g: %d b: %d background: r: %d g: %d b: %d",
+           "Progress screen mode: %d iconname: %s color progressbar: r: %d g: %d b: %d background: r: %d g: %d b: %d",
            (int) mode, iconname.c_str(), (int) r, (int) g, (int) b, (int) bg_r, (int) bg_g, (int) bg_b);
   screen->status();
 }
@@ -1986,15 +1962,7 @@ void PixelClock::icon_clock(std::string iconname, int32_t lifetime, int32_t scre
   std::string ic = get_icon_name(iconname);
   std::string id = get_screen_id(iconname);
 
-  uint8_t icon = this->find_icon(ic.c_str());
-
-  if (icon == MAXICONS) {
-    ESP_LOGW(TAG, "icon %d/%s not found => default: 0", icon, ic.c_str());
-    icon = 0;
-    for (auto *t : on_icon_error_triggers_) {
-      t->process(ic);
-    }
-  }
+  uint8_t icon = this->find_icon_checked_(ic);
   PixelClock_Queue *screen = this->find_mode_icon_queue_element(MODE_ICON_CLOCK, id);
 
   screen->text_color = Color(r, g, b);
@@ -2015,7 +1983,7 @@ void PixelClock::icon_clock(std::string iconname, int32_t lifetime, int32_t scre
   for (auto *t : on_add_screen_triggers_) {
     t->process(screen->icon_name, (uint8_t) screen->mode);
   }
-  ESP_LOGD(TAG, "icon clock icon: %d iconname: %s lifetime: %d screen_time: %d", icon, iconname.c_str(), (int) lifetime,
+  ESP_LOGD(TAG, "Icon clock icon: %d iconname: %s lifetime: %d screen_time: %d", icon, iconname.c_str(), (int) lifetime,
            (int) screen_time);
   screen->status();
 }
@@ -2025,15 +1993,7 @@ void PixelClock::icon_date(std::string iconname, int32_t lifetime, int32_t scree
   std::string ic = get_icon_name(iconname);
   std::string id = get_screen_id(iconname);
 
-  uint8_t icon = this->find_icon(ic.c_str());
-
-  if (icon == MAXICONS) {
-    ESP_LOGW(TAG, "icon %d/%s not found => default: 0", icon, ic.c_str());
-    icon = 0;
-    for (auto *t : on_icon_error_triggers_) {
-      t->process(ic);
-    }
-  }
+  uint8_t icon = this->find_icon_checked_(ic);
   PixelClock_Queue *screen = this->find_mode_icon_queue_element(MODE_ICON_DATE, id);
 
   screen->text_color = Color(r, g, b);
@@ -2054,7 +2014,7 @@ void PixelClock::icon_date(std::string iconname, int32_t lifetime, int32_t scree
   for (auto *t : on_add_screen_triggers_) {
     t->process(screen->icon_name, (uint8_t) screen->mode);
   }
-  ESP_LOGD(TAG, "icon date icon: %d iconname: %s lifetime: %d screen_time: %d", icon, iconname.c_str(), (int) lifetime,
+  ESP_LOGD(TAG, "Icon date icon: %d iconname: %s lifetime: %d screen_time: %d", icon, iconname.c_str(), (int) lifetime,
            (int) screen_time);
   screen->status();
 }
@@ -2064,19 +2024,10 @@ void PixelClock::rainbow_icon_screen(std::string iconname, std::string text, int
   std::string ic = get_icon_name(iconname);
   std::string id = get_screen_id(iconname);
 
-  uint8_t icon = this->find_icon(ic.c_str());
-
-  if (icon == MAXICONS) {
-    ESP_LOGW(TAG, "icon %d/%s not found => default: 0", icon, ic.c_str());
-    icon = 0;
-    for (auto *t : on_icon_error_triggers_) {
-      t->process(ic);
-    }
-  }
+  uint8_t icon = this->find_icon_checked_(ic);
   PixelClock_Queue *screen = this->find_mode_icon_queue_element(MODE_RAINBOW_ICON, id);
 
   screen->text = text;
-
   screen->default_font = default_font;
   screen->mode = MODE_RAINBOW_ICON;
   screen->icon_name = id;
@@ -2090,7 +2041,7 @@ void PixelClock::rainbow_icon_screen(std::string iconname, std::string text, int
   for (auto *t : on_add_screen_triggers_) {
     t->process(screen->icon_name, (uint8_t) screen->mode);
   }
-  ESP_LOGD(TAG, "rainbow icon screen icon: %d iconname: %s text: %s lifetime: %d screen_time: %d", icon,
+  ESP_LOGD(TAG, "Rainbow icon screen icon: %d iconname: %s text: %s lifetime: %d screen_time: %d", icon,
            iconname.c_str(), text.c_str(), (int) lifetime, (int) screen_time);
   screen->status();
 }
@@ -2098,7 +2049,7 @@ void PixelClock::rainbow_icon_screen(std::string iconname, std::string text, int
 void PixelClock::rainbow_clock_screen(int32_t lifetime, int32_t screen_time, bool default_font) {
   PixelClock_Queue *screen = this->find_mode_queue_element(MODE_RAINBOW_CLOCK);
 
-  ESP_LOGD(TAG, "rainbow_clock_screen lifetime: %d screen_time: %d", (int) lifetime, (int) screen_time);
+  ESP_LOGD(TAG, "Rainbow clock screen lifetime: %d screen_time: %d", (int) lifetime, (int) screen_time);
   screen->mode = MODE_RAINBOW_CLOCK;
   screen->default_font = default_font;
   if (PIXEL_CLOCK_CLOCK_INTERVAL == 0 || (PIXEL_CLOCK_CLOCK_INTERVAL * 1000.0 > screen_time * 1000.0)) {
@@ -2119,7 +2070,7 @@ void PixelClock::rainbow_clock_screen(int32_t lifetime, int32_t screen_time, boo
 }
 
 void PixelClock::rainbow_date_screen(int32_t lifetime, int32_t screen_time, bool default_font) {
-  ESP_LOGD(TAG, "rainbow_date_screen lifetime: %d screen_time: %d", (int) lifetime, (int) screen_time);
+  ESP_LOGD(TAG, "Rainbow date screen lifetime: %d screen_time: %d", (int) lifetime, (int) screen_time);
   PixelClock_Queue *screen = this->find_mode_queue_element(MODE_RAINBOW_DATE);
 
   screen->mode = MODE_RAINBOW_DATE;
@@ -2182,7 +2133,7 @@ void PixelClock::text_screen(std::string text, int32_t lifetime, int32_t screen_
   } else {
     screen->endtime = this->get_tick() + (lifetime > 0 ? lifetime * 60000.0 : screen->screen_time_);
   }
-  ESP_LOGD(TAG, "text screen: text: %s screen_time: %d", text.c_str(), (int) screen_time);
+  ESP_LOGD(TAG, "Text screen: text: %s screen_time: %d", text.c_str(), (int) screen_time);
   screen->status();
 }
 
@@ -2197,7 +2148,7 @@ void PixelClock::rainbow_text_screen(std::string text, int32_t lifetime, int32_t
   } else {
     screen->endtime = this->get_tick() + (lifetime > 0 ? lifetime * 60000.0 : screen->screen_time_);
   }
-  ESP_LOGD(TAG, "rainbow text screen: text: %s screen_time: %d", text.c_str(), (int) screen_time);
+  ESP_LOGD(TAG, "Rainbow text screen: text: %s screen_time: %d", text.c_str(), (int) screen_time);
   screen->status();
 }
 
@@ -2211,7 +2162,7 @@ void PixelClock::alert_text_screen(std::string text, int32_t screen_time, bool d
   screen->mode = MODE_ALERT_TEXT_SCREEN;
   screen->calc_scroll_time(text, screen_time);
   screen->endtime = this->get_tick() + screen->screen_time_;
-  ESP_LOGD(TAG, "alert text screen: text: %s screen_time: %d", text.c_str(), (int) screen_time);
+  ESP_LOGD(TAG, "Alert text screen: text: %s screen_time: %d", text.c_str(), (int) screen_time);
   screen->status();
 
   force_screen("", MODE_ALERT_TEXT_SCREEN);
@@ -2235,7 +2186,7 @@ void PixelClock::fire_screen(int32_t lifetime, int32_t screen_time) {
   for (auto *t : on_add_screen_triggers_) {
     t->process("Fire", (uint8_t) screen->mode);
   }
-  ESP_LOGD(TAG, "fire screen: lifetime: %d screen_time:%d ", (int) lifetime, (int) screen_time);
+  ESP_LOGD(TAG, "Fire screen: lifetime: %d screen_time:%d ", (int) lifetime, (int) screen_time);
   screen->status();
 }
 #endif
@@ -2244,7 +2195,7 @@ void PixelClock::full_screen(std::string iconname, int32_t lifetime, int32_t scr
   uint8_t icon = this->find_icon(iconname.c_str());
 
   if (icon == MAXICONS) {
-    ESP_LOGW(TAG, "full screen: icon %d not found => default: 0", icon);
+    ESP_LOGW(TAG, "Full screen: icon %d not found => default: 0", icon);
     for (auto *t : on_icon_error_triggers_) {
       t->process(iconname);
     }
@@ -2268,7 +2219,7 @@ void PixelClock::full_screen(std::string iconname, int32_t lifetime, int32_t scr
   for (auto *t : on_add_screen_triggers_) {
     t->process(screen->icon_name, (uint8_t) screen->mode);
   }
-  ESP_LOGD(TAG, "full screen: icon: %d iconname: %s lifetime: %d screen_time:%d ", icon, iconname.c_str(),
+  ESP_LOGD(TAG, "Full screen: icon: %d iconname: %s lifetime: %d screen_time:%d ", icon, iconname.c_str(),
            (int) lifetime, (int) screen_time);
   screen->status();
 }
@@ -2277,7 +2228,7 @@ void PixelClock::clock_screen(int32_t lifetime, int32_t screen_time, bool defaul
                               int32_t b) {
   PixelClock_Queue *screen = this->find_mode_queue_element(MODE_CLOCK);
   screen->text_color = Color(r, g, b);
-  ESP_LOGD(TAG, "clock_screen_color lifetime: %d screen_time: %d red: %d green: %d blue: %d", (int) lifetime,
+  ESP_LOGD(TAG, "Clock screen color lifetime: %d screen_time: %d red: %d green: %d blue: %d", (int) lifetime,
            (int) screen_time, (int) r, (int) g, (int) b);
   screen->mode = MODE_CLOCK;
   screen->default_font = default_font;
@@ -2296,7 +2247,7 @@ void PixelClock::clock_screen(int32_t lifetime, int32_t screen_time, bool defaul
 
 void PixelClock::date_screen(int32_t lifetime, int32_t screen_time, bool default_font, int32_t r, int32_t g,
                              int32_t b) {
-  ESP_LOGD(TAG, "date_screen lifetime: %d screen_time: %d red: %d green: %d blue: %d", (int) lifetime,
+  ESP_LOGD(TAG, "Date screen lifetime: %d screen_time: %d red: %d green: %d blue: %d", (int) lifetime,
            (int) screen_time, (int) r, (int) g, (int) b);
   PixelClock_Queue *screen = this->find_free_queue_element();
 
@@ -2322,15 +2273,7 @@ void PixelClock::icon_text_screen(std::string iconname, std::string text, int32_
   std::string ic = get_icon_name(iconname);
   std::string id = get_screen_id(iconname);
 
-  uint8_t icon = this->find_icon(ic.c_str());
-
-  if (icon == MAXICONS) {
-    ESP_LOGW(TAG, "icon %d/%s not found => default: 0", icon, ic.c_str());
-    icon = 0;
-    for (auto *t : on_icon_error_triggers_) {
-      t->process(ic);
-    }
-  }
+  uint8_t icon = this->find_icon_checked_(ic);
   PixelClock_Queue *screen = this->find_mode_icon_queue_element(MODE_ICON_TEXT_SCREEN, id);
 
   screen->text = text;
@@ -2348,7 +2291,7 @@ void PixelClock::icon_text_screen(std::string iconname, std::string text, int32_
   for (auto *t : on_add_screen_triggers_) {
     t->process(screen->icon_name, (uint8_t) screen->mode);
   }
-  ESP_LOGD(TAG, "icon text screen icon: %d iconname: %s text: %s lifetime: %d screen_time: %d", icon, iconname.c_str(),
+  ESP_LOGD(TAG, "Icon text screen icon: %d iconname: %s text: %s lifetime: %d screen_time: %d", icon, iconname.c_str(),
            text.c_str(), (int) lifetime, (int) screen_time);
   screen->status();
 }
@@ -2358,15 +2301,7 @@ void PixelClock::rainbow_icon_text_screen(std::string iconname, std::string text
   std::string ic = get_icon_name(iconname);
   std::string id = get_screen_id(iconname);
 
-  uint8_t icon = this->find_icon(ic.c_str());
-
-  if (icon == MAXICONS) {
-    ESP_LOGW(TAG, "icon %d/%s not found => default: 0", icon, ic.c_str());
-    icon = 0;
-    for (auto *t : on_icon_error_triggers_) {
-      t->process(ic);
-    }
-  }
+  uint8_t icon = this->find_icon_checked_(ic);
   PixelClock_Queue *screen = this->find_mode_icon_queue_element(MODE_RAINBOW_ICON_TEXT_SCREEN, id);
 
   screen->text = text;
@@ -2383,7 +2318,7 @@ void PixelClock::rainbow_icon_text_screen(std::string iconname, std::string text
   for (auto *t : on_add_screen_triggers_) {
     t->process(screen->icon_name, (uint8_t) screen->mode);
   }
-  ESP_LOGD(TAG, "rainbow icon text screen icon: %d iconname: %s text: %s lifetime: %d screen_time: %d", icon,
+  ESP_LOGD(TAG, "Rainbow icon text screen icon: %d iconname: %s text: %s lifetime: %d screen_time: %d", icon,
            iconname.c_str(), text.c_str(), (int) lifetime, (int) screen_time);
   screen->status();
 }
@@ -2400,16 +2335,7 @@ void PixelClock::icon_prognosis_screen_rgb(std::string iconname, std::string tex
   std::string ic = get_icon_name(iconname);
   std::string id = get_screen_id(iconname);
 
-  uint8_t icon = this->find_icon(ic.c_str());
-
-  if (icon == MAXICONS) {
-    ESP_LOGW(TAG, "icon %d/%s not found => default: 0", icon, ic.c_str());
-    icon = 0;
-    for (auto *t : on_icon_error_triggers_) {
-      t->process(ic);
-    }
-  }
-
+  uint8_t icon = this->find_icon_checked_(ic);
   PixelClock_Queue *screen = this->find_mode_icon_queue_element(MODE_PROGNOSIS_SCREEN, id);
 
   screen->text = text;
@@ -2464,8 +2390,8 @@ void PixelClock::icon_prognosis_screen_rgb(std::string iconname, std::string tex
   for (auto *t : on_add_screen_triggers_) {
     t->process(screen->icon_name, (uint8_t) screen->mode);
   }
-  ESP_LOGD(TAG, "icon prognosis screen prognosis: %s", prognosis.c_str());
-  ESP_LOGD(TAG, "icon prognosis screen icon: %d iconname: %s text: %s prognosis: %d lifetime: %d screen_time: %d", icon,
+  ESP_LOGD(TAG, "Icon prognosis screen prognosis: %s", prognosis.c_str());
+  ESP_LOGD(TAG, "Icon prognosis screen icon: %d iconname: %s text: %s prognosis: %d lifetime: %d screen_time: %d", icon,
            iconname.c_str(), text.c_str(), static_cast<uint8_t>(i / 3), (int) lifetime, (int) screen_time);
   screen->status();
 }
@@ -2475,7 +2401,7 @@ PixelClock_Queue *PixelClock::find_icon_queue_element(uint8_t icon) {
     if (((this->queue[i]->mode == MODE_ICON_SCREEN) || (this->queue[i]->mode == MODE_RAINBOW_ICON) ||
          (this->queue[i]->mode == MODE_ICON_PROGRESS)) &&
         (this->queue[i]->icon == icon)) {
-      ESP_LOGD(TAG, "icon_screen: found by icon");
+      ESP_LOGD(TAG, "Icon screen: found by icon");
       return this->queue[i];
     }
   }
@@ -2486,7 +2412,7 @@ PixelClock_Queue *PixelClock::find_free_queue_element() {
   float ts = this->get_tick();
   for (size_t i = 0; i < MAXQUEUE; i++) {
     if (this->queue[i]->endtime < ts) {
-      ESP_LOGD(TAG, "free_screen: found by endtime %d", i);
+      ESP_LOGD(TAG, "Free screen: found by endtime %d", i);
       return this->queue[i];
     }
   }
@@ -2496,7 +2422,7 @@ PixelClock_Queue *PixelClock::find_free_queue_element() {
 PixelClock_Queue *PixelClock::find_mode_queue_element(uint8_t mode) {
   for (size_t i = 0; i < MAXQUEUE; i++) {
     if (this->queue[i]->mode == mode) {
-      ESP_LOGD(TAG, "find screen: found by mode %d", i);
+      ESP_LOGD(TAG, "Find screen: found by mode %d", i);
       return this->queue[i];
     }
   }
@@ -2506,7 +2432,7 @@ PixelClock_Queue *PixelClock::find_mode_queue_element(uint8_t mode) {
 PixelClock_Queue *PixelClock::find_mode_icon_queue_element(uint8_t mode, std::string name) {
   for (size_t i = 0; i < MAXQUEUE; i++) {
     if (this->queue[i]->mode == mode && strcmp(this->queue[i]->icon_name.c_str(), name.c_str()) == 0) {
-      ESP_LOGD(TAG, "find screen: found by mode %d icon %s", i, name.c_str());
+      ESP_LOGD(TAG, "Find screen: found by mode %d icon %s", i, name.c_str());
       return this->queue[i];
     }
   }
@@ -2527,7 +2453,7 @@ void PixelClock::set_brightness(int32_t value) {
   if (value < 256) {
     this->target_brightness_ = value;
     float br = (float) value / (float) 255;
-    ESP_LOGI(TAG, "set_brightness %d => %.2f %%", (int) value, 100 * br);
+    ESP_LOGI(TAG, "Set brightness %d => %.2f %%", (int) value, 100 * br);
   }
 }
 
@@ -2548,17 +2474,17 @@ void PixelClock::set_display(addressable_light::AddressableLightDisplay *disp) {
   this->show_display = true;
   this->night_mode = false;
   this->weekday_accent = false;
-  ESP_LOGD(TAG, "set_display");
+  ESP_LOGD(TAG, "Set display");
 }
 
 #ifdef USE_GRAPH
 void PixelClock::set_graph(graph::Graph *graph) {
   this->graph = graph;
-  ESP_LOGD(TAG, "set_graph");
+  ESP_LOGD(TAG, "Set graph");
 }
 
 void PixelClock::graph_screen(int32_t lifetime, int32_t screen_time) {
-  ESP_LOGD(TAG, "graph screen: lifetime: %d screen_time: %d", (int) lifetime, (int) screen_time);
+  ESP_LOGD(TAG, "Graph screen: lifetime: %d screen_time: %d", (int) lifetime, (int) screen_time);
 
   PixelClock_Queue *screen = this->find_mode_queue_element(MODE_GRAPH_SCREEN);
 
@@ -2588,7 +2514,7 @@ void PixelClock::icon_graph_screen(std::string iconname, int32_t lifetime, int32
   uint8_t icon = this->find_icon(iconname.c_str());
 
   if (icon == MAXICONS) {
-    ESP_LOGW(TAG, "graph screen with icon: icon %d not found => default: 0", icon);
+    ESP_LOGW(TAG, "Graph screen with icon: icon %d not found => default: 0", icon);
     for (auto *t : on_icon_error_triggers_) {
       t->process(iconname);
     }
@@ -2618,7 +2544,7 @@ void PixelClock::icon_graph_screen(std::string iconname, int32_t lifetime, int32
   for (auto *t : on_add_screen_triggers_) {
     t->process("graph", (uint8_t) screen->mode);
   }
-  ESP_LOGD(TAG, "graph screen with icon: icon: %d iconname: %s lifetime: %d screen_time:%d ", icon, iconname.c_str(),
+  ESP_LOGD(TAG, "Graph screen with icon: icon: %d iconname: %s lifetime: %d screen_time:%d ", icon, iconname.c_str(),
            (int) lifetime, (int) screen_time);
   screen->status();
 }
@@ -2627,7 +2553,7 @@ void PixelClock::icon_graph_screen(std::string iconname, int32_t lifetime, int32
 
 void PixelClock::set_clock(time::RealTimeClock *clock) {
   this->clock = clock;
-  ESP_LOGD(TAG, "set_clock");
+  ESP_LOGD(TAG, "Set clock");
 }
 
 void PixelClock::draw_day_of_week(int32_t ypos, bool small) {
@@ -2668,7 +2594,7 @@ void PixelClock::set_clock_infotext_color(int32_t lr, int32_t lg, int32_t lb, in
   this->info_clock_rcolor = Color((uint8_t) rr, (uint8_t) rg, (uint8_t) rb);
   this->info_clock_font = df;
   this->info_clock_y_offset = y_offset;
-  ESP_LOGD(TAG, "info clock text color left: r: %d g: %d b: %d right: r: %d g: %d b: %d y_offset %d", (int) lr,
+  ESP_LOGD(TAG, "Info clock text color left: r: %d g: %d b: %d right: r: %d g: %d b: %d y_offset %d", (int) lr,
            (int) lg, (int) lb, (int) rr, (int) rg, (int) rb, (int) y_offset);
 }
 
@@ -2678,7 +2604,7 @@ void PixelClock::set_date_infotext_color(int32_t lr, int32_t lg, int32_t lb, int
   this->info_date_rcolor = Color((uint8_t) rr, (uint8_t) rg, (uint8_t) rb);
   this->info_date_font = df;
   this->info_date_y_offset = y_offset;
-  ESP_LOGD(TAG, "info date text color left: r: %d g: %d b: %d right: r: %d g: %d b: %d y_offset %d", (int) lr, (int) lg,
+  ESP_LOGD(TAG, "Info date text color left: r: %d g: %d b: %d right: r: %d g: %d b: %d y_offset %d", (int) lr, (int) lg,
            (int) lb, (int) rr, (int) rg, (int) rb, (int) y_offset);
 }
 
@@ -2687,7 +2613,7 @@ void PixelClock::set_adv_clock_color(int32_t hr, int32_t hg, int32_t hb, int32_t
   this->hour_color = Color((uint8_t) hr, (uint8_t) hg, (uint8_t) hb);
   this->minutes_color = Color((uint8_t) mr, (uint8_t) mg, (uint8_t) mb);
   this->spacer_color = Color((uint8_t) sr, (uint8_t) sg, (uint8_t) sb);
-  ESP_LOGD(TAG, "advanced clock color hour: r: %d g: %d b: %d minutes: r: %d g: %d b: %d spacer: r: %d g: %d b: %d",
+  ESP_LOGD(TAG, "Advanced clock color hour: r: %d g: %d b: %d minutes: r: %d g: %d b: %d spacer: r: %d g: %d b: %d",
            (int) hr, (int) hg, (int) hb, (int) mr, (int) mg, (int) mb, (int) sr, (int) sg, (int) sb);
 }
 
@@ -3142,7 +3068,7 @@ void PixelClock::dump_config() {
 
 void PixelClock::add_icon(PixelClock_Icon *icon) {
   this->icons[this->icon_count] = icon;
-  ESP_LOGD(TAG, "add_icon No.: %d name: %s frame_duration: %d ms", this->icon_count, icon->name.c_str(),
+  ESP_LOGD(TAG, "Add icon No.: %d name: %s frame_duration: %d ms", this->icon_count, icon->name.c_str(),
            icon->frame_duration);
   this->icon_count++;
 }
