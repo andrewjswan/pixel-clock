@@ -1082,9 +1082,8 @@ void PixelClock::get_status() {
            "  Formats: %s, %s\n"
            "  Display: %s\n"
            "  Brightness: %d/255",
-           now.day_of_month, now.month, now.year, now.hour, now.minute,
-           PIXEL_CLOCK_DATE_FORMAT, PIXEL_CLOCK_TIME_FORMAT,
-           ONOFF(this->show_display), this->brightness_);
+           now.day_of_month, now.month, now.year, now.hour, now.minute, PIXEL_CLOCK_DATE_FORMAT,
+           PIXEL_CLOCK_TIME_FORMAT, ONOFF(this->show_display), this->brightness_);
 
   if (this->screen_pointer != MAXQUEUE) {
     ESP_LOGI(TAG, "  Screen: %d (mode: %d)", this->screen_pointer, this->queue[this->screen_pointer]->mode);
@@ -1096,9 +1095,7 @@ void PixelClock::get_status() {
            "  Night mode: %s\n"
            "  Weekday accent: %s\n"
            "  Replace time/date: %s",
-           ONOFF(this->night_mode),
-           ONOFF(this->weekday_accent),
-           ONOFF(this->replace_time_date_active));
+           ONOFF(this->night_mode), ONOFF(this->weekday_accent), ONOFF(this->replace_time_date_active));
 
   this->queue_status();
 }
