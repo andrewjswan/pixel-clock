@@ -410,6 +410,7 @@ void PixelClock::set_weekday_color(int32_t r, int32_t g, int32_t b) {
   this->weekday_color = Color((uint8_t) r, (uint8_t) g, (uint8_t) b);
   ESP_LOGD(TAG, "default weekday color: %d g: %d b: %d", (int) r, (int) g, (int) b);
 }
+
 /**
  * @brief some mode look better with wider icons
  *
@@ -419,6 +420,7 @@ void PixelClock::expand_icon_to_9(int32_t mode) {
   this->icon_to_9 = mode;
   ESP_LOGD(TAG, "icon expanded to 9 mode: %d", (int) mode);
 }
+
 /**
  * @brief helper to check trailing chars for behavior selection
  *
@@ -434,6 +436,7 @@ bool PixelClock::string_has_ending(std::string const &fullString, std::string co
     return false;
   }
 }
+
 /**
  * @brief Get the icon name object
  *
@@ -1070,6 +1073,47 @@ void PixelClock::setup() {
   ESP_LOGD(TAG, "Setup and running!");
 }
 
+void PixelClock::get_status() {
+  auto now = this->clock->now();
+  char screen_buf[24];
+  if (this->screen_pointer != MAXQUEUE) {
+    snprintf(screen_buf, sizeof(screen_buf), "%d (mode: %d)", this->screen_pointer,
+             this->queue[this->screen_pointer]->mode);
+  } else {
+    snprintf(screen_buf, sizeof(screen_buf), "MAX");
+  }
+  ESP_LOGI(TAG,
+           "Pixel Clock Status:\n"
+           "  Time: %02d.%02d.%d %02d:%02d\n"
+           "  Formats: %s, %s\n"
+           "  Week start: %s\n"
+           "  Display: %s\n"
+           "  Brightness: %d/255\n"
+           "  Screen: %s\n"
+           "  Night mode: %s\n"
+           "  Weekday accent: %s\n"
+           "  Replace time/date: %s",
+           now.day_of_month, now.month, now.year, now.hour, now.minute, PIXEL_CLOCK_DATE_FORMAT,
+           PIXEL_CLOCK_TIME_FORMAT, PIXEL_CLOCK_WEEK_START ? LOG_STR_LITERAL("Monday") : LOG_STR_LITERAL("Sunday"),
+           ONOFF(this->show_display), this->brightness_, screen_buf, ONOFF(this->night_mode),
+           ONOFF(this->weekday_accent), ONOFF(this->replace_time_date_active));
+
+  this->queue_status();
+}
+
+void PixelClock::queue_status() {
+  uint8_t empty = 0;
+  for (uint8_t i = 0; i < MAXQUEUE; i++) {
+    if (this->queue[i]->mode != MODE_EMPTY)
+      this->queue[i]->status();
+    else
+      empty++;
+  }
+  if (empty > 0) {
+    ESP_LOGI(TAG, "Queue: %d empty slots", empty);
+  }
+}
+
 void PixelClock::set_clock_color(int32_t r, int32_t g, int32_t b) {
   this->clock_color = Color((uint8_t) r, (uint8_t) g, (uint8_t) b);
 
@@ -1653,41 +1697,6 @@ void PixelClock::tick() {
 void PixelClock::skip_screen() { this->next_action_time = this->get_tick() - 1000.0; }
 
 void PixelClock::hold_screen(int32_t time) { this->next_action_time = this->get_tick() + time * 1000.0; }
-
-void PixelClock::get_status() {
-  ESP_LOGI(TAG, "status time: %d.%d.%d %02d:%02d", this->clock->now().day_of_month, this->clock->now().month,
-           this->clock->now().year, this->clock->now().hour, this->clock->now().minute);
-  ESP_LOGI(TAG, "status brightness: %d (0..255)", this->brightness_);
-  ESP_LOGI(TAG, "status date format: %s", PIXEL_CLOCK_DATE_FORMAT);
-  ESP_LOGI(TAG, "screen_pointer: %d", this->screen_pointer);
-  if (this->screen_pointer != MAXQUEUE) {
-    ESP_LOGI(TAG, "current screen mode: %d", this->queue[this->screen_pointer]->mode);
-  } else {
-    ESP_LOGI(TAG, "screenpointer at max");
-  }
-  ESP_LOGI(TAG, "status time format: %s", PIXEL_CLOCK_TIME_FORMAT);
-  ESP_LOGI(TAG, "status display %s", this->show_display ? ESPHOME_F("on") : ESPHOME_F("off"));
-  ESP_LOGI(TAG, "status night mode %s", this->night_mode ? ESPHOME_F("on") : ESPHOME_F("off"));
-  ESP_LOGI(TAG, "status weekday accent %s", this->weekday_accent ? ESPHOME_F("on") : ESPHOME_F("off"));
-  ESP_LOGI(TAG, "status replace time and date %s", this->replace_time_date_active ? ESPHOME_F("on") : ESPHOME_F("off"));
-
-  this->queue_status();
-}
-
-void PixelClock::queue_status() {
-  uint8_t empty = 0;
-  for (uint8_t i = 0; i < MAXQUEUE; i++) {
-    if (this->queue[i]->mode != MODE_EMPTY)
-      this->queue[i]->status();
-    else
-      empty++;
-  }
-  if (empty > 0) {
-    // Braced: ESP_LOGI expands to nothing at log levels below INFO, which
-    // would leave this if with an empty body (-Wempty-body).
-    ESP_LOGI(TAG, "queue: %d empty slots", empty);
-  }
-}
 
 void PixelClock::set_default_font(display::BaseFont *font) { this->default_font = font; }
 
