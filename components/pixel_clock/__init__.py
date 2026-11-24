@@ -23,7 +23,6 @@ from esphome.const import (
     CONF_RESIZE,
     CONF_TRIGGER_ID,
 )
-from esphome.core import CORE, HexInt
 from esphome.cpp_generator import RawExpression
 from PIL import Image
 
@@ -35,8 +34,8 @@ DEPENDENCIES = ["display", "light"]
 
 AUTO_LOAD = ["json", "image", "animation", "web_server_base"]
 
-logging.info("Load Pixel-Clock component https://github.com/andrewjswan/pixel-clock")
-logging.info("If you like the Pixel-Clock, you can support it with a star ⭐ on GitHub.")
+_LOGGER.info("Load Pixel-Clock component https://github.com/andrewjswan/pixel-clock")
+_LOGGER.info("If you like the Pixel-Clock, you can support it with a star ⭐ on GitHub.")
 
 pixel_clock_ns = cg.esphome_ns.namespace("pixel_clock")
 PixelClock_ = pixel_clock_ns.class_("PixelClock", cg.Component)
@@ -125,17 +124,17 @@ SVG_END = "</svg>"
 
 StartRunningTrigger = pixel_clock_ns.class_(
     "PixelClockStartRunningTrigger",
-    automation.Trigger.template(cg.std_string),
+    automation.Trigger.template(),
 )
 
 EmptyQueueTrigger = pixel_clock_ns.class_(
     "PixelClockEmptyQueueTrigger",
-    automation.Trigger.template(cg.std_string),
+    automation.Trigger.template(),
 )
 
 NextScreenTrigger = pixel_clock_ns.class_(
     "PixelClockNextScreenTrigger",
-    automation.Trigger.template(cg.std_string),
+    automation.Trigger.template(cg.std_string, cg.std_string),
 )
 
 IconErrorTrigger = pixel_clock_ns.class_(
@@ -145,27 +144,27 @@ IconErrorTrigger = pixel_clock_ns.class_(
 
 ExpiredScreenTrigger = pixel_clock_ns.class_(
     "PixelClockExpiredScreenTrigger",
-    automation.Trigger.template(cg.std_string),
+    automation.Trigger.template(cg.std_string, cg.std_string),
 )
 
 NextClockTrigger = pixel_clock_ns.class_(
     "PixelClockNextClockTrigger",
-    automation.Trigger.template(cg.std_string),
+    automation.Trigger.template(),
 )
 
 AddScreenTrigger = pixel_clock_ns.class_(
     "PixelClockAddScreenTrigger",
-    automation.Trigger.template(cg.std_string),
+    automation.Trigger.template(cg.std_string, cg.uint8),
 )
 
 ShowDisplayTrigger = pixel_clock_ns.class_(
     "PixelClockShowDisplayTrigger",
-    automation.Trigger.template(cg.std_string),
+    automation.Trigger.template(cg.bool_),
 )
 
 NightModeTrigger = pixel_clock_ns.class_(
     "PixelClockNightModeTrigger",
-    automation.Trigger.template(cg.std_string),
+    automation.Trigger.template(cg.bool_),
 )
 
 PIXEL_CLOCK_SCHEMA = cv.Schema(
@@ -387,9 +386,9 @@ async def to_code(config: dict[str, Any]) -> None:  # noqa: C901, PLR0912, PLR09
     """Generate C++ configuration code for the PixelClock component."""
     var = cg.new_Pvariable(config[CONF_ID])
 
-    logging.info("Preparing icons, this may take some seconds.")
+    _LOGGER.info("Preparing icons, this may take some seconds.")
 
-    html_string = f"<html><head><title>{CORE.config_path}</title></head>"
+    html_string = f"<html><head><title>{core.CORE.config_path}</title></head>"
     html_string += """\
     <style>
     svg { padding-top: 2x; padding-right: 2px; padding-bottom: 2px; padding-left: 2px; }
@@ -402,14 +401,14 @@ async def to_code(config: dict[str, Any]) -> None:  # noqa: C901, PLR0912, PLR09
     yaml_string = ""
     for conf in config[CONF_ICONS]:
         if CONF_FILE in conf:
-            path = CORE.relative_config_path(conf[CONF_FILE])
+            path = core.CORE.relative_config_path(conf[CONF_FILE])
             image = open_image_file(path)
 
         elif CONF_LAMEID in conf:
-            path = CORE.relative_config_path(".cache/icons/lameid/" + conf[CONF_LAMEID])
+            path = core.CORE.relative_config_path(".cache/icons/lameid/" + conf[CONF_LAMEID])
             if config[CONF_CACHE] and Path(path).is_file():
                 image = open_image_file(path)
-                logging.info("  Icons: Load %s from cache.", conf[CONF_LAMEID])
+                _LOGGER.info("  Icons: Load %s from cache.", conf[CONF_LAMEID])
             else:
                 r = requests.get(
                     "https://developer.lametric.com/content/apps/icon_thumbs/" + conf[CONF_LAMEID],
@@ -432,14 +431,14 @@ async def to_code(config: dict[str, Any]) -> None:  # noqa: C901, PLR0912, PLR09
                     cache_path.parent.mkdir(parents=True, exist_ok=True)
                     with cache_path.open("wb") as f:
                         f.write(r.content)
-                    logging.info("  Icons: Save %s to cache.", conf[CONF_LAMEID])
+                    _LOGGER.info("  Icons: Save %s to cache.", conf[CONF_LAMEID])
 
         elif CONF_URL in conf:
             a = urlparse(conf[CONF_URL])
-            path = CORE.relative_config_path(".cache/icons/url/" + Path(a.path).name)
+            path = core.CORE.relative_config_path(".cache/icons/url/" + Path(a.path).name)
             if config[CONF_CACHE] and Path(path).is_file():
                 image = open_image_file(path)
-                logging.info("  Icons: Load %s from cache.", conf[CONF_URL])
+                _LOGGER.info("  Icons: Load %s from cache.", conf[CONF_URL])
             else:
                 r = requests.get(
                     conf[CONF_URL],
@@ -461,7 +460,7 @@ async def to_code(config: dict[str, Any]) -> None:  # noqa: C901, PLR0912, PLR09
                     cache_path.parent.mkdir(parents=True, exist_ok=True)
                     with cache_path.open("wb") as f:
                         f.write(r.content)
-                    logging.info("  Icons: Save %s to cache.", conf[CONF_URL])
+                    _LOGGER.info("  Icons: Save %s to cache.", conf[CONF_URL])
 
         elif CONF_RGB565ARRAY in conf:
             r = list(json.loads(conf[CONF_RGB565ARRAY]))
@@ -481,12 +480,12 @@ async def to_code(config: dict[str, Any]) -> None:  # noqa: C901, PLR0912, PLR09
 
         if hasattr(image, "n_frames"):
             frames = min(image.n_frames, MAXFRAMES)
-            logging.info("Animation %s with %s frame(s)", conf[CONF_ID], frames)
+            _LOGGER.info("Animation %s with %s frame(s)", conf[CONF_ID], frames)
         else:
             frames = 1
 
-        if ((width != 4 * ICONWIDTH) or (width != ICONWIDTH)) and (height != ICONHEIGHT):
-            logging.warning("Icon wrong size valid 8x8 or 8x32: %s skipped!", conf[CONF_ID])
+        if height != ICONHEIGHT or width not in (ICONWIDTH, 4 * ICONWIDTH):
+            _LOGGER.warning("Icon wrong size valid 8x8 or 32x8: %s skipped!", conf[CONF_ID])
         else:
             if conf[CONF_FRAMEDURATION] == 0:
                 try:
@@ -519,13 +518,13 @@ async def to_code(config: dict[str, Any]) -> None:  # noqa: C901, PLR0912, PLR09
                         encoder.encode(pixels[row * width + col])
                     encoder.end_row()
 
-            rhs = [HexInt(x) for x in encoder.data]
+            rhs = [core.HexInt(x) for x in encoder.data]
             prog_arr = cg.progmem_array(conf[CONF_RAW_DATA_ID], rhs)
 
             image_type = espImage.get_image_type_enum(DEF_TYPE)
             trans_value = espImage.get_transparency_enum(encoder.transparency)
 
-            logging.debug("  Icons: Icon %s %s", conf[CONF_ID], rhs)
+            _LOGGER.debug("  Icons: Icon %s %s", conf[CONF_ID], rhs)
 
             cg.new_Pvariable(
                 conf[CONF_ID],
@@ -574,15 +573,15 @@ async def to_code(config: dict[str, Any]) -> None:  # noqa: C901, PLR0912, PLR09
     html_string += "</body></html>"
 
     if config[CONF_HTML]:
-        htmlfn = str(CORE.config_path).replace(".yaml", "") + ".html"
+        htmlfn = str(core.CORE.config_path).replace(".yaml", "") + ".html"
         try:
             with Path(htmlfn).open("w", encoding="utf-8") as f:
                 f.write(html_string)
-            logging.info("PixelClock: Wrote HTML file with icon preview: %s", htmlfn)
+            _LOGGER.info("PixelClock: Wrote HTML file with icon preview: %s", htmlfn)
         except OSError:
-            logging.warning("PixelClock: Error writing HTML file: %s", htmlfn)
+            _LOGGER.warning("PixelClock: Error writing HTML file: %s", htmlfn)
 
-    logging.info("List of icons for e.g. Blueprint:\n\n\r[%s]\n", yaml_string)
+    _LOGGER.info("List of icons for e.g. Blueprint:\n\n\r[%s]\n", yaml_string)
 
     disp = await cg.get_variable(config[CONF_MATRIXCOMPONENT])
     cg.add(var.set_display(disp))
@@ -606,7 +605,7 @@ async def to_code(config: dict[str, Any]) -> None:  # noqa: C901, PLR0912, PLR09
         cg.add_define("PIXEL_CLOCK_COLOR_CORRECT_R", round(r, 4))
         cg.add_define("PIXEL_CLOCK_COLOR_CORRECT_G", round(g, 4))
         cg.add_define("PIXEL_CLOCK_COLOR_CORRECT_B", round(b, 4))
-        logging.info(
+        _LOGGER.info(
             "[X] Color Correct: R=%d%%, G=%d%%, B=%d%%",
             round(r * 100),
             round(g * 100),
@@ -627,7 +626,7 @@ async def to_code(config: dict[str, Any]) -> None:  # noqa: C901, PLR0912, PLR09
         elif (len(config[CONF_WEEKDAYTEXT])) == 14:
             cg.add(var.set_weekday_char_count(14))
         else:
-            logging.warning(
+            _LOGGER.warning(
                 "weekdays: must be 7 or 14 characters... "
                 "your config may have unpredictable results!",
             )
@@ -640,31 +639,31 @@ async def to_code(config: dict[str, Any]) -> None:  # noqa: C901, PLR0912, PLR09
     if config[CONF_REPLACE_TIME_DATE_FROM] and config[CONF_REPLACE_TIME_DATE_TO]:
         from_parts = config[CONF_REPLACE_TIME_DATE_FROM].split()
         if len(from_parts) != len(config[CONF_REPLACE_TIME_DATE_TO].split()):
-            logging.warning(
+            _LOGGER.warning(
                 "replace_time_date_from: and replace_time_date_to: do not have matching pairs! "
                 "(not using replacements)",
             )
             cg.add(var.set_replace_time_date_active(False))
         elif len(from_parts) > 50:
-            logging.warning(
-                "replace_time_date_from: and replace_time_date_to: exceeds 30! "
+            _LOGGER.warning(
+                "replace_time_date_from: and replace_time_date_to: exceeds 50! "
                 "(not using replacements)",
             )
             cg.add(var.set_replace_time_date_active(False))
         else:
-            logging.info(
+            _LOGGER.info(
                 "replace_time_date_from: and replace_time_date_to: defined (using replacements)",
             )
             cg.add(var.set_replace_time_date_active(True))
     else:
         cg.add(var.set_replace_time_date_active(False))
         if config[CONF_REPLACE_TIME_DATE_TO]:
-            logging.warning(
+            _LOGGER.warning(
                 "replace_time_date_to: defined but no replace_time_date_from:! "
                 "(not using replacements)",
             )
         if config[CONF_REPLACE_TIME_DATE_FROM]:
-            logging.warning(
+            _LOGGER.warning(
                 "replace_time_date_from: defined but no replace_time_date_to:! "
                 "(not using replacements)",
             )
@@ -694,11 +693,11 @@ async def to_code(config: dict[str, Any]) -> None:  # noqa: C901, PLR0912, PLR09
 
     if config[CONF_RAINBOWSHIMMER]:
         cg.add_define("PIXEL_CLOCK_RAINBOW_SHIMMER")
-        logging.info("[X] Rainbow shimmer")
+        _LOGGER.info("[X] Rainbow shimmer")
 
     if config[CONF_MULTICOLOR_TEXT]:
         cg.add_define("PIXEL_CLOCK_MULTICOLOR_TEXT")
-        logging.info("[X] Multi color text")
+        _LOGGER.info("[X] Multi color text")
 
     if config[CONF_SCROLL_SMALL_TEXT]:
         cg.add_define("PIXEL_CLOCK_SCROLL_SMALL_TEXT")
@@ -711,52 +710,52 @@ async def to_code(config: dict[str, Any]) -> None:  # noqa: C901, PLR0912, PLR09
 
     if config[CONF_VERTICAL]:
         cg.add_define("PIXEL_CLOCK_USE_VERTICAL_SCROLL")
-        logging.info("[X] Vertical scroll")
+        _LOGGER.info("[X] Vertical scroll")
 
     if config[CONF_CLOCK]:
         cg.add_define("PIXEL_CLOCK_ADV_CLOCK")
-        logging.info("[X] Advanced clock mode")
+        _LOGGER.info("[X] Advanced clock mode")
 
     if config[CONF_CLOCK] and config[CONF_FLIP_FLOP]:
         cg.add_define("PIXEL_CLOCK_FLIP_FLOP")
-        logging.info("[X] Flip Flop clock mode")
+        _LOGGER.info("[X] Flip Flop clock mode")
         if config[CONF_FLIP_FLOP_SPEED]:
             cg.add_define("PIXEL_CLOCK_FLIP_FLOP_SPEED", config[CONF_FLIP_FLOP_SPEED])
-            logging.info("[X] Flip Flop Speed %s", config[CONF_FLIP_FLOP_SPEED])
+            _LOGGER.info("[X] Flip Flop Speed %s", config[CONF_FLIP_FLOP_SPEED])
 
     if config[CONF_BITMAP]:
         cg.add_define("PIXEL_CLOCK_ADV_BITMAP")
-        logging.info("[X] Advanced bitmap mode")
+        _LOGGER.info("[X] Advanced bitmap mode")
 
     if config.get(CONF_BOOTLOGO):
         cg.add(var.set_boot_logo(config[CONF_BOOTLOGO]))
         cg.add_define("PIXEL_CLOCK_ADV_BOOT")
-        logging.info("[X] Advanced boot")
+        _LOGGER.info("[X] Advanced boot")
 
         if config[CONF_BOOTLOGOMODE] == 0:
             cg.add_define("PIXEL_CLOCK_ADV_BOOT_MODE_0")
-            logging.info("[X] Advanced boot mode 0")
+            _LOGGER.info("[X] Advanced boot mode 0")
         if config[CONF_BOOTLOGOMODE] == 1:
             cg.add_define("PIXEL_CLOCK_ADV_BOOT_MODE_1")
-            logging.info("[X] Advanced boot mode 1")
+            _LOGGER.info("[X] Advanced boot mode 1")
         if config[CONF_BOOTLOGOMODE] == 2:
             cg.add_define("PIXEL_CLOCK_ADV_BOOT_MODE_2")
-            logging.info("[X] Advanced boot mode 2")
+            _LOGGER.info("[X] Advanced boot mode 2")
         if config[CONF_BOOTLOGOMODE] == 3:
             cg.add_define("PIXEL_CLOCK_ADV_BOOT_MODE_3")
-            logging.info("[X] Advanced boot mode 3")
+            _LOGGER.info("[X] Advanced boot mode 3")
         if config[CONF_BOOTLOGOMODE] == 4:
             cg.add_define("PIXEL_CLOCK_ADV_BOOT_MODE_4")
-            logging.info("[X] Advanced boot mode 4")
+            _LOGGER.info("[X] Advanced boot mode 4")
         if config[CONF_BOOTLOGOMODE] == 5:
             cg.add_define("PIXEL_CLOCK_ADV_BOOT_MODE_5")
-            logging.info("[X] Advanced boot mode 5")
+            _LOGGER.info("[X] Advanced boot mode 5")
         if config[CONF_BOOTLOGOMODE] == 6:
             cg.add_define("PIXEL_CLOCK_ADV_BOOT_MODE_6")
-            logging.info("[X] Advanced boot mode 6")
+            _LOGGER.info("[X] Advanced boot mode 6")
         if config[CONF_BOOTLOGOMODE] == 7:
             cg.add_define("PIXEL_CLOCK_ADV_BOOT_MODE_7")
-            logging.info("[X] Advanced boot mode 7")
+            _LOGGER.info("[X] Advanced boot mode 7")
 
     if config[CONF_NIGHT_MODE_SCREENS]:
         cg.add_define("PIXEL_CLOCK_CONF_NIGHT_MODE_SCREENS", config[CONF_NIGHT_MODE_SCREENS])
@@ -771,31 +770,31 @@ async def to_code(config: dict[str, Any]) -> None:  # noqa: C901, PLR0912, PLR09
 
     cg.add(var.set_show_seconds(config[CONF_SHOW_SECONDS]))
 
-    logging.info("[X] Right Top Indicator - Alarm")
+    _LOGGER.info("[X] Right Top Indicator - Alarm")
     if config[CONF_RCINDICATOR]:
         cg.add_define("PIXEL_CLOCK_RCINDICATOR")
-        logging.info("[X] Right Center Indicator")
+        _LOGGER.info("[X] Right Center Indicator")
     if config[CONF_RBINDICATOR]:
         cg.add_define("PIXEL_CLOCK_RBINDICATOR")
-        logging.info("[X] Right Bottom Indicator - Right")
+        _LOGGER.info("[X] Right Bottom Indicator - Right")
     if config[CONF_LTINDICATOR]:
         cg.add_define("PIXEL_CLOCK_LTINDICATOR")
-        logging.info("[X] Left Top Indicator")
+        _LOGGER.info("[X] Left Top Indicator")
     if config[CONF_LCINDICATOR]:
         cg.add_define("PIXEL_CLOCK_LCINDICATOR")
-        logging.info("[X] Left Center Indicator")
+        _LOGGER.info("[X] Left Center Indicator")
     if config[CONF_LBINDICATOR]:
         cg.add_define("PIXEL_CLOCK_LBINDICATOR")
-        logging.info("[X] Left Bottom Indicator - Left")
+        _LOGGER.info("[X] Left Bottom Indicator - Left")
     if config[CONF_ICINDICATOR]:
         cg.add_define("PIXEL_CLOCK_ICINDICATOR")
-        logging.info("[X] Icon Indicator")
+        _LOGGER.info("[X] Icon Indicator")
     if config[CONF_GAUGE]:
         cg.add_define("PIXEL_CLOCK_GAUGE")
-        logging.info("[X] Gauge")
+        _LOGGER.info("[X] Gauge")
     if config[CONF_FIRE]:
         cg.add_define("PIXEL_CLOCK_USE_FIRE_PLUGIN")
-        logging.info("[X] Fire screen")
+        _LOGGER.info("[X] Fire screen")
 
     for conf in config.get(CONF_ON_NEXT_SCREEN, []):
         trigger = cg.new_Pvariable(conf[CONF_TRIGGER_ID], var)
@@ -839,10 +838,10 @@ async def to_code(config: dict[str, Any]) -> None:  # noqa: C901, PLR0912, PLR09
 
     for conf in config.get(CONF_ON_SHOW_DISPLAY, []):
         trigger = cg.new_Pvariable(conf[CONF_TRIGGER_ID], var)
-        await automation.build_automation(trigger, [(bool, "state")], conf)
+        await automation.build_automation(trigger, [(cg.bool_, "state")], conf)
 
     for conf in config.get(CONF_ON_NIGHT_MODE, []):
         trigger = cg.new_Pvariable(conf[CONF_TRIGGER_ID], var)
-        await automation.build_automation(trigger, [(bool, "state")], conf)
+        await automation.build_automation(trigger, [(cg.bool_, "state")], conf)
 
     await cg.register_component(var, config)
