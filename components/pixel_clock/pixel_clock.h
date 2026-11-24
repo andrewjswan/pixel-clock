@@ -513,16 +513,9 @@ class PixelClock_Queue {
   Color *bitmap;
 #endif
 
-#ifdef USE_ESP32
-  PROGMEM Color text_color, progressbar_color, progressbar_back_color;
-  PROGMEM std::string text;
-  PROGMEM std::string icon_name;
-#endif
-#ifdef USE_ESP8266
   Color text_color, progressbar_color, progressbar_back_color;
   std::string text;
   std::string icon_name;
-#endif
 
   PixelClock_Queue(PixelClock *config);
 
@@ -641,12 +634,7 @@ class PixelClock_Icon {
       delete this->animation_;
   }
 
-#ifdef USE_ESP32
-  PROGMEM std::string name;
-#endif
-#ifdef USE_ESP8266
   std::string name;
-#endif
   uint16_t frame_duration;
   void next_frame();
   bool reverse;
