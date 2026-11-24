@@ -554,16 +554,20 @@ class PixelClock_Queue {
 #endif
 
   PixelClock_Queue(PixelClock *config);
+
 #ifdef PIXEL_CLOCK_USE_FIRE_PLUGIN
   Color heatColor(uint8_t temperature);
 #endif
-  void status();
 
+  void status();
   void draw();
   void update_screen();
   void hold_slot(uint8_t _sec);
   void calc_scroll_time(const std::string &text, uint16_t screen_time);
   void calc_scroll_time(uint8_t icon_count, uint16_t screen_time);
+
+  bool is_allowed_in_night_mode() const;
+
   int32_t xpos();
   int32_t xpos(uint8_t item);
   int32_t ypos();
