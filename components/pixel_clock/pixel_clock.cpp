@@ -1075,30 +1075,34 @@ void PixelClock::setup() {
 
 void PixelClock::get_status() {
   auto now = this->clock->now();
-
+  
+  char screen_buf[24];
+  if (this->screen_pointer != MAXQUEUE) {
+    snprintf(screen_buf, sizeof(screen_buf), "%d (mode: %d)",
+             this->screen_pointer, this->queue[this->screen_pointer]->mode);
+  } else {
+    snprintf(screen_buf, sizeof(screen_buf), "MAX");
+  }
+  
   ESP_LOGI(TAG,
            "Pixel Clock Status:\n"
            "  Time: %02d.%02d.%d %02d:%02d\n"
            "  Formats: %s, %s\n"
            "  Week start: %s\n"
            "  Display: %s\n"
-           "  Brightness: %d/255",
-           now.day_of_month, now.month, now.year, now.hour, now.minute,
-           PIXEL_CLOCK_DATE_FORMAT, PIXEL_CLOCK_TIME_FORMAT,
-           PIXEL_CLOCK_WEEK_START ? LOG_STR_LITERAL("Monday") : LOG_STR_LITERAL("Sunday"),
-           ONOFF(this->show_display), this->brightness_);
-
-  if (this->screen_pointer != MAXQUEUE) {
-    ESP_LOGI(TAG, "  Screen: %d (mode: %d)", this->screen_pointer, this->queue[this->screen_pointer]->mode);
-  } else {
-    ESP_LOGI(TAG, "  Screen: MAX");
-  }
-
-  ESP_LOGI(TAG,
+           "  Brightness: %d/255\n"
+           "  Screen: %s\n"
            "  Night mode: %s\n"
            "  Weekday accent: %s\n"
            "  Replace time/date: %s",
-           ONOFF(this->night_mode), ONOFF(this->weekday_accent), ONOFF(this->replace_time_date_active));
+           now.day_of_month, now.month, now.year, now.hour, now.minute,
+           PIXEL_CLOCK_DATE_FORMAT, PIXEL_CLOCK_TIME_FORMAT,
+           PIXEL_CLOCK_WEEK_START ? LOG_STR_LITERAL("Monday") : LOG_STR_LITERAL("Sunday"),
+           ONOFF(this->show_display), this->brightness_,
+           screen_buf,
+           ONOFF(this->night_mode),
+           ONOFF(this->weekday_accent),
+           ONOFF(this->replace_time_date_active));
 
   this->queue_status();
 }
@@ -1112,7 +1116,7 @@ void PixelClock::queue_status() {
       empty++;
   }
   if (empty > 0) {
-    ESP_LOGI(TAG, "  Queue: %d empty slots", empty);
+    ESP_LOGI(TAG, "Queue: %d empty slots", empty);
   }
 }
 
