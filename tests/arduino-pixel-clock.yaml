@@ -15,7 +15,7 @@ dashboard_import:
 external_components:
   - source:
       type: local
-      path: components
+      path: ../components
     components: [pixel_clock]
 
 packages:
