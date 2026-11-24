@@ -2,6 +2,7 @@
 
 #include "esphome/core/defines.h"
 #include "esphome/core/color.h"
+#include "esphome/core/helpers.h"
 #include "esphome/components/addressable_light/addressable_light_display.h"
 #ifdef USE_API
 #include "esphome/components/api/custom_api_device.h"
@@ -644,4 +645,16 @@ class PixelClock_Icon {
    */
   esphome::animation::Animation *get_animation() { return this->animation_; }
 };
+
+#ifdef PIXEL_CLOCK_MULTICOLOR_TEXT
+inline bool try_parse_hex_color(const std::string &s, size_t pos, Color fallback, Color &out) {
+  uint8_t rgb[3];
+  if (s[pos] != '#' || pos + 6 >= s.length() || !esphome::parse_hex(s.c_str() + pos + 1, 6, rgb, 3)) {
+    return false;
+  }
+  out = (rgb[0] + rgb[1] + rgb[2] > 0) ? Color(rgb[0], rgb[1], rgb[2]) : fallback;
+  return true;
+}
+#endif
+
 }  // namespace esphome::pixel_clock
