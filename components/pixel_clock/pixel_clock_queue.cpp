@@ -205,6 +205,20 @@ void PixelClock_Queue::reset() {
 #endif
 }
 
+void PixelClock_Queue::draw_icon_at(int32_t x, int32_t y, uint8_t icon_id) {
+  if (icon_id == BLANKICON) {
+    return;
+  }
+  if (icon_id == SOLIDICON) {
+    this->config_->display->filled_rectangle(x, y, 8, 8, this->config_->solid_color);
+  } else if (icon_id == CALENDARICON) {
+    this->config_->display->filled_rectangle(x, y, 8, 8, Color(C_RED, C_GREEN, C_BLUE));
+    this->config_->display->filled_rectangle(x, y, 8, 2, this->config_->calendar_color);
+  } else {
+    this->config_->display->image(x, y, this->config_->icons[icon_id]->get_animation());
+  }
+}
+
 std::string PixelClock_Queue::get_infotext() const {
   switch (this->mode) {
     case MODE_EMPTY:
@@ -519,14 +533,7 @@ void PixelClock_Queue::draw() {
           this->config_->display->graph(8, this->ypos(), this->config_->graph);
           if (this->icon != BLANKICON) {
             this->config_->display->line(8, this->ypos(), 8, this->ypos() + 7, esphome::display::COLOR_OFF);
-            if (this->icon == SOLIDICON) {
-              this->config_->display->filled_rectangle(0, this->ypos(), 8, 8, this->config_->solid_color);
-            } else if (this->icon == CALENDARICON) {
-              this->config_->display->filled_rectangle(0, this->ypos(), 8, 8, Color(C_RED, C_GREEN, C_BLUE));
-              this->config_->display->filled_rectangle(0, this->ypos(), 8, 2, this->config_->calendar_color);
-            } else {
-              this->config_->display->image(0, this->ypos(), this->config_->icons[this->icon]->get_animation());
-            }
+            this->draw_icon_at(0, this->ypos(), this->icon);
           }
         }
         break;
@@ -873,14 +880,7 @@ void PixelClock_Queue::draw() {
         if (this->mode == MODE_ICON_PROGRESS) {
           if (this->icon != BLANKICON) {
             this->config_->display->line(8, this->ypos(), 8, this->ypos() + 7, esphome::display::COLOR_OFF);
-            if (this->icon == SOLIDICON) {
-              this->config_->display->filled_rectangle(0, this->ypos(), 8, 8, this->config_->solid_color);
-            } else if (this->icon == CALENDARICON) {
-              this->config_->display->filled_rectangle(0, this->ypos(), 8, 8, Color(C_RED, C_GREEN, C_BLUE));
-              this->config_->display->filled_rectangle(0, this->ypos(), 8, 2, this->config_->calendar_color);
-            } else {
-              this->config_->display->image(0, this->ypos(), this->config_->icons[this->icon]->get_animation());
-            }
+            this->draw_icon_at(0, this->ypos(), this->icon);
           }
 
           this->config_->display->line(9, this->ypos() + 7, 31, this->ypos() + 7, this->progressbar_back_color);
@@ -897,14 +897,7 @@ void PixelClock_Queue::draw() {
         } else if (this->mode == MODE_PROGNOSIS_SCREEN) {
           if (this->icon != BLANKICON) {
             this->config_->display->line(8, this->ypos(), 8, this->ypos() + 7, esphome::display::COLOR_OFF);
-            if (this->icon == SOLIDICON) {
-              this->config_->display->filled_rectangle(0, this->ypos(), 8, 8, this->config_->solid_color);
-            } else if (this->icon == CALENDARICON) {
-              this->config_->display->filled_rectangle(0, this->ypos(), 8, 8, Color(C_RED, C_GREEN, C_BLUE));
-              this->config_->display->filled_rectangle(0, this->ypos(), 8, 2, this->config_->calendar_color);
-            } else {
-              this->config_->display->image(0, this->ypos(), this->config_->icons[this->icon]->get_animation());
-            }
+            this->draw_icon_at(0, this->ypos(), this->icon);
           }
 
           if (this->sbitmap != NULL) {
@@ -915,31 +908,13 @@ void PixelClock_Queue::draw() {
         } else {
 #ifdef PIXEL_CLOCK_GAUGE
           if (this->config_->display_gauge) {
-            if (this->icon != BLANKICON) {
-              if (this->icon == SOLIDICON) {
-                this->config_->display->filled_rectangle(2, this->ypos(), 8, 8, this->config_->solid_color);
-              } else if (this->icon == CALENDARICON) {
-                this->config_->display->filled_rectangle(2, this->ypos(), 8, 8, Color(C_RED, C_GREEN, C_BLUE));
-                this->config_->display->filled_rectangle(2, this->ypos(), 8, 2, this->config_->calendar_color);
-              } else {
-                this->config_->display->image(2, this->ypos(), this->config_->icons[this->icon]->get_animation());
-              }
-            }
+            this->draw_icon_at(2, this->ypos(), this->icon);
             this->config_->display->line(10, this->ypos(), 10, this->ypos() + 7, esphome::display::COLOR_OFF);
           } else
 #endif
           {
             this->config_->display->line(8, this->ypos(), 8, this->ypos() + 7, esphome::display::COLOR_OFF);
-            if (this->icon != BLANKICON) {
-              if (this->icon == SOLIDICON) {
-                this->config_->display->filled_rectangle(0, this->ypos(), 8, 8, this->config_->solid_color);
-              } else if (this->icon == CALENDARICON) {
-                this->config_->display->filled_rectangle(0, this->ypos(), 8, 8, Color(C_RED, C_GREEN, C_BLUE));
-                this->config_->display->filled_rectangle(0, this->ypos(), 8, 2, this->config_->calendar_color);
-              } else {
-                this->config_->display->image(0, this->ypos(), this->config_->icons[this->icon]->get_animation());
-              }
-            }
+            this->draw_icon_at(0, this->ypos(), this->icon);
           }
         }
 
@@ -998,14 +973,7 @@ void PixelClock_Queue::draw() {
             }
           }
           this->config_->display->line(x + 8, this->ypos(), x + 8, this->ypos() + 7, esphome::display::COLOR_OFF);
-          if (this->icon == SOLIDICON) {
-            this->config_->display->filled_rectangle(x, this->ypos(), 8, 8, this->config_->solid_color);
-          } else if (this->icon == CALENDARICON) {
-            this->config_->display->filled_rectangle(x, this->ypos(), 8, 8, Color(C_RED, C_GREEN, C_BLUE));
-            this->config_->display->filled_rectangle(x, this->ypos(), 8, 2, this->config_->calendar_color);
-          } else {
-            this->config_->display->image(x, this->ypos(), this->config_->icons[this->icon]->get_animation());
-          }
+          this->draw_icon_at(x, this->ypos(), this->icon);
         }
         break;
 
