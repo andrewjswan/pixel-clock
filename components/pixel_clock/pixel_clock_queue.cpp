@@ -189,6 +189,22 @@ bool PixelClock_Queue::is_allowed_in_night_mode() const {
   return false;
 }
 
+void PixelClock_Queue::reset() {
+  this->mode = MODE_EMPTY;
+  this->endtime = 0.0;
+  this->last_time = 0.0;
+  if (this->sbitmap != nullptr) {
+    delete[] this->sbitmap;
+    this->sbitmap = nullptr;
+  }
+#ifdef PIXEL_CLOCK_ADV_BITMAP
+  if (this->bitmap != nullptr) {
+    delete[] this->bitmap;
+    this->bitmap = nullptr;
+  }
+#endif
+}
+
 std::string PixelClock_Queue::get_infotext() const {
   switch (this->mode) {
     case MODE_EMPTY:
@@ -559,7 +575,6 @@ void PixelClock_Queue::draw() {
         if (this->config_->clock->now().is_valid())  // valid time
         {
           color_ = (this->mode == MODE_RAINBOW_CLOCK) ? this->config_->rainbow_color : this->text_color;
-          time_t ts = this->config_->clock->now().timestamp;
 #ifdef PIXEL_CLOCK_ADV_CLOCK
           if (!this->config_->draw_clock(PIXEL_CLOCK_TIME_FORMAT_BIG, font, color_, xoffset + 15,
                                          this->ypos() + yoffset)) {
@@ -593,7 +608,6 @@ void PixelClock_Queue::draw() {
       case MODE_DATE:
         if (this->config_->clock->now().is_valid()) {
           color_ = (this->mode == MODE_RAINBOW_DATE) ? this->config_->rainbow_color : this->text_color;
-          time_t ts = this->config_->clock->now().timestamp;
 #ifdef PIXEL_CLOCK_ADV_CLOCK
           if (!this->config_->draw_date(PIXEL_CLOCK_DATE_FORMAT_BIG, font, color_, xoffset + 15,
                                         this->ypos() + yoffset)) {
@@ -632,7 +646,6 @@ void PixelClock_Queue::draw() {
         if (this->config_->clock->now().is_valid())  // valid time
         {
           color_ = this->text_color;
-          time_t ts = this->config_->clock->now().timestamp;
           uint8_t offset = (this->config_->icon_to_9 == 3) ? 21 : 20;
 
           if (this->mode == MODE_ICON_CLOCK) {
