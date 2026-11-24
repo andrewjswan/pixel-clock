@@ -518,7 +518,7 @@ void PixelClock::bitmap_screen(std::string text, int32_t lifetime, int32_t scree
   std::string ic = get_icon_name(text);
   std::string id = "";
 
-  if (text.find("|") != std::string::npos) {
+  if (text.find('|') != std::string::npos) {
     id = get_screen_id(text);
   }
 
@@ -588,7 +588,7 @@ void PixelClock::bitmap_small(std::string icon, std::string text, int32_t lifeti
   std::string ic = get_icon_name(icon);
   std::string id = "";
 
-  if (icon.find("|") != std::string::npos) {
+  if (icon.find('|') != std::string::npos) {
     id = get_screen_id(icon);
   }
 
@@ -650,7 +650,7 @@ void PixelClock::rainbow_bitmap_small(std::string icon, std::string text, int32_
   std::string ic = get_icon_name(icon);
   std::string id = "";
 
-  if (icon.find("|") != std::string::npos) {
+  if (icon.find('|') != std::string::npos) {
     id = get_screen_id(icon);
   }
 
@@ -720,7 +720,7 @@ void PixelClock::bitmap_stack(std::string icons, int32_t lifetime, int32_t scree
   std::string ic = get_icon_name(icons);
   std::string id = "";
 
-  if (icons.find("|") != std::string::npos) {
+  if (icons.find('|') != std::string::npos) {
     id = get_screen_id(icons);
   }
 
@@ -1184,7 +1184,7 @@ void PixelClock::force_screen(std::string icon_name, int32_t mode) {
           (mode == MODE_BITMAP_SCREEN) ||
 #endif
           (mode == MODE_PROGNOSIS_SCREEN)) {
-        if (strcmp(this->queue[i]->icon_name.c_str(), icon_name.c_str()) != 0) {
+        if (this->queue[i]->icon_name != icon_name) {
           force = false;
         }
       }
@@ -1597,7 +1597,7 @@ void PixelClock::del_screen(std::string icon_name, int32_t mode) {
     if (this->queue[i]->mode == mode) {
       bool force = true;
       std::string ic = get_icon_name(icon_name);
-      std::string id = icon_name.find("|") != std::string::npos ? get_screen_id(icon_name) : ic;
+      std::string id = icon_name.find('|') != std::string::npos ? get_screen_id(icon_name) : ic;
       ESP_LOGD(TAG, "Del screen: %s -> icon: %s id: %s in position: %s mode: %d", icon_name.c_str(), ic.c_str(),
                id.c_str(), this->queue[i]->icon_name.c_str(), (int) mode);
 
@@ -1615,7 +1615,7 @@ void PixelClock::del_screen(std::string icon_name, int32_t mode) {
           if (this->queue[i]->icon_name.rfind(comparename, 0) != 0) {
             force = false;
           }
-        } else if (strcmp(this->queue[i]->icon_name.c_str(), id.c_str()) != 0) {
+        } else if (this->queue[i]->icon_name != id) {
           force = false;
         }
       }
@@ -2489,7 +2489,7 @@ bool PixelClock::draw_clock(const std::string &format, esphome::display::BaseFon
     std::string output = output_token;
 
     if (output.length() > 0) {
-      if (output.find("%") != std::string::npos) {
+      if (output.find('%') != std::string::npos) {
         if (this->replace_time_date_active && output == "%p")  // check for replace active
         {
           output = this->clock->now().strftime(output);
@@ -2645,7 +2645,7 @@ bool PixelClock::draw_date(const std::string &format, esphome::display::BaseFont
     std::string output = output_token;
 
     if (output.length() > 0) {
-      if (output.find("%") != std::string::npos) {
+      if (output.find('%') != std::string::npos) {
         if (this->replace_time_date_active &&
             (output == "%a" || output == "%A" || output == "%b" || output == "%B"))  // check for replace active
         {
@@ -2684,7 +2684,7 @@ bool PixelClock::draw_date(const std::string &format, esphome::display::BaseFont
 void PixelClock::draw_text(const std::string &text, esphome::display::BaseFont *font, Color color, int32_t xpos,
                            int32_t ypos) {
 #ifdef PIXEL_CLOCK_MULTICOLOR_TEXT
-  std::size_t pos = text.find("#");
+  std::size_t pos = text.find('#');
   if (pos == std::string::npos) {
     this->display->print(xpos, ypos, font, color, esphome::display::TextAlign::BASELINE_LEFT, text.c_str());
     return;
