@@ -1548,7 +1548,7 @@ void PixelClock::set_special_font(display::BaseFont *font) { this->special_font 
 
 void PixelClock::set_replace_time_date_active(bool b) {
   this->replace_time_date_active = b;
-  ESP_LOGI(TAG, "replace_time_date %s", b ? ESPHOME_F("on") : ESPHOME_F("off"));
+  ESP_LOGI(TAG, "replace_time_date %s", ONOFF(b));
 }
 
 static std::vector<std::string> split_whitespace(const std::string &str) {
@@ -2168,7 +2168,7 @@ void PixelClock::icon_prognosis_screen_rgb(std::string iconname, std::string tex
   }
 
   if (screen->sbitmap == NULL) {
-    screen->sbitmap = new Color[64];
+    screen->sbitmap = new Color[24]();
   }
 
   JsonDocument doc;
@@ -2257,12 +2257,12 @@ PixelClock_Queue *PixelClock::find_mode_icon_queue_element(uint8_t mode, const s
 
 void PixelClock::set_show_seconds(bool b) {
   this->show_seconds = b;
-  ESP_LOGI(TAG, "%sshow seconds", b ? ESPHOME_F("") : ESPHOME_F("don't "));
+  ESP_LOGI(TAG, "Show seconds: %s", ONOFF(b));
 }
 
 void PixelClock::set_show_day_of_week(bool b) {
   this->show_day_of_week = b;
-  ESP_LOGI(TAG, "%sshow day of week", b ? ESPHOME_F("") : ESPHOME_F("don't "));
+  ESP_LOGI(TAG, "Show day of week: %s", ONOFF(b));
 }
 
 void PixelClock::set_brightness(int32_t value) {
@@ -2733,12 +2733,13 @@ void PixelClock::draw_rainbow_text(const std::string &text, esphome::display::Ba
   for (uint16_t i = 0; i < str_len; i++) {
     uint8_t hue = this->hue_ + remap((int) i, 0, (int) str_len - 1, 0, 255);
     Color color = esphome::light::ESPHSVColor(hue, 255, 240).to_rgb();
-    this->display->printf(x + xpos, ypos, font, color, display::TextAlign::BASELINE_LEFT, "%s",
-                          GetTextChar(text, i).c_str());
-    x += this->GetTextWidth(font, "%s", GetTextChar(text, i).c_str());
+    std::string ch = GetTextChar(text, i);
+    this->display->print(x + xpos, ypos, font, color, display::TextAlign::BASELINE_LEFT, ch.c_str());
+    x += this->GetTextBounds(font, ch.c_str());
   }
 }
 #endif
+
 
 void PixelClock::set_weekday_char_count(uint8_t i) { this->weekday_char_count = i; }
 
@@ -2881,7 +2882,8 @@ void PixelClock::dump_config() {
                 "  Night mode: %s\n"
                 "  Weekday accent: %s\n"
                 "  Replace Time and Date: %s",
-                PIXEL_CLOCK_WEEK_START ? "Monday" : "Sunday", PIXEL_CLOCK_WEEKDAYTEXT, this->weekday_char_count,
+                PIXEL_CLOCK_WEEK_START ? LOG_STR_LITERAL("Monday") : LOG_STR_LITERAL("Sunday"), PIXEL_CLOCK_WEEKDAYTEXT,
+                this->weekday_char_count,
                 ONOFF(this->show_display), ONOFF(this->night_mode), ONOFF(this->weekday_accent),
                 ONOFF(this->replace_time_date_active));
   if (this->replace_time_date_active) {
