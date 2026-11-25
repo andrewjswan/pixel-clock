@@ -492,6 +492,7 @@ Numerous features are accessible with services from home assistant and lambdas t
 |text_screen_progress|"text", "value", "progress", "lifetime", "screen_time", "default_font", "value_color_as_progress", "r", "g", "b"|show the specified short text with value and with progress bar on bottom|
 |icon_prognosis_screen|"icon_name", "text", "prognosis", "lifetime", "screen_time", "default_font"|show an icon, text, and a prognosis bar consisting of 24 dots of specified colors|
 |icon_prognosis_screen_rgb|"icon_name", "text", "prognosis", "lifetime", "screen_time", "default_font", "r", "g", "b"|show an icon, text, and a prognosis bar consisting of 24 dots of specified colors|
+|prognosis_shift|"icon_name", "shift_time", "r", "g", "b"|shifts the 24-pixel forecast bar on an active `icon_prognosis_screen` to the left over `shift_time` minutes (set `shift_time` to `0` to disable) and fills vacated trailing pixels with the specified `(r, g, b)` color (`0, 0, 0` = off)|
 |set_adv_clock_color|"hr", "hg", "hb", "mr", "mg", "mb", "sr", "sg", "sb"|available only in **advanced clock mode** `advanced_clock: true`, allows you to set the color for the Hours (hr, hg, hb), Minutes (mr, mg, mb) and Spacer (sr, sg, sb), color is set by analogy with `r,g,b`. If the color is set as `black`, the standard color is used (see `set_clock_color`).|
 |set_clock_infotext_color|"left_r", "left_g", "left_b", "right_r", "right_g", "right_b","default_font","y_offset"|set the special color for left and right char on info text on `icon clock` screen, work only in **advanced clock mode**|
 |set_date_infotext_color|"left_r", "left_g", "left_b", "right_r", "right_g", "right_b","default_font","y_offset"|set the special color for left and right char on info text on `icon date` screen, work only in **advanced clock mode**|
@@ -514,6 +515,7 @@ Numerous features are accessible with services from home assistant and lambdas t
 - **value_color_as_progress**: display the value with the color of the current color on the progress bar
 - **value**: the brightness 0...255
 - **prognosis**: 24 triplets of digits (72 in total), each triplet, one point on the prognosis bar in the specified color in the triplet color. Like: [200,200,200, ..., 100,100,100] see [details](https://github.com/lubeda/EspHoMaTriXv2/issues/149)
+- **shift_time**: duration in minutes over which the 24-pixel forecast bar shifts to the left until empty (quantized in 5-minute steps, max `1275` minutes; `0` disables shifting). Updates the screen lifetime to match `shift_time`.
 
 !!! example annotate "Text Screen like Alert Text Screen"
 
@@ -637,6 +639,35 @@ You can use the `|two` modifier in the `icons` list (supported for 1, 2, or 3 ic
 !!! tip
 
     It's easier to see what it looks like than to describe it, try both options, choose the one that suits you best.
+
+### Prognosis shift
+
+!!! example annotate "Dynamic Prognosis Bar Shift"
+
+    ``` { .yaml .copy .annotate }
+    - action: esphome.pixel_clock_icon_prognosis_screen (1)
+      data:
+        icon_name: "weather_cloudy|forecast"
+        text: "+18°"
+        prognosis: "[255,200,0, ...]"
+        lifetime: 120
+        screen_time: 10
+        default_font: true
+
+    - action: esphome.pixel_clock_prognosis_shift (2)
+      data:
+        icon_name: "forecast" (3)
+        shift_time: 120 (4)
+        r: 15
+        g: 15
+        b: 15 (5)
+    ```
+
+1. Creates the prognosis screen (`MODE_PROGNOSIS_SCREEN`) with screen ID `forecast`.
+2. Enables smooth left-shifting of the 24-pixel bar.
+3. Matches the screen ID (`forecast` or wildcard `forecast*`).
+4. Shifts all 24 pixels out over `120` minutes (1 pixel every 5 minutes) and synchronizes the screen lifetime.
+5. Trailing background color for vacated pixels (`0, 0, 0` turns them off).
 
 ## Local Triggers and Lambdas
 

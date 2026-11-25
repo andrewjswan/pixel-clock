@@ -2,6 +2,9 @@
 
 #include "esphome/core/defines.h"
 
+#include <algorithm>
+#include <cmath>
+
 namespace esphome::pixel_clock {
 
 #ifdef PIXEL_CLOCK_USE_FIRE_PLUGIN
@@ -193,6 +196,7 @@ void PixelClock_Queue::reset() {
   this->mode = MODE_EMPTY;
   this->endtime = 0.0;
   this->last_time = 0.0;
+  this->progress = 0;
   if (this->sbitmap != nullptr) {
     delete[] this->sbitmap;
     this->sbitmap = nullptr;
@@ -901,8 +905,20 @@ void PixelClock_Queue::draw() {
           }
 
           if (this->sbitmap != NULL) {
+            uint8_t shift = 0;
+            // Reinterpret signed progress field as unsigned step count (0 = static, 1..255 = active)
+            uint8_t steps = static_cast<uint8_t>(this->progress);
+            if (steps > 0 && std::isfinite(this->endtime)) {
+              float total_ms = static_cast<float>(steps) * PIXEL_CLOCK_PROGNOSIS_STEP * 60000.0f;
+              float remaining_ms = this->endtime - this->config_->get_tick();
+              int32_t active =
+                  std::clamp<int32_t>(static_cast<int32_t>(std::ceil(24.0f * remaining_ms / total_ms)), 0, 24);
+              shift = static_cast<uint8_t>(24 - active);
+            }
+
             for (uint8_t x = 0; x < 24; x++) {
-              this->config_->display->draw_pixel_at(8 + x, this->ypos() + 7, this->sbitmap[x]);
+              Color c = (x + shift < 24) ? this->sbitmap[x + shift] : this->progressbar_back_color;
+              this->config_->display->draw_pixel_at(8 + x, this->ypos() + 7, c);
             }
           }
         } else {

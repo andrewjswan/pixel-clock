@@ -17,13 +17,9 @@
 #include "esphome/components/api/custom_api_device.h"
 #endif
 
-#include <vector>
 #include <algorithm>
 #include <string>
-
-// #define USE_ESP32
-// #define PIXEL_CLOCK_ADV_BOOT
-// #define PIXEL_CLOCK_ADV_BOOT_MODE_0
+#include <vector>
 
 #ifdef USE_ESP32
 #ifdef PIXEL_CLOCK_ADV_BOOT
@@ -933,6 +929,7 @@ void PixelClock::hide_gauge() {
 void PixelClock::setup() {
 #if defined(USE_API_SERVICES) || defined(USE_API_USER_DEFINED_ACTIONS)
   ESP_LOGD(TAG, "Setting up services");
+
   register_service(&PixelClock::get_status, "get_status");
   register_service(&PixelClock::set_display_on, "display_on");
   register_service(&PixelClock::set_display_off, "display_off");
@@ -1070,7 +1067,9 @@ void PixelClock::setup() {
                    {"icon_name", "text", "prognosis", "lifetime", "screen_time", "default_font"});
   register_service(&PixelClock::icon_prognosis_screen_rgb, "icon_prognosis_screen_rgb",
                    {"icon_name", "text", "prognosis", "lifetime", "screen_time", "default_font", "r", "g", "b"});
-#endif
+  register_service(&PixelClock::prognosis_shift, "prognosis_shift", {"icon_name", "shift_time", "r", "g", "b"});
+
+#endif  // #if defined(USE_API_SERVICES) || defined(USE_API_USER_DEFINED_ACTIONS)
 
   ESP_LOGD(TAG, "Setup and running!");
 }
@@ -2160,6 +2159,7 @@ void PixelClock::icon_prognosis_screen_rgb(std::string iconname, std::string tex
   screen->mode = MODE_PROGNOSIS_SCREEN;
   screen->icon_name = id;
   screen->icon = icon;
+  screen->progress = 0;
   screen->calc_scroll_time(text, screen_time);
   if (lifetime < 0) {
     screen->endtime = INFINITY;
@@ -2210,6 +2210,48 @@ void PixelClock::icon_prognosis_screen_rgb(std::string iconname, std::string tex
   ESP_LOGD(TAG, "Icon prognosis screen icon: %d iconname: %s text: %s prognosis: %d lifetime: %d screen_time: %d", icon,
            iconname.c_str(), text.c_str(), static_cast<uint8_t>(i / 3), (int) lifetime, (int) screen_time);
   screen->status();
+}
+
+void PixelClock::prognosis_shift(std::string iconname, int32_t shift_time, int32_t r, int32_t g, int32_t b) {
+  std::string id = get_screen_id(iconname);
+  bool found = false;
+
+  for (uint8_t i = 0; i < MAXQUEUE; i++) {
+    if (this->queue[i]->mode == MODE_PROGNOSIS_SCREEN) {
+      bool match = false;
+      if (this->string_has_ending(id, "*")) {
+        std::string prefix = id.substr(0, id.length() - 1);
+        match = (this->queue[i]->icon_name.rfind(prefix, 0) == 0);
+      } else {
+        match = (this->queue[i]->icon_name == id);
+      }
+
+      if (match) {
+        found = true;
+        PixelClock_Queue *screen = this->queue[i];
+        screen->progressbar_back_color =
+            (r + g + b == C_BLACK) ? esphome::display::COLOR_OFF : Color((uint8_t) r, (uint8_t) g, (uint8_t) b);
+
+        if (shift_time > 0) {
+          uint8_t steps = static_cast<uint8_t>(
+              std::clamp<int32_t>((shift_time + PIXEL_CLOCK_PROGNOSIS_STEP / 2) / PIXEL_CLOCK_PROGNOSIS_STEP, 1, 255));
+          screen->progress = static_cast<int8_t>(steps);
+          // Align endtime with quantized steps so the initial pixel holds for its full interval
+          screen->endtime = this->get_tick() + static_cast<float>(steps) * PIXEL_CLOCK_PROGNOSIS_STEP * 60000.0f;
+        } else {
+          screen->progress = 0;
+        }
+
+        ESP_LOGD(TAG, "Prognosis shift: iconname: %s shift_time: %d steps: %d back_color: r:%d g:%d b:%d",
+                 iconname.c_str(), (int) shift_time, static_cast<uint8_t>(screen->progress), (int) r, (int) g, (int) b);
+        screen->status();
+      }
+    }
+  }
+
+  if (!found) {
+    ESP_LOGW(TAG, "Prognosis shift: screen %s not found", iconname.c_str());
+  }
 }
 
 PixelClock_Queue *PixelClock::find_icon_queue_element(uint8_t icon) {
