@@ -2828,7 +2828,6 @@ int32_t PixelClock::GetTextWidth(esphome::display::BaseFont *font, const char *f
   return GetTextBounds(font, temp_buffer);
 }
 
-
 uint32_t PixelClock::IntToBits(uint32_t data, uint32_t newBitValues, unsigned nbits, unsigned startbit) {
   uint32_t mask = (1UL << nbits) - 1;
   uint32_t smask = ~(mask << startbit);
