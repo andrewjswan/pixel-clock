@@ -681,4 +681,14 @@ inline std::string strip_hex_colors(const std::string &text) {
 }
 #endif
 
+inline size_t utf8_char_len(unsigned char lead) {
+  if (lead & 0x80) {
+    if (lead & 0x20) {
+      return (lead & 0x10) ? 4 : 3;
+    }
+    return 2;
+  }
+  return 1;
+}
+
 }  // namespace esphome::pixel_clock
