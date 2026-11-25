@@ -496,7 +496,7 @@ void PixelClock_Queue::draw() {
 #ifndef USE_ESP8266
 #ifdef PIXEL_CLOCK_ADV_BITMAP
         if (this->bitmap != NULL) {
-          std::size_t pos = icon_name.find("#");
+          std::size_t pos = icon_name.find('#');
           if (pos != std::string::npos) {
             uint8_t bri;
             std::string str_mode = icon_name.substr(pos + 1);
@@ -741,7 +741,7 @@ void PixelClock_Queue::draw() {
 #endif
 
             int32_t mode = 0;
-            std::size_t pos = icon_name.find("#");
+            std::size_t pos = icon_name.find('#');
             if (pos != std::string::npos) {
               std::string str_mode = icon_name.substr(pos + 1);
               if (str_mode.length()) {
