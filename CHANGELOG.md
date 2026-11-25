@@ -1,5 +1,67 @@
 # Changelog
 
+## [v1.5.0.1](https://github.com/andrewjswan/pixel-clock/releases/tag/v1.1.5.37/compare/v1.5.0...v1.5.0.1) - 2026-11-25
+
+### What's Changed
+
+### 🚀 Features
+
+- Optimize `rainbow text` rendering to O(N) and streamline `GetTextWidth` @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/120)
+- Refactor: Send `new_screen` event only when API is connected @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/119)
+- Optimize rainbow text rendering, reduce prognosis buffer size, and clean up string ops @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/118)
+- Deduplicate icon drawing, fix bitmap leak on expiration, and clean up warnings @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/117)
+- Align trigger template types in `__init__.py` with C++ definitions, align `trigger` templates, fix `icon size` check, and standardize logging @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/116)
+- Сlean up remaining `night-mode` loops, unused declarations, and `bitmap_stack` parsing @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/115)
+- Replace `std::regex` with lightweight parsing helpers @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/114)
+- Consolidate queue filtering and screen helper logic @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/113)
+- Pass `std::string` parameters by const reference to avoid unnecessary copies @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/112)
+- Extract `find_icon_checked_` helper to deduplicate icon fallback handling @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/111)
+- Refactor `draw_day_of_week` and fix Sunday accent alignment on Monday-first week @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/110)
+- Optimize and group status log output @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/109)
+- Add `color_correct` option to preserve RGB balance during brightness scaling @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/108)
+- Common: Add `OTA` page @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/107)
+- AAB Light: Implement non-linear brightness curve and fixed hysteresis @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/106)
+- AAB Tiny: Implement non-linear brightness curve and fixed hysteresis @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/105)
+
+### 🚋 Pixel Clock aka Tram
+
+- Refactor: Send `new_screen` event only when API is connected @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/119)
+- Common: Add `OTA` page @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/107)
+- AAB Light: Implement non-linear brightness curve and fixed hysteresis @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/106)
+- AAB Tiny: Implement non-linear brightness curve and fixed hysteresis @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/105)
+
+### 🧩 Pixel Clock Component
+
+- Optimize `rainbow text` rendering to O(N) and streamline `GetTextWidth` @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/120)
+- Optimize rainbow text rendering, reduce prognosis buffer size, and clean up string ops @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/118)
+- Deduplicate icon drawing, fix bitmap leak on expiration, and clean up warnings @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/117)
+- Align trigger template types in `__init__.py` with C++ definitions, align `trigger` templates, fix `icon size` check, and standardize logging @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/116)
+- Сlean up remaining `night-mode` loops, unused declarations, and `bitmap_stack` parsing @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/115)
+- Replace `std::regex` with lightweight parsing helpers @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/114)
+- Consolidate queue filtering and screen helper logic @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/113)
+- Pass `std::string` parameters by const reference to avoid unnecessary copies @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/112)
+- Extract `find_icon_checked_` helper to deduplicate icon fallback handling @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/111)
+- Refactor `draw_day_of_week` and fix Sunday accent alignment on Monday-first week @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/110)
+- Optimize and group status log output @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/109)
+- Add `color_correct` option to preserve RGB balance during brightness scaling @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/108)
+
+#### ⚡ Performance & Memory Optimization
+
+* **Reduced firmware size by ~206.6 KB (15.4%) and static RAM by ~5.0 KB:**
+  * **Binary image:** `1,374,691 B` → `1,163,163 B` (`-211,528 B`, Flash usage `74.9%` → `63.4%`, free OTA space `+12%`)
+  * **Flash Code (`.text`):** `1,006,244 B` → `812,696 B` (`-193,548 B` / `-19.2%`)
+  * **Flash Data (`.rodata`):** `272,804 B` → `255,496 B` (`-17,308 B` / `-6.3%`)
+  * **Static DRAM (`.bss` + `.data`):** `58,572 B` → `53,436 B` (`-5,136 B` / `-8.8%`, RAM usage `32.4%` → `29.6%`)
+  
+
+### 🤝 Support
+
+If you like the project, you can support it with a star ⭐ on GitHub.
+
+### ✨ Changelog
+
+**Full Changelog**: https://github.com/andrewjswan/pixel-clock/compare/v1.5.0...v1.5.0.1
+
 ## [v1.5.0](https://github.com/andrewjswan/pixel-clock/releases/tag/v1.1.5.37/compare/v1.1.5.39...v1.5.0) - 2026-11-19
 
 ### 🧩 Component Migration (`ehmtxv2` → `pixel_clock`)
