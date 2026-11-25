@@ -2729,13 +2729,23 @@ void PixelClock::draw_rainbow_text(const std::string &text, esphome::display::Ba
                                    int32_t ypos) {
   uint16_t str_len = GetTextCharCount(text);
   uint16_t x = 0;
+  size_t byte_pos = 0;
+  char ch_buf[5];
 
-  for (uint16_t i = 0; i < str_len; i++) {
-    uint8_t hue = this->hue_ + remap((int) i, 0, (int) str_len - 1, 0, 255);
+  for (uint16_t i = 0; i < str_len && byte_pos < text.length(); i++) {
+    uint8_t hue = this->hue_ + (str_len > 1 ? remap((int) i, 0, (int) str_len - 1, 0, 255) : 0);
     Color color = esphome::light::ESPHSVColor(hue, 255, 240).to_rgb();
-    std::string ch = GetTextChar(text, i);
-    this->display->print(x + xpos, ypos, font, color, display::TextAlign::BASELINE_LEFT, ch.c_str());
-    x += this->GetTextBounds(font, ch.c_str());
+
+    size_t len = utf8_char_len(static_cast<unsigned char>(text[byte_pos]));
+    if (byte_pos + len > text.length()) {
+      len = text.length() - byte_pos;
+    }
+    memcpy(ch_buf, text.data() + byte_pos, len);
+    ch_buf[len] = '\0';
+    byte_pos += len;
+
+    this->display->print(x + xpos, ypos, font, color, display::TextAlign::BASELINE_LEFT, ch_buf);
+    x += this->GetTextBounds(font, ch_buf);
   }
 }
 #endif
@@ -2745,59 +2755,32 @@ void PixelClock::set_weekday_char_count(uint8_t i) { this->weekday_char_count = 
 std::string PixelClock::GetWeekdayChar(int32_t position) { return GetTextChar(PIXEL_CLOCK_WEEKDAYTEXT, position); }
 
 std::string PixelClock::GetTextChar(const std::string &text, int32_t position) {
-  std::string text_char = "";
+  if (position < 0) {
+    return "";
+  }
   int32_t pos = 0;
-
   for (size_t i = 0; i < text.length();) {
-    text_char = text_char + text[i];
-    if (text[i] & 0x80) {
-      text_char = text_char + text[i + 1];
-      if (text[i] & 0x20) {
-        text_char = text_char + text[i + 2];
-        if (text[i] & 0x10) {
-          text_char = text_char + text[i + 3];
-          i += 4;
-        } else {
-          i += 3;
-        }
-      } else {
-        i += 2;
-      }
-    } else {
-      i += 1;
+    size_t len = utf8_char_len(static_cast<unsigned char>(text[i]));
+    if (i + len > text.length()) {
+      len = text.length() - i;
     }
-
     if (pos == position) {
-      return text_char;
+      return text.substr(i, len);
     }
-    text_char = "";
+    i += len;
     pos++;
   }
-
   return "";
 }
 
 #ifdef PIXEL_CLOCK_RAINBOW_SHIMMER
 int32_t PixelClock::GetTextCharCount(const std::string &text) {
   int32_t count = 0;
-
   for (size_t i = 0; i < text.length();) {
-    if (text[i] & 0x80) {
-      if (text[i] & 0x20) {
-        if (text[i] & 0x10) {
-          i += 4;
-        } else {
-          i += 3;
-        }
-      } else {
-        i += 2;
-      }
-    } else {
-      i += 1;
-    }
+    size_t len = utf8_char_len(static_cast<unsigned char>(text[i]));
+    i += (i + len <= text.length()) ? len : (text.length() - i);
     count++;
   }
-
   return count;
 }
 #endif
@@ -2813,25 +2796,28 @@ int32_t PixelClock::GetTextBounds(esphome::display::BaseFont *font, const char *
 
 int32_t PixelClock::GetTextWidth(esphome::display::BaseFont *font, const char *formatting, const char raw_char) {
   char temp_buffer[80];
-  sprintf(temp_buffer, formatting, raw_char);
+  snprintf(temp_buffer, sizeof(temp_buffer), formatting, raw_char);
   return GetTextBounds(font, temp_buffer);
 }
 
 int32_t PixelClock::GetTextWidth(esphome::display::BaseFont *font, const char *formatting, const char *raw_text) {
+  if (strcmp(formatting, "%s") == 0) {
+    return GetTextBounds(font, raw_text);
+  }
   char temp_buffer[80];
-  sprintf(temp_buffer, formatting, raw_text);
+  snprintf(temp_buffer, sizeof(temp_buffer), formatting, raw_text);
   return GetTextBounds(font, temp_buffer);
 }
 
 int32_t PixelClock::GetTextWidth(esphome::display::BaseFont *font, const char *formatting, const int32_t raw_int) {
   char temp_buffer[80];
-  sprintf(temp_buffer, formatting, raw_int);
+  snprintf(temp_buffer, sizeof(temp_buffer), formatting, raw_int);
   return GetTextBounds(font, temp_buffer);
 }
 
 int32_t PixelClock::GetTextWidth(esphome::display::BaseFont *font, const char *formatting, const float raw_float) {
   char temp_buffer[80];
-  sprintf(temp_buffer, formatting, raw_float);
+  snprintf(temp_buffer, sizeof(temp_buffer), formatting, raw_float);
   return GetTextBounds(font, temp_buffer);
 }
 
