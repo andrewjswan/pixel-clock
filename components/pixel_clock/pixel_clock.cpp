@@ -2823,11 +2823,11 @@ int32_t PixelClock::GetTextWidth(esphome::display::BaseFont *font, const char *f
 
 int32_t PixelClock::GetTextWidth(esphome::display::BaseFont *font, const char *formatting, esphome::ESPTime time) {
   auto c_tm = time.to_c_tm();
-  size_t buffer_length = 80;
-  char temp_buffer[buffer_length];
-  strftime(temp_buffer, buffer_length, formatting, &c_tm);
+  char temp_buffer[80];
+  strftime(temp_buffer, sizeof(temp_buffer), formatting, &c_tm);
   return GetTextBounds(font, temp_buffer);
 }
+
 
 uint32_t PixelClock::IntToBits(uint32_t data, uint32_t newBitValues, unsigned nbits, unsigned startbit) {
   uint32_t mask = (1UL << nbits) - 1;
