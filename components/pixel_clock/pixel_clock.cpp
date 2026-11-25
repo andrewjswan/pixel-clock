@@ -1548,7 +1548,7 @@ void PixelClock::set_special_font(display::BaseFont *font) { this->special_font 
 
 void PixelClock::set_replace_time_date_active(bool b) {
   this->replace_time_date_active = b;
-  ESP_LOGI(TAG, "replace_time_date %s", ONOFF(b));
+  ESP_LOGI(TAG, "Replace time/date: %s", ONOFF(b));
 }
 
 static std::vector<std::string> split_whitespace(const std::string &str) {
