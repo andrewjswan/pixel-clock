@@ -927,7 +927,6 @@ void PixelClock::hide_gauge() {
 #endif  // PIXEL_CLOCK_GAUGE
 
 void PixelClock::setup() {
-
 #if defined(USE_API_SERVICES) || defined(USE_API_USER_DEFINED_ACTIONS)
   ESP_LOGD(TAG, "Setting up services");
 
