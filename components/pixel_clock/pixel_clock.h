@@ -53,6 +53,10 @@ const uint8_t ICON_STRIDE = TEXTSCROLLSTART + 1;  // icon width (8px) + 1px gap
 
 const uint16_t POLLINGINTERVAL = 250;
 
+#ifndef PIXEL_CLOCK_PROGNOSIS_STEP
+#define PIXEL_CLOCK_PROGNOSIS_STEP 5  // Prognosis shift step in minutes (max: 255 * 5 = 1275 min)
+#endif
+
 static const char *const PIXEL_CLOCK_VERSION = "2026.11.1";
 static const char *const TAG = "pixel-clock";
 
@@ -415,6 +419,8 @@ class PixelClock final : public PollingComponent
   void icon_prognosis_screen_rgb(std::string icon, std::string text, std::string prognosis,
                                  int32_t lifetime = D_LIFETIME, int32_t screen_time = D_SCREEN_TIME,
                                  bool default_font = true, int32_t r = C_RED, int32_t g = C_GREEN, int32_t b = C_BLUE);
+  void prognosis_shift(std::string icon, int32_t shift_time, int32_t r = C_BLACK, int32_t g = C_BLACK,
+                       int32_t b = C_BLACK);
 
   void bitmap_screen(std::string text, int32_t lifetime = D_LIFETIME, int32_t screen_time = D_SCREEN_TIME);
   void bitmap_small(std::string icon, std::string text, int32_t lifetime = D_LIFETIME,
