@@ -6,13 +6,20 @@
 <div class="ehmtx-tool-container" style="padding: 0px !important;">
     <div class="editor-layout">
         <div class="picker-sidebar">
-            <div id="iroPicker"></div>
-              <div class="color-inputs" style="display: flex; align-items: center; gap: 4px;">
-                <div class="input-group"><input type="number" id="input-r" /><span>R</span></div>
-                <div class="input-group"><input type="number" id="input-g" /><span>G</span></div>
-                <div class="input-group"><input type="number" id="input-b" /><span>B</span></div>
-                <button id="eyedropperBtn" type="button" class="md-button" onclick="window.toggleEyedropper()" title="Pick color" style="height: 36px; min-width: 36px; padding: 0; display: flex; align-items: center; justify-content: center; border: 1px solid #ccc; background: transparent; cursor: pointer;">💧</button>
+          <div id="iroPicker"></div>
+            <div class="color-inputs" style="display: flex; align-items: flex-start; gap: 6px;">
+              <div class="input-group"><input type="number" id="input-r" /><span>R</span></div>
+              <div class="input-group"><input type="number" id="input-g" /><span>G</span></div>
+              <div class="input-group"><input type="number" id="input-b" /><span>B</span></div>
+              <div class="input-group">
+                <button id="eyedropperBtn" type="button" onclick="window.toggleEyedropper()" title="Pick color from grid" style="width: 32px; height: 28px; padding: 0; display: flex; align-items: center; justify-content: center; border: 1px solid var(--md-default-fg-color--lightest); border-radius: 4px; background-color: #212121; color: #ffffff; cursor: pointer;">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                    <path d="M19.35 11.72l-2.13 2.13-1.41-1.42-7.71 7.71c-1.26 1.26-3.45 1.31-4.76 0-1.31-1.31-1.26-3.5 0-4.76l7.71-7.71-1.42-1.41 2.13-2.13 7.59 7.59zm-2.83-8.49c1.17-1.17 3.07-1.17 4.24 0 1.17 1.17 1.17 3.07 0 4.24l-2.12 2.12-4.24-4.24 2.12-2.12z"/>
+                  </svg>
+                </button>
+                <span style="visibility: hidden;">.</span>
               </div>
+            </div>
             <div style="display: flex; gap: 5px; width: 100%; margin-top: 10px;">
                 <button class="md-button md-button--primary" style="flex: 1; height: 36px; font-size: 12px; min-width: 0; display: flex; align-items: center; justify-content: center;" onclick="window.setEditorMode(8, 8)">8x8</button>
                 <button class="md-button md-button--primary" style="flex: 1; height: 36px; font-size: 12px; min-width: 0; display: flex; align-items: center; justify-content: center;" onclick="window.setEditorMode(16, 16)">16x16</button>
