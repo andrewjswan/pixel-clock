@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const inR = document.getElementById('input-r'), inG = document.getElementById('input-g'), inB = document.getElementById('input-b');
       const eyedropperBtn = document.getElementById('eyedropperBtn');
       let isDrawing = false, isEyedropper = false, currentW = 8, currentH = 8, currentColor = "#F44336";
-    
+
       // Toggle eyedropper mode state and visual feedback
       window.toggleEyedropper = () => {
         isEyedropper = !isEyedropper;
