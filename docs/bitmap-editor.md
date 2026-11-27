@@ -7,11 +7,12 @@
     <div class="editor-layout">
         <div class="picker-sidebar">
             <div id="iroPicker"></div>
-            <div class="color-inputs">
+              <div class="color-inputs" style="display: flex; align-items: center; gap: 4px;">
                 <div class="input-group"><input type="number" id="input-r" /><span>R</span></div>
                 <div class="input-group"><input type="number" id="input-g" /><span>G</span></div>
                 <div class="input-group"><input type="number" id="input-b" /><span>B</span></div>
-            </div>
+                <button id="eyedropperBtn" type="button" class="md-button" onclick="window.toggleEyedropper()" title="Pick color" style="height: 36px; min-width: 36px; padding: 0; display: flex; align-items: center; justify-content: center; border: 1px solid #ccc; background: transparent; cursor: pointer;">💧</button>
+              </div>
             <div style="display: flex; gap: 5px; width: 100%; margin-top: 10px;">
                 <button class="md-button md-button--primary" style="flex: 1; height: 36px; font-size: 12px; min-width: 0; display: flex; align-items: center; justify-content: center;" onclick="window.setEditorMode(8, 8)">8x8</button>
                 <button class="md-button md-button--primary" style="flex: 1; height: 36px; font-size: 12px; min-width: 0; display: flex; align-items: center; justify-content: center;" onclick="window.setEditorMode(16, 16)">16x16</button>
