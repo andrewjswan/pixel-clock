@@ -1,8 +1,19 @@
 document.addEventListener("DOMContentLoaded", () => {
     const grid = document.getElementById('pixelGrid');
     const output = document.getElementById('editorOutput');
-    const inR = document.getElementById('input-r'), inG = document.getElementById('input-g'), inB = document.getElementById('input-b');
-    let isDrawing = false, currentW = 8, currentH = 8, currentColor = "#F44336";
+      const inR = document.getElementById('input-r'), inG = document.getElementById('input-g'), inB = document.getElementById('input-b');
+      const eyedropperBtn = document.getElementById('eyedropperBtn');
+      let isDrawing = false, isEyedropper = false, currentW = 8, currentH = 8, currentColor = "#F44336";
+    
+      // Toggle eyedropper mode state and visual feedback
+      window.toggleEyedropper = () => {
+        isEyedropper = !isEyedropper;
+        if (eyedropperBtn) {
+          eyedropperBtn.style.backgroundColor = isEyedropper ? '#3f51b5' : 'transparent';
+          eyedropperBtn.style.color = isEyedropper ? '#ffffff' : 'inherit';
+        }
+        grid.style.cursor = isEyedropper ? 'crosshair' : 'default';
+      };
 
     const colorPicker = new iro.ColorPicker("#iroPicker", {
         width: 220, color: currentColor,
@@ -36,16 +47,27 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     function handlePaint(e, isClick) {
-        const cell = e.target;
-        const cellRgb = cell.style.backgroundColor.match(/\d+/g).map(Number);
-        const cellHex = "#" + cellRgb.map(x => x.toString(16).padStart(2, '0')).join('').toUpperCase();
+      const cell = e.target;
+      const cellRgb = cell.style.backgroundColor.match(/\d+/g).map(Number);
 
-        if (isClick && cellHex === currentColor) {
-            cell.style.backgroundColor = 'rgb(0, 0, 0)';
-        } else {
-            cell.style.backgroundColor = currentColor;
+      // Pick color from the clicked cell and exit eyedropper mode
+      if (isEyedropper) {
+        if (isClick) {
+          colorPicker.color.set({ r: cellRgb[0], g: cellRgb[1], b: cellRgb[2] });
+          window.toggleEyedropper();
+          isDrawing = false;
         }
-        updateOutput();
+        return;
+      }
+
+      const cellHex = "#" + cellRgb.map(x => x.toString(16).padStart(2, '0')).join('').toUpperCase();
+
+      if (isClick && cellHex === currentColor) {
+        cell.style.backgroundColor = 'rgb(0, 0, 0)';
+      } else {
+        cell.style.backgroundColor = currentColor;
+      }
+      updateOutput();
     }
 
     window.addEventListener('mouseup', () => isDrawing = false);
