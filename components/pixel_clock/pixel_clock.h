@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cctype>
-
 #include "esphome/core/defines.h"
 #include "esphome/core/color.h"
 #include "esphome/core/helpers.h"
@@ -659,9 +657,6 @@ class PixelClock_Icon {
 #ifdef PIXEL_CLOCK_MULTICOLOR_TEXT
 inline bool try_parse_hex_color(const std::string &s, size_t pos, Color fallback, Color &out) {
   if (s[pos] != '#' || pos + 6 >= s.length()) {
-    return false;
-  }
-  if (pos + 7 < s.length() && std::isxdigit(static_cast<unsigned char>(s[pos + 7]))) {
     return false;
   }
   uint8_t rgb[3];
