@@ -1,5 +1,30 @@
 # Changelog
 
+## [v1.5.0.3](https://github.com/andrewjswan/pixel-clock/releases/tag/v1.1.5.37/compare/v1.5.0.1...v1.5.0.3) - 2026-11-28
+
+### What's Changed
+
+### 🚀 Features
+
+- Add `prognosis_shift` service for time-based forecast bar shifting @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/122)
+
+### 🧩 Pixel Clock Component
+
+- Allow hex digits immediately following a `#RRGGBB` color tag @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/124)
+- Add `prognosis_shift` service for time-based forecast bar shifting @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/122)
+
+### 🧰 Maintenance
+
+- Bitmap Editor: Add Eyedropper @andrewjswan (https://github.com/andrewjswan/pixel-clock/pull/123)
+
+### 🤝 Support
+
+If you like the project, you can support it with a star ⭐ on GitHub.
+
+### ✨ Changelog
+
+**Full Changelog**: https://github.com/andrewjswan/pixel-clock/compare/v1.5.0.1...v1.5.0.3
+
 ## [v1.5.0.1](https://github.com/andrewjswan/pixel-clock/releases/tag/v1.1.5.37/compare/v1.5.0...v1.5.0.1) - 2026-11-25
 
 ### What's Changed
@@ -52,7 +77,7 @@
   * **Flash Code (`.text`):** `1,006,244 B` → `812,696 B` (`-193,548 B` / `-19.2%`)
   * **Flash Data (`.rodata`):** `272,804 B` → `255,496 B` (`-17,308 B` / `-6.3%`)
   * **Static DRAM (`.bss` + `.data`):** `58,572 B` → `53,436 B` (`-5,136 B` / `-8.8%`, RAM usage `32.4%` → `29.6%`)
-
+  
 
 ### 🤝 Support
 
